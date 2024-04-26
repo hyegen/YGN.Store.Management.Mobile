@@ -1,4 +1,4 @@
-package com.example.ygn_store_management.Activities;
+package com.example.ygn_store_management.Activities.ReportActivities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +11,7 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.ygn_store_management.Activities.LoginActivity;
 import com.example.ygn_store_management.Adapters.ProductAdapter;
 import com.example.ygn_store_management.Models.Product;
 import com.example.ygn_store_management.R;
@@ -18,6 +19,7 @@ import com.example.ygn_store_management.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -25,7 +27,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 @SuppressWarnings("deprecation")
-public class MainActivity extends AppCompatActivity {
+public class ReportStockAmountActivity extends AppCompatActivity {
     private List<String> dataList = new ArrayList<>();
     private SwipeRefreshLayout swipeRefreshLayout;
     private ListView productsListView;
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new stockAmounts().execute();
+                new getStockAmounts().execute();
             }
         });
     }
@@ -67,18 +69,20 @@ public class MainActivity extends AppCompatActivity {
         apiUrl = "http://" + savedIpAddress;
     }
     private void initialize(){
-        new stockAmounts().execute();
+        new getStockAmounts().execute();
     }
     private void findViews() {
         productsListView = findViewById(R.id.productsListView);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
     }
-    private class stockAmounts extends AsyncTask<Void, Void, String>{
+
+    private class getStockAmounts extends AsyncTask<Void, Void, String>{
         @SuppressWarnings("deprecation")
         @Override
         protected String doInBackground(Void... voids) {
+            String apiRoute = "/api/GetStockAmount";
             try {
-                URL url = new URL(apiUrl);
+                URL url = new URL(apiUrl + apiRoute); // Concatenate the API route with the base URL
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -114,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                         product.StockAmount = Integer.valueOf(jsonObject.getString("StockAmount"));
                         products.add(product);
                     }
-                    ProductAdapter adapter = new ProductAdapter(MainActivity.this,R.layout.products_adapter,products);
+                    ProductAdapter adapter = new ProductAdapter(ReportStockAmountActivity.this,R.layout.products_adapter,products);
                     productsListView.setAdapter(adapter);
                 } catch (JSONException e) {
                     Log.e(TAG, "Error parsing JSON: " + e.getMessage());

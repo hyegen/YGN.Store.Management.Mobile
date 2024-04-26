@@ -16,7 +16,7 @@
         android:theme="@style/Theme.YGNStoreManagement"
         tools:targetApi="31">
         <activity
-            android:name=".Activities.MainActivity"
+            android:name=".Activities.ReportActivities.ReportStockAmountActivity"
             android:exported="false" />
         <activity android:name=".Activities.SettingActivity" />
         <activity

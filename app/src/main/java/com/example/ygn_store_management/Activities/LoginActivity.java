@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,8 +14,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.ygn_store_management.Activities.MainActivity;
-import com.example.ygn_store_management.Activities.SettingActivity;
+import com.example.ygn_store_management.Activities.ReportActivities.ReportStockAmountActivity;
 import com.example.ygn_store_management.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -70,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (selectedUser.equals("BAHAR")) {
             if (isPasswordValid(edtPassword.getText().toString())) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(LoginActivity.this, ReportStockAmountActivity.class);
                 startActivity(intent);
                 finish();
             } else {
