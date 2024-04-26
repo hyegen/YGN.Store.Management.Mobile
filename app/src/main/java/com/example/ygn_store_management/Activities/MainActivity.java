@@ -104,17 +104,17 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String jsonData) {
             if (jsonData != null) {
                 try {
-                    ArrayList<Product> students = new ArrayList<>();
+                    ArrayList<Product> products = new ArrayList<>();
                     JSONArray jsonArray = new JSONArray(jsonData);
                     for (int i = 0; i < jsonArray.length(); i++) {
-                        Product student=new Product();
+                        Product product=new Product();
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        student.ItemCode = jsonObject.getString("ItemCode");
-                        student.ItemName = jsonObject.getString("ItemName");
-                        student.StockAmount = Integer.valueOf(jsonObject.getString("StockAmount"));
-                        students.add(student);
+                        product.ItemCode = jsonObject.getString("ItemCode");
+                        product.ItemName = jsonObject.getString("ItemName");
+                        product.StockAmount = Integer.valueOf(jsonObject.getString("StockAmount"));
+                        products.add(product);
                     }
-                    ProductAdapter adapter = new ProductAdapter(MainActivity.this,R.layout.products_adapter,students);
+                    ProductAdapter adapter = new ProductAdapter(MainActivity.this,R.layout.products_adapter,products);
                     productsListView.setAdapter(adapter);
                 } catch (JSONException e) {
                     Log.e(TAG, "Error parsing JSON: " + e.getMessage());
