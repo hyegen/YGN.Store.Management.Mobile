@@ -1,4 +1,4 @@
-package com.example.ygn_store_management.Activities;
+package com.example.ygn_store_management.Activities.MainActivities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;

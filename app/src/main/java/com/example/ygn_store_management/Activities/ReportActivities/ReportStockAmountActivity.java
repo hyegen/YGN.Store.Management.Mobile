@@ -14,7 +14,7 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.ygn_store_management.Activities.LoginActivity;
+import com.example.ygn_store_management.Activities.MainActivities.LoginActivity;
 import com.example.ygn_store_management.Adapters.ProductAdapter;
 import com.example.ygn_store_management.Models.Product;
 import com.example.ygn_store_management.R;

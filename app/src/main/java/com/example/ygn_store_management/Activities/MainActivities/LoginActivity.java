@@ -1,5 +1,6 @@
-package com.example.ygn_store_management.Activities;
+package com.example.ygn_store_management.Activities.MainActivities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -22,7 +23,9 @@ public class LoginActivity extends AppCompatActivity {
     private Spinner usernameSpinner;
     private Button loginButton;
     private Button settingButton;
+    private Button infoButton;
     private EditText edtPassword;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
         settingButton = findViewById(R.id.settingButton);
         edtPassword = findViewById(R.id.passwordEditText);
-
+        infoButton=findViewById(R.id.btnInfo);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,6 +65,15 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        infoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, InformationActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
     private void login(){
         String selectedUser = usernameSpinner.getSelectedItem().toString();

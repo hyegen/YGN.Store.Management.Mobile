@@ -10,17 +10,20 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:usesCleartextTraffic="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.YGNStoreManagement"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".Activities.MainActivities.InformationActivity"
+            android:exported="false" />
         <activity
             android:name=".Activities.ReportActivities.ReportStockAmountActivity"
             android:exported="false" />
-        <activity android:name=".Activities.SettingActivity" />
+        <activity android:name=".Activities.MainActivities.SettingActivity" />
         <activity
-            android:name=".Activities.LoginActivity"
+            android:name=".Activities.MainActivities.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
