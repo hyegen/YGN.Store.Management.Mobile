@@ -82,14 +82,8 @@ public class ReportStockAmountActivity extends AppCompatActivity {
         finish();
     }
     private void setPolicy(){
-
-        if (android.os.Build.VERSION.SDK_INT > 9) {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                    .permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
-        /*StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);*/
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
     }
     private void getSharedPreferences(){
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
@@ -104,7 +98,6 @@ public class ReportStockAmountActivity extends AppCompatActivity {
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
         edtSearchItem=findViewById(R.id.edtSearchItem);
     }
-
     private class getStockAmounts extends AsyncTask<Void, Void, String>{
        @SuppressWarnings("deprecation")
         @Override
@@ -170,7 +163,6 @@ public class ReportStockAmountActivity extends AppCompatActivity {
             swipeRefreshLayout.setRefreshing(false);
         }
     }
-
     private ArrayList<Product> performSearch(String query) {
         ArrayList<Product> results = new ArrayList<>();
 
