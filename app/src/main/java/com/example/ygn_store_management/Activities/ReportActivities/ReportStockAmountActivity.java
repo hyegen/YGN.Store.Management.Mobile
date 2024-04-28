@@ -29,6 +29,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
 @SuppressWarnings("deprecation")
 public class ReportStockAmountActivity extends AppCompatActivity {
     private List<String> dataList = new ArrayList<>();
@@ -162,59 +163,9 @@ public class ReportStockAmountActivity extends AppCompatActivity {
         }
     }
 
-   /* private ArrayList<Product> performSearch(String query) {
-        ArrayList<Product> results = new ArrayList<>();
-
-        for (String data : dataList) {
-            try {
-                JSONObject jsonObject = new JSONObject(data);
-                Product product = new Product();
-                product.setItemCode(jsonObject.getString("ItemCode"));
-                product.setItemName(jsonObject.getString("ItemName"));
-                product.setStockAmount(jsonObject.getString("StockAmount"));
-
-                if (product.getItemName().contains(query)) {
-                    results.add(product);
-                }
-            } catch (JSONException e) {
-                Log.e(TAG, "Error parsing JSON: " + e.getMessage());
-            }
-        }
-        return results;
-    }*/
-
-   /* private ArrayList<Product> performSearch(String query) {
-        ArrayList<Product> results = new ArrayList<>();
-
-        // Kullanıcı girişini ve ürün adlarını büyük harflere dönüştür
-        String queryUpperCase = query.toUpperCase();
-
-        for (String data : dataList) {
-            try {
-                JSONObject jsonObject = new JSONObject(data);
-                Product product = new Product();
-                product.setItemCode(jsonObject.getString("ItemCode"));
-                product.setItemName(jsonObject.getString("ItemName"));
-                product.setStockAmount(jsonObject.getString("StockAmount"));
-
-                // Ürün adını da büyük harflere dönüştür
-                String itemNameUpperCase = product.getItemName().toUpperCase();
-
-                // Büyük harfe dönüştürülmüş kullanıcı girişiyle karşılaştır
-                if (itemNameUpperCase.contains(queryUpperCase)) {
-                    results.add(product);
-                }
-            } catch (JSONException e) {
-                Log.e(TAG, "Error parsing JSON: " + e.getMessage());
-            }
-        }
-        return results;
-    }*/
-
     private ArrayList<Product> performSearch(String query) {
         ArrayList<Product> results = new ArrayList<>();
 
-        // Kullanıcı girişini ve ürün adlarını büyük harflere dönüştür
         String queryUpperCase = query.toUpperCase();
 
         for (String data : dataList) {
@@ -225,11 +176,9 @@ public class ReportStockAmountActivity extends AppCompatActivity {
                 product.setItemName(jsonObject.getString("ItemName"));
                 product.setStockAmount(jsonObject.getString("StockAmount"));
 
-                // Ürün adını ve kodunu da büyük harflere dönüştür
                 String itemNameUpperCase = product.getItemName().toUpperCase();
                 String itemCodeUpperCase = product.getItemCode().toUpperCase();
 
-                // Hem ürün adında hem de kodunda arama yap
                 if (itemNameUpperCase.contains(queryUpperCase) || itemCodeUpperCase.contains(queryUpperCase)) {
                     results.add(product);
                 }
