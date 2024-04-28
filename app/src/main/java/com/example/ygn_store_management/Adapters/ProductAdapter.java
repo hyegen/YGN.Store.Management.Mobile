@@ -44,8 +44,8 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         TextView txtItemName = convertView.findViewById(R.id.txtItemName);
         TextView txtStockAmount = convertView.findViewById(R.id.txtStockAmount);
 
-        txtItemCode.setText(itemName);
-        txtItemName.setText(itemCode);
+        txtItemCode.setText(itemCode);
+        txtItemName.setText(itemName);
         txtStockAmount.setText(stockAmount);
 
         return convertView;

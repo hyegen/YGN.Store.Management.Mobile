@@ -5,7 +5,10 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +33,7 @@ import java.util.List;
 public class ReportStockAmountActivity extends AppCompatActivity {
     private List<String> dataList = new ArrayList<>();
     private SwipeRefreshLayout swipeRefreshLayout;
+    private EditText edtSearchItem;
     private ListView productsListView;
     private static String apiUrl;
     private static final String TAG = "MainActivity";
@@ -37,7 +41,7 @@ public class ReportStockAmountActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_report_stock_amount);
         getSharedPreferences();
         setPolicy();
         findViews();
@@ -51,6 +55,21 @@ public class ReportStockAmountActivity extends AppCompatActivity {
                 new getStockAmounts().execute();
             }
         });
+        edtSearchItem.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                searchItemByCode(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+    }
+    private void searchItemByCode(String query) {
+        new SearchTask().execute(query);
     }
     @Override
     public void onBackPressed() {
@@ -74,6 +93,7 @@ public class ReportStockAmountActivity extends AppCompatActivity {
     private void findViews() {
         productsListView = findViewById(R.id.productsListView);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+        edtSearchItem=findViewById(R.id.edtSearchItem);
     }
 
     private class getStockAmounts extends AsyncTask<Void, Void, String>{
@@ -82,7 +102,7 @@ public class ReportStockAmountActivity extends AppCompatActivity {
         protected String doInBackground(Void... voids) {
             String apiRoute = "/api/GetStockAmount";
             try {
-                URL url = new URL(apiUrl + apiRoute); // Concatenate the API route with the base URL
+                URL url = new URL(apiUrl + apiRoute);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -127,4 +147,97 @@ public class ReportStockAmountActivity extends AppCompatActivity {
             swipeRefreshLayout.setRefreshing(false);
         }
     }
+    private class SearchTask extends AsyncTask<String, Void, ArrayList<Product>> {
+        @Override
+        protected ArrayList<Product> doInBackground(String... params) {
+            String query = params[0];
+            return performSearch(query);
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Product> products) {
+            ProductAdapter adapter = new ProductAdapter(ReportStockAmountActivity.this, R.layout.products_adapter, products);
+            productsListView.setAdapter(adapter);
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
+   /* private ArrayList<Product> performSearch(String query) {
+        ArrayList<Product> results = new ArrayList<>();
+
+        for (String data : dataList) {
+            try {
+                JSONObject jsonObject = new JSONObject(data);
+                Product product = new Product();
+                product.setItemCode(jsonObject.getString("ItemCode"));
+                product.setItemName(jsonObject.getString("ItemName"));
+                product.setStockAmount(jsonObject.getString("StockAmount"));
+
+                if (product.getItemName().contains(query)) {
+                    results.add(product);
+                }
+            } catch (JSONException e) {
+                Log.e(TAG, "Error parsing JSON: " + e.getMessage());
+            }
+        }
+        return results;
+    }*/
+
+   /* private ArrayList<Product> performSearch(String query) {
+        ArrayList<Product> results = new ArrayList<>();
+
+        // Kullanıcı girişini ve ürün adlarını büyük harflere dönüştür
+        String queryUpperCase = query.toUpperCase();
+
+        for (String data : dataList) {
+            try {
+                JSONObject jsonObject = new JSONObject(data);
+                Product product = new Product();
+                product.setItemCode(jsonObject.getString("ItemCode"));
+                product.setItemName(jsonObject.getString("ItemName"));
+                product.setStockAmount(jsonObject.getString("StockAmount"));
+
+                // Ürün adını da büyük harflere dönüştür
+                String itemNameUpperCase = product.getItemName().toUpperCase();
+
+                // Büyük harfe dönüştürülmüş kullanıcı girişiyle karşılaştır
+                if (itemNameUpperCase.contains(queryUpperCase)) {
+                    results.add(product);
+                }
+            } catch (JSONException e) {
+                Log.e(TAG, "Error parsing JSON: " + e.getMessage());
+            }
+        }
+        return results;
+    }*/
+
+    private ArrayList<Product> performSearch(String query) {
+        ArrayList<Product> results = new ArrayList<>();
+
+        // Kullanıcı girişini ve ürün adlarını büyük harflere dönüştür
+        String queryUpperCase = query.toUpperCase();
+
+        for (String data : dataList) {
+            try {
+                JSONObject jsonObject = new JSONObject(data);
+                Product product = new Product();
+                product.setItemCode(jsonObject.getString("ItemCode"));
+                product.setItemName(jsonObject.getString("ItemName"));
+                product.setStockAmount(jsonObject.getString("StockAmount"));
+
+                // Ürün adını ve kodunu da büyük harflere dönüştür
+                String itemNameUpperCase = product.getItemName().toUpperCase();
+                String itemCodeUpperCase = product.getItemCode().toUpperCase();
+
+                // Hem ürün adında hem de kodunda arama yap
+                if (itemNameUpperCase.contains(queryUpperCase) || itemCodeUpperCase.contains(queryUpperCase)) {
+                    results.add(product);
+                }
+            } catch (JSONException e) {
+                Log.e(TAG, "Error parsing JSON: " + e.getMessage());
+            }
+        }
+        return results;
+    }
+
 }

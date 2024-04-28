@@ -38,15 +38,18 @@
                         android:gravity="center"
                         android:text="Stok Miktarları"
                         android:textSize="24sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        />
                 </androidx.appcompat.widget.Toolbar>
 
                 <EditText
-                    android:id="@+id/edtStudent"
+                    android:id="@+id/edtSearchItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Search"
-                    android:minHeight="48dp"></EditText>
+                    android:hint="Ürün Kodu veya Açıklaması"
+                    android:singleLine="true"
+                    android:minHeight="48dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
