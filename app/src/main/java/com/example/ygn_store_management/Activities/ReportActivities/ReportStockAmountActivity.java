@@ -24,8 +24,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.SocketException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,8 +82,14 @@ public class ReportStockAmountActivity extends AppCompatActivity {
         finish();
     }
     private void setPolicy(){
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        /*StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);*/
     }
     private void getSharedPreferences(){
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
@@ -98,7 +106,7 @@ public class ReportStockAmountActivity extends AppCompatActivity {
     }
 
     private class getStockAmounts extends AsyncTask<Void, Void, String>{
-        @SuppressWarnings("deprecation")
+       @SuppressWarnings("deprecation")
         @Override
         protected String doInBackground(Void... voids) {
             String apiRoute = "/api/GetStockAmount";
