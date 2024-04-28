@@ -70,7 +70,7 @@ public class ReportStockAmountActivity extends AppCompatActivity {
         });
     }
     private void searchItemByCode(String query) {
-        new SearchTask().execute(query);
+        new searchProduct().execute(query);
     }
     @Override
     public void onBackPressed() {
@@ -148,7 +148,7 @@ public class ReportStockAmountActivity extends AppCompatActivity {
             swipeRefreshLayout.setRefreshing(false);
         }
     }
-    private class SearchTask extends AsyncTask<String, Void, ArrayList<Product>> {
+    private class searchProduct extends AsyncTask<String, Void, ArrayList<Product>> {
         @Override
         protected ArrayList<Product> doInBackground(String... params) {
             String query = params[0];
