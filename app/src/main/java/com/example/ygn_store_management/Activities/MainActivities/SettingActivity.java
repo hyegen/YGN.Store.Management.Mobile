@@ -18,7 +18,6 @@ public class SettingActivity extends AppCompatActivity {
     private EditText ipAddressEditText;
     private Button saveButton;
     private Button returnButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,14 +56,12 @@ public class SettingActivity extends AppCompatActivity {
 
         showSavedIpAddress();
     }
-
     private void saveIpAddress() {
         String ipAddress = ipAddressEditText.getText().toString();
         SharedPreferences.Editor editor = getSharedPreferences("MY_PREFS", MODE_PRIVATE).edit();
         editor.putString("ipAddress", ipAddress);
         editor.apply();
     }
-
     private void returnToMainActivity() {
         runOnUiThread(new Runnable() {
             @Override
@@ -75,7 +72,6 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
     }
-
     private void showSavedIpAddress() {
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         String savedIpAddress = prefs.getString("ipAddress", "");

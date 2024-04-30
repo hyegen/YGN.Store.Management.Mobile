@@ -120,7 +120,7 @@ public class ReportStockAmountActivity extends AppCompatActivity {
                     dataList.add(data);
                 }
             } catch (Exception e) {
-                Log.e(TAG, "Error fetching data: " + e.getMessage());
+                Log.e(TAG, "Hata: " + e.getMessage());
             }
             return dataList.toString();
         }
@@ -143,7 +143,7 @@ public class ReportStockAmountActivity extends AppCompatActivity {
                     ProductAdapter adapter = new ProductAdapter(ReportStockAmountActivity.this,R.layout.products_adapter,products);
                     productsListView.setAdapter(adapter);
                 } catch (JSONException e) {
-                    Log.e(TAG, "Error parsing JSON: " + e.getMessage());
+                    Log.e(TAG, "Hata: " + e.getMessage());
                 }
             }
             swipeRefreshLayout.setRefreshing(false);
@@ -183,7 +183,7 @@ public class ReportStockAmountActivity extends AppCompatActivity {
                     results.add(product);
                 }
             } catch (JSONException e) {
-                Log.e(TAG, "Error parsing JSON: " + e.getMessage());
+                Log.e(TAG, "Hata: " + e.getMessage());
             }
         }
         return results;

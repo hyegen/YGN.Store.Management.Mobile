@@ -1,9 +1,8 @@
 package com.example.ygn_store_management.Activities.MainActivities;
 
-import static com.example.ygn_store_management.Managers.RequestManager.makePostRequest;
-import static java.lang.System.out;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -19,18 +18,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedWriter;
+import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.InvocationTargetException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ygn_store_management.Activities.ReportActivities.ReportStockAmountActivity;
-import com.example.ygn_store_management.Adapters.UserAdapter;
-import com.example.ygn_store_management.Models.Product;
-import com.example.ygn_store_management.Models.User;
+import com.example.ygn_store_management.Managers.RequestManager;
 import com.example.ygn_store_management.R;
 
 import org.json.JSONArray;
@@ -105,31 +102,16 @@ public class LoginActivity extends AppCompatActivity {
         infoButton=findViewById(R.id.btnInfo);
         usernameSpinner = findViewById(R.id.usernameSpinner);
     }
-    private void login(){
-
-        String username = usernameSpinner.getSelectedItem().toString();
-        String password = edtPassword.getText().toString();
-        LoginTask loginTask = new LoginTask(username, password);
-        loginTask.execute();
-
-       /* String selectedUser = usernameSpinner.getSelectedItem().toString();
-
-        if (selectedUser.equals("BAHAR")) {
-            if (isPasswordValid(edtPassword.getText().toString())) {
-                Intent intent = new Intent(LoginActivity.this, ReportStockAmountActivity.class);
-                startActivity(intent);
-                finish();
-            } else {
-                Toast.makeText(LoginActivity.this, "Şifre yanlış", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(LoginActivity.this, "Geçersiz kullanıcı", Toast.LENGTH_SHORT).show();
-        }*/
-    }
     private void getSharedPreferences(){
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         String savedIpAddress = prefs.getString("ipAddress", "");
         apiUrl = "http://" + savedIpAddress;
+    }
+    private void login(){
+        String username = usernameSpinner.getSelectedItem().toString();
+        String password = edtPassword.getText().toString();
+
+        new LoginTask(username,password).execute();
     }
     private class fetchDataTask extends AsyncTask<Void, Void, String> {
         @Override
@@ -152,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
                     users.add(data);
                 }
             } catch (Exception e) {
-                Log.e(TAG, "Error fetching data: " + e.getMessage());
+                Log.e(TAG, "Hata: " + e.getMessage());
             }
             return users.toString();
         }
@@ -170,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
                 usernameSpinner.setAdapter(new ArrayAdapter<String>(LoginActivity.this,
                         android.R.layout.simple_spinner_dropdown_item, users));
             }catch (JSONException e) {
-                Log.e(TAG, "Error parsing JSON: " + e.getMessage());
+                Log.e(TAG, "Hata: " + e.getMessage());
             }
         }
     }
@@ -185,26 +167,51 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Void... voids) {
-            String apiRoute = "/api/login";
-
             try {
-                String response = makePostRequest(apiUrl+apiRoute,
-                        "{\"userName\":\""+username+"\", \"password\":\""+password+"\"}", getApplicationContext());
-                return response;
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                return "";
+                String apiRoute = apiUrl + "/api/login/{userName}/{password}";
+                String user = username;
+                String pass = password;
+
+                apiRoute = apiRoute.replace("{userName}", URLEncoder.encode(user, "UTF-8"));
+                apiRoute = apiRoute.replace("{password}", URLEncoder.encode(pass, "UTF-8"));
+
+                URL url = new URL(apiRoute);
+
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+
+                urlConnection.connect();
+
+                int statusCode = urlConnection.getResponseCode();
+
+                if (statusCode == 200) {
+                    InputStream it = new BufferedInputStream(urlConnection.getInputStream());
+                    InputStreamReader read = new InputStreamReader(it);
+                    BufferedReader buff = new BufferedReader(read);
+                    StringBuilder dta = new StringBuilder();
+                    String chunks;
+                    while ((chunks = buff.readLine()) != null) {
+                        dta.append(chunks);
+                    }
+                    return String.valueOf(statusCode);
+                } else {
+                    Toast.makeText(LoginActivity.this, "Hata !", Toast.LENGTH_SHORT).show();
+                }
+            }catch (Exception e) {
+                e.printStackTrace();
             }
+            return null;
         }
         @Override
         protected void onPostExecute(String success) {
-            if (success.equals("OK")) {
+            if (success!= null && success.equals("200")) {
                 Intent intent = new Intent(LoginActivity.this, ReportStockAmountActivity.class);
                 startActivity(intent);
+                Toast.makeText(LoginActivity.this, "Giriş Başarılı.", Toast.LENGTH_SHORT).show();
                 finish();
-                Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Giriş Başarısız.", Toast.LENGTH_SHORT).show();
             }
         }
     }
