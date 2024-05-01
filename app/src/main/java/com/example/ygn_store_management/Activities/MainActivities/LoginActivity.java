@@ -26,6 +26,8 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.ygn_store_management.Activities.PrintTestActivities.TestPrintActivity;
+import com.example.ygn_store_management.Activities.PurchasingActivities.PurchasingDetailActivity;
 import com.example.ygn_store_management.Activities.ReportActivities.ReportStockAmountActivity;
 import com.example.ygn_store_management.Managers.RequestManager;
 import com.example.ygn_store_management.R;
@@ -45,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private Button settingButton;
     private Button infoButton;
+    private Button btnPurchasing;
     private EditText edtPassword;
     private static String apiUrl;
     private ArrayList<String> users= new ArrayList<>();;
@@ -60,8 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         initialize();
     }
     private void initialize(){
-
-        new fetchDataTask().execute();
+        new fetchUsers().execute();
     }
     private void events(){
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +96,13 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+       /* btnPurchasing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, PurchasingDetailActivity.class);
+                startActivity(intent);
+            }
+        });*/
     }
     private void findViews(){
         loginButton = findViewById(R.id.loginButton);
@@ -113,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
 
         new LoginTask(username,password).execute();
     }
-    private class fetchDataTask extends AsyncTask<Void, Void, String> {
+    private class fetchUsers extends AsyncTask<Void, Void, String> {
         @Override
         protected String doInBackground(Void... voids) {
             String apiRoute = "/api/getAllUsers";
@@ -206,8 +215,8 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String success) {
             if (success!= null && success.equals("200")) {
-                Intent intent = new Intent(LoginActivity.this, ReportStockAmountActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent(LoginActivity.this, MainCardViewActivity.class);
+               startActivity(intent);
                 Toast.makeText(LoginActivity.this, "Giriş Başarılı.", Toast.LENGTH_SHORT).show();
                 finish();
             } else {

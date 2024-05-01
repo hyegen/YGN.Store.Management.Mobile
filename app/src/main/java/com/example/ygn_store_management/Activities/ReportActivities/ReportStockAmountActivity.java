@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.ygn_store_management.Activities.MainActivities.LoginActivity;
+import com.example.ygn_store_management.Activities.MainActivities.MainCardViewActivity;
 import com.example.ygn_store_management.Adapters.ProductAdapter;
 import com.example.ygn_store_management.Models.Product;
 import com.example.ygn_store_management.R;
@@ -77,7 +78,7 @@ public class ReportStockAmountActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, MainCardViewActivity.class);
         startActivity(intent);
         finish();
     }

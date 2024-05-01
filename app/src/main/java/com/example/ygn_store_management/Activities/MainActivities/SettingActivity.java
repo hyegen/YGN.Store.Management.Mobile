@@ -22,11 +22,16 @@ public class SettingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-
+        findView();
+        events();
+        showSavedIpAddress();
+    }
+    private void findView(){
         ipAddressEditText = findViewById(R.id.ipAddressEditText);
         saveButton = findViewById(R.id.saveButton);
         returnButton = findViewById(R.id.returnButton);
-
+    }
+    private void events() {
         ipAddressEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -38,7 +43,6 @@ public class SettingActivity extends AppCompatActivity {
                 return false;
             }
         });
-
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,15 +50,12 @@ public class SettingActivity extends AppCompatActivity {
                 Toast.makeText(SettingActivity.this, "Kaydetme Başarılı.", Toast.LENGTH_SHORT).show();
             }
         });
-
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 returnToMainActivity();
             }
         });
-
-        showSavedIpAddress();
     }
     private void saveIpAddress() {
         String ipAddress = ipAddressEditText.getText().toString();

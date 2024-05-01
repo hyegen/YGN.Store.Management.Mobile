@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +16,18 @@
         android:theme="@style/Theme.YGNStoreManagement"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".Activities.SalesActivities.SalesDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.MainActivities.MainCardViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.PurchasingActivities.PurchasingDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.PrintTestActivities.TestPrintActivity"
+            android:exported="false" />
         <activity
             android:name=".Activities.MainActivities.InformationActivity"
             android:exported="false" />

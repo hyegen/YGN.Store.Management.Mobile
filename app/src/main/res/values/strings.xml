@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">YGN-Store-Management</string>
+    <string name="sales">Satış</string>
+    <string name="purchasing">Satınalma</string>
+    <string name="toplam_fiyat">Toplam Fiyat</string>
+    <string name="reports">Raporlar</string>
 </resources>
