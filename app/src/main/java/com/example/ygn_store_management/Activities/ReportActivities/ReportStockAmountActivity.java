@@ -14,7 +14,6 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.ygn_store_management.Activities.MainActivities.LoginActivity;
 import com.example.ygn_store_management.Activities.MainActivities.MainCardViewActivity;
 import com.example.ygn_store_management.Adapters.ProductAdapter;
 import com.example.ygn_store_management.Models.Product;
@@ -25,10 +24,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.SocketException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +37,7 @@ public class ReportStockAmountActivity extends AppCompatActivity {
     private EditText edtSearchItem;
     private ListView productsListView;
     private static String apiUrl;
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "ReportStockAmountActivity";
     @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,7 +138,7 @@ public class ReportStockAmountActivity extends AppCompatActivity {
                         product.StockAmount = Integer.valueOf(jsonObject.getString("StockAmount"));
                         products.add(product);
                     }
-                    ProductAdapter adapter = new ProductAdapter(ReportStockAmountActivity.this,R.layout.products_adapter,products);
+                    ProductAdapter adapter = new ProductAdapter(ReportStockAmountActivity.this,R.layout.adapter_products,products);
                     productsListView.setAdapter(adapter);
                 } catch (JSONException e) {
                     Log.e(TAG, "Hata: " + e.getMessage());
@@ -159,7 +156,7 @@ public class ReportStockAmountActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(ArrayList<Product> products) {
-            ProductAdapter adapter = new ProductAdapter(ReportStockAmountActivity.this, R.layout.products_adapter, products);
+            ProductAdapter adapter = new ProductAdapter(ReportStockAmountActivity.this, R.layout.adapter_products, products);
             productsListView.setAdapter(adapter);
             swipeRefreshLayout.setRefreshing(false);
         }

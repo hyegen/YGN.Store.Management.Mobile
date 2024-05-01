@@ -20,6 +20,12 @@
             android:name=".Activities.SalesActivities.SalesDetailActivity"
             android:exported="false" />
         <activity
+            android:name=".Activities.DialogActivities.ProductSelectionDialogActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.DialogActivities.ClientSelectionDialogActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.MainActivities.MainCardViewActivity"
             android:exported="false" />
         <activity

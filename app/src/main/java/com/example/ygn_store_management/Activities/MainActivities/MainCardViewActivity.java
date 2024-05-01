@@ -7,12 +7,9 @@ import android.view.View;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.ygn_store_management.Activities.ReportActivities.ReportStockAmountActivity;
-import com.example.ygn_store_management.Activities.SalesActivities.SalesDetailActivity;
+import com.example.ygn_store_management.Activities.DialogActivities.ClientSelectionDialogActivity;
 import com.example.ygn_store_management.R;
 
 public class MainCardViewActivity extends AppCompatActivity {
@@ -35,7 +32,7 @@ public class MainCardViewActivity extends AppCompatActivity {
         salesCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainCardViewActivity.this, SalesDetailActivity.class);
+                Intent intent = new Intent(MainCardViewActivity.this, ClientSelectionDialogActivity.class);
                 startActivity(intent);
             }
         });

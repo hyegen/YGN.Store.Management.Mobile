@@ -27,7 +27,6 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -54,6 +53,7 @@
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/reportsCardView"
         android:layout_width="match_parent"
