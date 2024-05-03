@@ -1,9 +1,17 @@
 package com.example.ygn_store_management.Activities.SalesActivities;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -13,6 +21,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.ygn_store_management.Activities.DialogActivities.ProductSelectionDialogActivity;
+import com.example.ygn_store_management.Adapters.ProductListAdapter;
+import com.example.ygn_store_management.Adapters.SalesDetailAdapter;
 import com.example.ygn_store_management.Models.Product;
 import com.example.ygn_store_management.R;
 
@@ -29,22 +39,40 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class SalesDetailActivity extends AppCompatActivity {
+    private ListView selectedProductListView;
+    private TextView clientDescriptionTextView;
+    private TextView clientIdDescTextView;
+    private ArrayList<Product> selectedProducts;
+    private String selectedClientDescription;
+    private Integer selectedClientId;
     private static String apiUrl;
     private static final String TAG = "SalesDetailActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales_detail);
-
+        findViews();
         getExtras();
+        initialize();
     }
-    private void getExtras(){
+    private void getExtras() {
         Intent intent = getIntent();
-        ArrayList<Product> selectedProducts = (ArrayList<Product>) intent.getSerializableExtra("selectedProducts");
-        String selectedClientDescription = intent.getStringExtra("selectedClientDescription");
-        Integer selectedClientId = intent.getIntExtra("selectedClientId",-1);
-    }
+        selectedProducts = (ArrayList<Product>) intent.getSerializableExtra("selectedProducts");
+        selectedClientDescription = intent.getStringExtra("selectedClientDescription");
+        selectedClientId = intent.getIntExtra("selectedClientId", -1);
 
+    }
+    private void initialize(){
+        SalesDetailAdapter adapter = new SalesDetailAdapter(SalesDetailActivity.this,R.layout.adapter_sales_detail,selectedProducts);
+        selectedProductListView.setAdapter(adapter);
+        clientDescriptionTextView.setText(selectedClientDescription);
+        clientIdDescTextView.setText(String.valueOf(selectedClientId));
+    }
+    private void findViews(){
+        clientIdDescTextView = findViewById(R.id.txtClientIdDesc);
+        clientDescriptionTextView = findViewById(R.id.clientDescriptionTextView);
+        selectedProductListView = findViewById(R.id.selectedProductListView);
+    }
     private class SaveProductsTask extends AsyncTask<ArrayList<Product>, Void, Boolean> {
         @Override
         protected Boolean doInBackground(ArrayList<Product>... arrayLists) {
@@ -91,5 +119,4 @@ public class SalesDetailActivity extends AppCompatActivity {
             }
         }
     }
-
 }

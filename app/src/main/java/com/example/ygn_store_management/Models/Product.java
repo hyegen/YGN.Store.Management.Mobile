@@ -9,13 +9,14 @@ public class Product implements Serializable {
         this.StockAmount = StockAmount;
         this.UnitPrice=UnitPrice;
         this.isSelected=isSelected;
+        this.Amount=Amount;
     }
     public String ItemCode;
     public String ItemName;
     public Integer StockAmount;
     public Double UnitPrice;
     public Boolean isSelected=false;
-
+    public Integer Amount;
     public String getItemCode() {
         return ItemCode;
     }
@@ -24,6 +25,9 @@ public class Product implements Serializable {
     }
     public Double getUnitPrice() {
         return UnitPrice;
+    }
+    public Integer getAmount() {
+        return StockAmount;
     }
 
     public void setItemCode(String itemCode) {
@@ -38,5 +42,19 @@ public class Product implements Serializable {
     public void setUnitPrice(Double unitPrice) {
         this.UnitPrice = Double.valueOf(unitPrice);
     }
+/*    public void setAmount(Integer amount) {
+        this.Amount = amount;
+    }*/
+public void setAmount(Integer amount) {
+    try {
+        if (amount != null) {
+            this.Amount = amount;
+        } else {
+            this.Amount = 0;
+        }
+    } catch (Exception e) {
+        System.err.println("Error while setting amount: " + e.getMessage());
+    }
+}
 
 }

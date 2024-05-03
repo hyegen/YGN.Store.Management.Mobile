@@ -186,5 +186,4 @@ public class ReportStockAmountActivity extends AppCompatActivity {
         }
         return results;
     }
-
 }

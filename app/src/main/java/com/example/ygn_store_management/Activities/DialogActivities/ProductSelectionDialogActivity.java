@@ -1,19 +1,30 @@
 package com.example.ygn_store_management.Activities.DialogActivities;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.ygn_store_management.Activities.ReportActivities.ReportStockAmountActivity;
 import com.example.ygn_store_management.Activities.SalesActivities.SalesDetailActivity;
+import com.example.ygn_store_management.Adapters.ProductAdapter;
+import com.example.ygn_store_management.Adapters.ProductListAdapter;
 import com.example.ygn_store_management.Adapters.ProductSelectionAdapter;
 import com.example.ygn_store_management.Models.Product;
 import com.example.ygn_store_management.R;
@@ -34,14 +45,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductSelectionDialogActivity extends AppCompatActivity {
+    private EditText edtSearchItem;
+    private Button confirmButton;
     private List<String> dataList = new ArrayList<>();
     private Integer selectedClientId;
     private String selectedClientDescription;
     private static final String TAG = "ProductSelectionDialogActivity";
     private static String apiUrl;
     private ListView productsListView;
-    private ArrayList<Product> selectedProducts = new ArrayList<>();
-
+    private ArrayList<Integer> inputAmounts = new ArrayList<>();
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,47 +67,40 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
     }
     private void findViews(){
         productsListView=findViewById(R.id.productSelectionListView);
+        edtSearchItem=findViewById(R.id.edtSearchItem);
+        confirmButton = findViewById(R.id.confirmButton);
     }
     private void events() {
-
-       /* Button confirmButton = findViewById(R.id.confirmButton);
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ArrayList<Product> selectedProducts = getSelectedProducts();
-                if (!selectedProducts.isEmpty()) {
-                    new SaveProductsTask().execute(selectedProducts);
-                } else {
-                    Toast.makeText(ProductSelectionDialogActivity.this, "Lütfen bir ürün seçin", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });*/
-
-        Button confirmButton = findViewById(R.id.confirmButton);
-        confirmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<Product> selectedProducts = getSelectedProducts();
-                if (!selectedProducts.isEmpty()) {
+                if(!selectedProducts.isEmpty()){
                     Intent intent = new Intent(ProductSelectionDialogActivity.this, SalesDetailActivity.class);
                     intent.putExtra("selectedProducts", selectedProducts);
                     intent.putExtra("selectedClientId", selectedClientId);
                     intent.putExtra("selectedClientDescription", selectedClientDescription);
+                    intent.putExtra("quantities", inputAmounts);
+
                     startActivity(intent);
-                } else {
-                    Toast.makeText(ProductSelectionDialogActivity.this, "Lütfen bir ürün seçin", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(ProductSelectionDialogActivity.this, "Ürün Seçiniz", Toast.LENGTH_SHORT).show();
                 }
 
-                /*ArrayList<Product> selectedProducts = getSelectedProducts();
-                if (!selectedProducts.isEmpty()) {
-                    Intent intent = new Intent(ProductSelectionDialogActivity.this, SalesDetailActivity.class);
-                    intent.putExtra("selectedProducts", selectedProducts);
-                    intent.putExtra("selectedClientDescription", selectedClientDescription);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(ProductSelectionDialogActivity.this, "Lütfen bir ürün seçin", Toast.LENGTH_SHORT).show();
-                }*/
             }
+        });
+        edtSearchItem.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                searchItem(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
         });
     }
     private void getSharedPreferences(){
@@ -108,22 +113,56 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
         selectedClientDescription = getIntent().getStringExtra("ClientCodeAndNameAndSurname");
     }
     private void initialize(){
-     new getStockAmounts().execute();
+     new getProducts().execute();
     }
     private ArrayList<Product> getSelectedProducts() {
         ArrayList<Product> selectedProducts = new ArrayList<>();
         ProductSelectionAdapter adapter = (ProductSelectionAdapter) productsListView.getAdapter();
         if (adapter != null) {
-            for (int i = 0; i < adapter.getCount(); i++) {
+            int count = adapter.getCount();
+            for (int i = 0; i < count; i++) {
                 Product product = adapter.getItem(i);
                 if (product != null && product.isSelected) {
+                    int quantity = 0;
+                    if (i < adapter.quantities.size()) {
+                        quantity = adapter.quantities.get(i);
+                    }
+                    product.setAmount(quantity);
                     selectedProducts.add(product);
                 }
             }
         }
         return selectedProducts;
     }
-    private class getStockAmounts extends AsyncTask<Void, Void, String> {
+    private ArrayList<Product> performSearch(String query) {
+        ArrayList<Product> results = new ArrayList<>();
+
+        String queryUpperCase = query.toUpperCase();
+
+        for (String data : dataList) {
+            try {
+                JSONObject jsonObject = new JSONObject(data);
+                Product product = new Product();
+                product.setItemCode(jsonObject.getString("ItemCode"));
+                product.setItemName(jsonObject.getString("ItemName"));
+                product.setStockAmount(jsonObject.getString("StockAmount"));
+
+                String itemNameUpperCase = product.getItemName().toUpperCase();
+                String itemCodeUpperCase = product.getItemCode().toUpperCase();
+
+                if (itemNameUpperCase.contains(queryUpperCase) || itemCodeUpperCase.contains(queryUpperCase)) {
+                    results.add(product);
+                }
+            } catch (JSONException e) {
+                Log.e(TAG, "Hata: " + e.getMessage());
+            }
+        }
+        return results;
+    }
+    private void searchItem(String query) {
+        new searchProduct().execute(query);
+    }
+    private class getProducts extends AsyncTask<Void, Void, String> {
         @SuppressWarnings("deprecation")
         @Override
         protected String doInBackground(Void... voids) {
@@ -167,9 +206,8 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
                         products.add(product);
                     }
 
-                    ProductSelectionAdapter adapter = new ProductSelectionAdapter(ProductSelectionDialogActivity.this, R.layout.adapter_products_selection, products);
+                    ProductSelectionAdapter adapter = new ProductSelectionAdapter(ProductSelectionDialogActivity.this, R.layout.adapter_products_selection, products,inputAmounts);
                     productsListView.setAdapter(adapter);
-
 
                 } catch (JSONException e) {
                     Log.e(TAG, "Hata: " + e.getMessage());
@@ -177,6 +215,17 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
             }
         }
     }
+    private class searchProduct extends AsyncTask<String, Void, ArrayList<Product>> {
+        @Override
+        protected ArrayList<Product> doInBackground(String... params) {
+            String query = params[0];
+            return performSearch(query);
+        }
 
-
+        @Override
+        protected void onPostExecute(ArrayList<Product> products) {
+            ProductSelectionAdapter adapter = new ProductSelectionAdapter(ProductSelectionDialogActivity.this, R.layout.adapter_products_selection, products,inputAmounts);
+            productsListView.setAdapter(adapter);
+        }
+    }
 }
