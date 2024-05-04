@@ -13,8 +13,8 @@ import com.example.ygn_store_management.Activities.DialogActivities.ClientSelect
 import com.example.ygn_store_management.R;
 
 public class MainCardViewActivity extends AppCompatActivity {
-
     private CardView salesCardView;
+    private CardView purchasingCardView;
     private CardView reportsCardView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,13 +26,23 @@ public class MainCardViewActivity extends AppCompatActivity {
     }
     private void findViews(){
         salesCardView=findViewById(R.id.salesCardView);
+        purchasingCardView=findViewById(R.id.purchasingCardView);
         reportsCardView=findViewById(R.id.reportsCardView);
     }
     private void events(){
+        purchasingCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainCardViewActivity.this, ClientSelectionDialogActivity.class);
+                intent.putExtra("IOCode",1);
+                startActivity(intent);
+            }
+        });
         salesCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainCardViewActivity.this, ClientSelectionDialogActivity.class);
+                intent.putExtra("IOCode",2);
                 startActivity(intent);
             }
         });

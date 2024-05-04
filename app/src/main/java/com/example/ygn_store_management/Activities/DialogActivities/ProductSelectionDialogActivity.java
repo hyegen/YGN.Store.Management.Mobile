@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.ygn_store_management.Activities.PurchasingActivities.PurchasingDetailActivity;
 import com.example.ygn_store_management.Activities.ReportActivities.ReportStockAmountActivity;
 import com.example.ygn_store_management.Activities.SalesActivities.SalesDetailActivity;
 import com.example.ygn_store_management.Adapters.ProductAdapter;
@@ -45,6 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductSelectionDialogActivity extends AppCompatActivity {
+    private Integer IOCode;
     private EditText edtSearchItem;
     private Button confirmButton;
     private List<String> dataList = new ArrayList<>();
@@ -79,13 +81,29 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ArrayList<Product> selectedProducts = getSelectedProducts();
                 if(!selectedProducts.isEmpty()){
-                    Intent intent = new Intent(ProductSelectionDialogActivity.this, SalesDetailActivity.class);
-                    intent.putExtra("selectedProducts", selectedProducts);
-                    intent.putExtra("selectedClientId", selectedClientId);
-                    intent.putExtra("selectedClientDescription", selectedClientDescription);
-                    intent.putExtra("quantities", inputAmounts);
-                    intent.putExtra("totalPrice",totalPrice);
-                    startActivity(intent);
+                    if(IOCode == 1){
+                        Intent intent = new Intent(ProductSelectionDialogActivity.this, PurchasingDetailActivity.class);
+                        intent.putExtra("selectedProducts", selectedProducts);
+                        intent.putExtra("selectedClientId", selectedClientId);
+                        intent.putExtra("selectedClientDescription", selectedClientDescription);
+                        intent.putExtra("quantities", inputAmounts);
+                        intent.putExtra("totalPrice",totalPrice);
+                        intent.putExtra("IOCode",IOCode);
+                        startActivity(intent);
+                    } else if (IOCode == 2) {
+                        Intent intent = new Intent(ProductSelectionDialogActivity.this, SalesDetailActivity.class);
+                        intent.putExtra("selectedProducts", selectedProducts);
+                        intent.putExtra("selectedClientId", selectedClientId);
+                        intent.putExtra("selectedClientDescription", selectedClientDescription);
+                        intent.putExtra("quantities", inputAmounts);
+                        intent.putExtra("totalPrice",totalPrice);
+                        intent.putExtra("IOCode",IOCode);
+                        startActivity(intent);
+                    }
+                    else{
+                        Toast.makeText(ProductSelectionDialogActivity.this, "Bir şeyler ters gitti.", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
                 else{
                     Toast.makeText(ProductSelectionDialogActivity.this, "Ürün Seçiniz", Toast.LENGTH_SHORT).show();
@@ -114,11 +132,11 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
     private void getExtras() {
         selectedClientId = getIntent().getIntExtra("selectedClientId", -1);
         selectedClientDescription = getIntent().getStringExtra("ClientCodeAndNameAndSurname");
+        IOCode = getIntent().getIntExtra("IOCode",-1);
     }
     private void initialize(){
      new getProducts().execute();
     }
-
     private ArrayList<Product> getSelectedProducts() {
         ArrayList<Product> selectedProducts = new ArrayList<>();
         totalPrice=0.0;
@@ -144,7 +162,6 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
         }
         return selectedProducts;
     }
-
     private ArrayList<Product> performSearch(String query) {
         ArrayList<Product> results = new ArrayList<>();
 

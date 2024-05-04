@@ -1,0 +1,57 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:paddingTop="3dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="3dp"
+    android:paddingBottom="3dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtItemCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Item Code"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtItemName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Item Name" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtUnitPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Unit Price" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtSelectedAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Selected Item Amount" />
+
+    </LinearLayout>
+</LinearLayout>

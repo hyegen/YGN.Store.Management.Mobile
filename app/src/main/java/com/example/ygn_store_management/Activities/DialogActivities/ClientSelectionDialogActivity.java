@@ -28,6 +28,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class ClientSelectionDialogActivity extends AppCompatActivity {
+    private Integer IOCode;
     private ArrayList<String> clients = new ArrayList<>();
     private static String apiUrl;
     private static final String TAG = "SalesDetailActivity";
@@ -37,13 +38,16 @@ public class ClientSelectionDialogActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_client_selection_dialog);
+        getExtras();
         findViews();
         getSharedPreferences();
         initialize();
         events();
-
     }
-    private void events(){
+    private void getExtras() {
+        IOCode = getIntent().getIntExtra("IOCode",-1);
+    }
+    private void events() {
         clientsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -56,21 +60,22 @@ public class ClientSelectionDialogActivity extends AppCompatActivity {
 
                 intent.putExtra("selectedClientId", itemId);
                 intent.putExtra("ClientCodeAndNameAndSurname", itemDescription);
+                intent.putExtra("IOCode", IOCode);
 
                 startActivity(intent);
             }
         });
     }
-    private void getSharedPreferences(){
+    private void getSharedPreferences() {
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         String savedIpAddress = prefs.getString("ipAddress", "");
         apiUrl = "http://" + savedIpAddress;
     }
-    private void initialize(){
+    private void initialize() {
         new fetchClients().execute();
     }
-    private void findViews(){
-        clientsListView=findViewById(R.id.clientSelectionListViewTest);
+    private void findViews() {
+        clientsListView = findViewById(R.id.clientSelectionListViewTest);
     }
     private class fetchClients extends AsyncTask<Void, Void, String> {
         @Override
@@ -105,13 +110,13 @@ public class ClientSelectionDialogActivity extends AppCompatActivity {
                 ArrayList<Client> clients = new ArrayList<>();
                 JSONArray jsonArray = new JSONArray(jsonData);
                 for (int i = 0; i < jsonArray.length(); i++) {
-                    Client client= new Client();
+                    Client client = new Client();
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     client.ClientId = Integer.valueOf(jsonObject.getString("ClientId"));
                     client.ClientCodeAndNameAndSurname = jsonObject.getString("ClientCodeAndNameAndSurname");
                     clients.add(client);
                 }
-                ClientAdapter adapter = new ClientAdapter(ClientSelectionDialogActivity.this,R.layout.adapter_client_selection,clients);
+                ClientAdapter adapter = new ClientAdapter(ClientSelectionDialogActivity.this, R.layout.adapter_client_selection, clients);
                 clientsListView.setAdapter(adapter);
                 clientsListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
                 clientsListView.setItemsCanFocus(false);

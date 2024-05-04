@@ -45,6 +45,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class SalesDetailActivity extends AppCompatActivity {
+    private Integer IOCode;
     private ListView selectedProductListView;
     private Button confirmButton;
     private Button closeButton;
@@ -94,6 +95,7 @@ public class SalesDetailActivity extends AppCompatActivity {
         selectedClientDescription = intent.getStringExtra("selectedClientDescription");
         selectedClientId = intent.getIntExtra("selectedClientId", -1);
         totalPrice=intent.getDoubleExtra("totalPrice",-1);
+        IOCode=intent.getIntExtra("IOCode",-1);
     }
     private void initialize(){
         SalesDetailAdapter adapter = new SalesDetailAdapter(SalesDetailActivity.this,R.layout.adapter_sales_detail,selectedProducts);
@@ -119,11 +121,10 @@ public class SalesDetailActivity extends AppCompatActivity {
                 SimpleDateFormat isoDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
                 String formattedDate = isoDateFormat.format(currentDate);
 
-
                 JSONObject orderObject = new JSONObject();
                 orderObject.put("DateTime", formattedDate);
                 orderObject.put("TotalPrice", totalPrice);
-                orderObject.put("IOCode", 2);
+                orderObject.put("IOCode", IOCode);
                 orderObject.put("ClientId", selectedClientId);
                 orderObject.put("OrderLines", new JSONArray());
 
@@ -136,7 +137,7 @@ public class SalesDetailActivity extends AppCompatActivity {
                     orderLineObject.put("Amount", product.Amount);
                     orderLineObject.put("DateTime", formattedDate);
                     orderLineObject.put("LineTotal", lineTotal);
-                    orderLineObject.put("IOCode", 2);
+                    orderLineObject.put("IOCode", IOCode);
 
                     orderLinesArray.put(orderLineObject);
                 }

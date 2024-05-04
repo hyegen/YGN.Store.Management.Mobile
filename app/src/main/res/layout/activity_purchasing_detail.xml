@@ -1,64 +1,184 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".Activities.PurchasingActivities.PurchasingDetailActivity">
+    tools:context=".Activities.SalesActivities.SalesDetailActivity">
 
-    <Spinner
-        android:id="@+id/clientSpinner"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp" />
+        android:background="@color/white"
+        android:minHeight="40dp"
+        android:theme="?attr/actionBarTheme">
 
-    <Button
-        android:id="@+id/productButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Ürün Seç" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Satınalma Detay"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+    </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
-        android:id="@+id/productLayout"
-        android:layout_width="match_parent"
+        android:layout_margin="12dp"
+        android:id="@+id/leftLinearLayout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@android:drawable/dialog_holo_light_frame"
         android:orientation="vertical"
-        android:padding="16dp"
-        android:visibility="gone">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toTopOf="@id/selectedProductListView">
 
-        <Spinner
-            android:id="@+id/productSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:id="@+id/quantityEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Enter quantity"
-            android:inputType="number" />
-
-        <Button
-            android:id="@+id/addProductButton"
+        <TextView
+            android:id="@+id/txtClientTag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Add Product" />
+            android:text="Cari Açıklaması"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/clientDescriptionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/selectedProductListView"
+        app:layout_constraintEnd_toStartOf="@id/rightLinearLayout"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toEndOf="@id/leftLinearLayout"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintVertical_bias="0.391">
+
+        <TextView
+            android:id="@+id/txtTotalPriceTag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Toplam Fiyat"
+            android:textSize="18dp"
+            android:textStyle="bold"
+
+            />
+
+        <TextView
+            android:id="@+id/txtTotalPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/rightLinearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toTopOf="@id/selectedProductListView">
+
+        <TextView
+            android:id="@+id/txtClientId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Client Id"
+            android:textColor="@color/black"
+            android:visibility="invisible"
+            />
+
+        <TextView
+            android:id="@+id/txtClientIdDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Client Id Desc"
+            android:textColor="@color/black"
+            android:visibility="invisible"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingTop="3dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="3dp"
+        android:paddingBottom="3dp"
+        android:background="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/leftLinearLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/txtItemDescriptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Ürün"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtItemName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Birim Fiyat"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtStockAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Miktar"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
     </LinearLayout>
 
     <ListView
-        android:id="@+id/productListView"
-        android:layout_width="match_parent"
+        android:id="@+id/selectedProductListView"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_marginTop="15dp"
+        app:layout_constraintBottom_toTopOf="@id/confirmButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/leftLinearLayout" />
 
     <Button
-        android:id="@+id/saveButton"
-        android:layout_width="match_parent"
+        android:id="@+id/confirmButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="Save" />
-</LinearLayout>
+        android:text="Tamamla"
+        app:layout_constraintBottom_toTopOf="@id/closeButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/closeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Vazgeç"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="0dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
