@@ -49,6 +49,9 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
     private Button confirmButton;
     private List<String> dataList = new ArrayList<>();
     private Integer selectedClientId;
+    private Double lineTotal;
+    private Double totalPrice;
+    private Integer selectedItemId;
     private String selectedClientDescription;
     private static final String TAG = "ProductSelectionDialogActivity";
     private static String apiUrl;
@@ -81,7 +84,7 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
                     intent.putExtra("selectedClientId", selectedClientId);
                     intent.putExtra("selectedClientDescription", selectedClientDescription);
                     intent.putExtra("quantities", inputAmounts);
-
+                    intent.putExtra("totalPrice",totalPrice);
                     startActivity(intent);
                 }
                 else{
@@ -115,8 +118,10 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
     private void initialize(){
      new getProducts().execute();
     }
+
     private ArrayList<Product> getSelectedProducts() {
         ArrayList<Product> selectedProducts = new ArrayList<>();
+        totalPrice=0.0;
         ProductSelectionAdapter adapter = (ProductSelectionAdapter) productsListView.getAdapter();
         if (adapter != null) {
             int count = adapter.getCount();
@@ -124,16 +129,22 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
                 Product product = adapter.getItem(i);
                 if (product != null && product.isSelected) {
                     int quantity = 0;
-                    if (i < adapter.quantities.size()) {
-                        quantity = adapter.quantities.get(i);
-                    }
+                    // if (i < adapter.quantities.size()) {
+                    quantity = adapter.quantities.get(i);
+                    // }
+
                     product.setAmount(quantity);
+                    lineTotal=quantity* product.getUnitPrice().doubleValue();
+                    totalPrice+=lineTotal;
                     selectedProducts.add(product);
                 }
             }
+
+
         }
         return selectedProducts;
     }
+
     private ArrayList<Product> performSearch(String query) {
         ArrayList<Product> results = new ArrayList<>();
 
@@ -146,6 +157,7 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
                 product.setItemCode(jsonObject.getString("ItemCode"));
                 product.setItemName(jsonObject.getString("ItemName"));
                 product.setStockAmount(jsonObject.getString("StockAmount"));
+                product.setUnitPrice(jsonObject.getString("UnitPrice"));
 
                 String itemNameUpperCase = product.getItemName().toUpperCase();
                 String itemCodeUpperCase = product.getItemCode().toUpperCase();
@@ -199,6 +211,7 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         Product product = new Product();
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        product.ItemId=jsonObject.getInt("ItemId");
                         product.ItemCode = jsonObject.getString("ItemCode");
                         product.ItemName = jsonObject.getString("ItemName");
                         product.StockAmount = Integer.valueOf(jsonObject.getString("StockAmount"));

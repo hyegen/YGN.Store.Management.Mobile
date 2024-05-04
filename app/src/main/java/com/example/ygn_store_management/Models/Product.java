@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Product implements Serializable {
     public Product() {
+        this.ItemId=ItemId;
         this.ItemCode = ItemCode;
         this.ItemName = ItemName;
         this.StockAmount = StockAmount;
@@ -11,6 +12,7 @@ public class Product implements Serializable {
         this.isSelected=isSelected;
         this.Amount=Amount;
     }
+    public Integer ItemId;
     public String ItemCode;
     public String ItemName;
     public Integer StockAmount;
@@ -29,6 +31,9 @@ public class Product implements Serializable {
     public Integer getAmount() {
         return StockAmount;
     }
+    public Integer getItemId() {
+        return ItemId;
+    }
 
     public void setItemCode(String itemCode) {
         this.ItemCode = itemCode;
@@ -39,12 +44,10 @@ public class Product implements Serializable {
     public void setStockAmount(String stockAmount) {
         this.StockAmount = Integer.valueOf(stockAmount);
     }
-    public void setUnitPrice(Double unitPrice) {
+    public void setUnitPrice(String unitPrice) {
         this.UnitPrice = Double.valueOf(unitPrice);
     }
-/*    public void setAmount(Integer amount) {
-        this.Amount = amount;
-    }*/
+
 public void setAmount(Integer amount) {
     try {
         if (amount != null) {

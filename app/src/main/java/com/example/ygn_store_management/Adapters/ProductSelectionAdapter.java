@@ -18,6 +18,7 @@ import com.example.ygn_store_management.Models.Product;
 import com.example.ygn_store_management.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ProductSelectionAdapter extends ArrayAdapter<Product> {
     private Context context;
@@ -27,66 +28,10 @@ public class ProductSelectionAdapter extends ArrayAdapter<Product> {
         super(context, pResource, pObjects);
         this.context = context;
         this.resource = pResource;
-        this.quantities = quantities;
+        //this.quantities = quantities;
+        this.quantities = new ArrayList<>(Collections.nCopies(pObjects.size(), 0)); // Her bir ürün için sıfır miktarı içeren bir liste oluştur
+
     }
-  /*  @NonNull
-    @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        String itemName = getItem(position).getItemName();
-        String itemCode = getItem(position).getItemCode();
-        String stockAmount = String.valueOf(getItem(position).getAmount());
-        String unitPrice = String.valueOf(getItem(position).getUnitPrice());
-
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.adapter_products_selection, parent, false);
-        }
-
-        TextView txtItemCode = convertView.findViewById(R.id.txtItemCode);
-        TextView txtItemName = convertView.findViewById(R.id.txtItemName);
-        TextView txtStockAmount = convertView.findViewById(R.id.txtStockAmount);
-        TextView txtUnitPrice = convertView.findViewById(R.id.txtUnitPrice);
-        CheckBox checkBox = convertView.findViewById(R.id.itemCheckBox);
-        EditText editTextQuantity = convertView.findViewById(R.id.editTextQuantity);
-
-        checkBox.setChecked(getItem(position).isSelected);
-
-        checkBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CheckBox cb = (CheckBox) v;
-                Product product = (Product) cb.getTag();
-                product.isSelected = cb.isChecked();
-            }
-        });
-
-        editTextQuantity.setTag(position);
-        editTextQuantity.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    EditText editText = (EditText) v;
-                    String quantityStr = editText.getText().toString();
-                    if (!quantityStr.isEmpty()) {
-                        try {
-                            int quantity = Integer.parseInt(quantityStr);
-                            quantities.add(quantity);
-                        } catch (NumberFormatException e) {
-                        }
-                    } else {
-                    }
-                }
-            }
-        });
-
-        txtItemCode.setText(itemCode);
-        txtItemName.setText(itemName);
-        txtStockAmount.setText(stockAmount);
-        txtUnitPrice.setText(unitPrice);
-        checkBox.setTag(getItem(position));
-
-        return convertView;
-    }*/
-
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         String itemName = getItem(position).getItemName();
@@ -137,7 +82,6 @@ public class ProductSelectionAdapter extends ArrayAdapter<Product> {
                 }
             }
         });
-
 
         txtItemCode.setText(itemCode);
         txtItemName.setText(itemName);
