@@ -9,8 +9,10 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -117,7 +119,6 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
                 new getProductByItemCode().execute(edtSearchItem.getText().toString());
             }
         });
-
     }
     private void getSharedPreferences(){
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
@@ -180,7 +181,8 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String jsonData) {
             if(jsonData.equals("null")){
-                Toast.makeText(ProductSelectionDialogActivity.this, "Ürün Bulunamadı", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProductSelectionDialogActivity.this, edtSearchItem.getText()+" "+"Kodlu Ürün Bulunamadı", Toast.LENGTH_SHORT).show();
+                edtSearchItem.setText("");
             }
             if (jsonData != null) {
                 try {
@@ -212,6 +214,7 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     Log.e(TAG, "JSON Hatası: " + e.getMessage());
                 }
+                edtSearchItem.setText("");
             }
 
         }
