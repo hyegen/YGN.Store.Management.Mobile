@@ -1,8 +1,10 @@
 package com.example.ygn_store_management.Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +27,7 @@ public class ProductSelectionAdapter extends ArrayAdapter<Product> {
     private Context context;
     private int resource;
     public ArrayList<Integer> quantities;
+    private static final String TAG = "ProductSelectionDialogAdapter";
     public ProductSelectionAdapter(@NonNull Context context, int pResource, @NonNull ArrayList<Product> pObjects, ArrayList<Integer> quantities) {
         super(context, pResource, pObjects);
         this.context = context;
@@ -37,6 +41,13 @@ public class ProductSelectionAdapter extends ArrayAdapter<Product> {
         String itemName = getItem(position).getItemName();
         String itemCode = getItem(position).getItemCode();
         String unitPrice = String.valueOf(getItem(position).getUnitPrice());
+
+        ArrayList<Integer> addedItemIds = new ArrayList<>();
+        ArrayList<Product> products = getProducts(); // Adapter içindeki ürünleri al
+
+        for (Product product : products) {
+            addedItemIds.add(product.ItemId);
+        }
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.adapter_products_selection, parent, false);
@@ -88,10 +99,41 @@ public class ProductSelectionAdapter extends ArrayAdapter<Product> {
         txtUnitPrice.setText(unitPrice);
         checkBox.setTag(getItem(position));
 
+    /*    if (addedItemIds.contains(getItem(position).ItemId)) {
+            convertView.setBackgroundColor(Color.RED);
+        } else {
+            convertView.setBackgroundColor(Color.WHITE);
+        }*/
+
         return convertView;
     }
     public void updateData(ArrayList<Product> newData) {
-        addAll(newData);
+        ArrayList<Product> updatedData = new ArrayList<>(this.getCount());
+        updatedData.addAll(this.getProducts());
+
+        for (Product newProduct : newData) {
+            boolean exists = false;
+            for (Product existingProduct : updatedData) {
+                if (existingProduct.ItemId.equals(newProduct.ItemId)) {
+                    exists = true;
+                    break;
+                }
+            }
+            if (!exists) {
+                updatedData.add(newProduct);
+            } else {
+                Toast.makeText(context, "Ürün Zaten Eklenmiş.", Toast.LENGTH_SHORT).show();
+            }
+        }
+        clear();
+        addAll(updatedData);
         notifyDataSetChanged();
+    }
+    public ArrayList<Product> getProducts() {
+        ArrayList<Product> products = new ArrayList<>();
+        for (int i = 0; i < getCount(); i++) {
+            products.add(getItem(i));
+        }
+        return products;
     }
 }
