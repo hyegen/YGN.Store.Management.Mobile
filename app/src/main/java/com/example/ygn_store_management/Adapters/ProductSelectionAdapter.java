@@ -90,5 +90,8 @@ public class ProductSelectionAdapter extends ArrayAdapter<Product> {
 
         return convertView;
     }
-
+    public void updateData(ArrayList<Product> newData) {
+        addAll(newData);
+        notifyDataSetChanged();
+    }
 }
