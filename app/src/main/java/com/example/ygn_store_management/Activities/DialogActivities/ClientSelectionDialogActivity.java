@@ -76,10 +76,8 @@ public class ClientSelectionDialogActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == CLIENT_SELECTION_REQUEST_CODE) {
-                // ClientSelectionActivity'den gelen sonucu yönetin
                 int ioCode = data.getIntExtra("IOCode", -1);
                 String resultValue = data.getStringExtra("result_key");
-                // IOCode'a göre işlemleri yapın veya UI'yi güncelleyin
             }
         }
     }*/

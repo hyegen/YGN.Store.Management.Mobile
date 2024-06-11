@@ -64,36 +64,6 @@ public class PurchasingDetailActivity extends AppCompatActivity {
         initialize();
         events();
     }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.i("TAG1", "onStart Çalıştı");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.i("TAG1", "onResume Çalıştı");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.i("TAG1", "onPause Çalıştı");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.i("TAG1", "onStop Çalıştı");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.i("TAG1", "onDestroy Çalıştı");
-    }
     private void getSharedPreferences(){
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         String savedIpAddress = prefs.getString("ipAddress", "");

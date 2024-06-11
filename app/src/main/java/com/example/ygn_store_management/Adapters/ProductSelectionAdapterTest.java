@@ -134,7 +134,7 @@ public class ProductSelectionAdapterTest extends ArrayAdapter<Product> {
             product.isSelected = cb.isChecked();
         });
 
-        holder.editTextQuantity.setTag(position); // Set the position as the tag for the EditText
+        holder.editTextQuantity.setTag(position);
         holder.editTextQuantity.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -148,7 +148,7 @@ public class ProductSelectionAdapterTest extends ArrayAdapter<Product> {
                 if (!quantityStr.isEmpty()) {
                     try {
                         int quantity = Integer.parseInt(quantityStr);
-                        int pos = (int) holder.editTextQuantity.getTag(); // Get the correct position
+                        int pos = (int) holder.editTextQuantity.getTag();
                         if (quantities.size() > pos) {
                             quantities.set(pos, quantity);
                         } else {
