@@ -119,7 +119,6 @@ public class LoginActivity extends AppCompatActivity {
             super.onPreExecute();
             pleaseWait = ProgressDialog.show(LoginActivity.this, LoginActivity.this.getResources().getString(R.string.loading), LoginActivity.this.getResources().getString(R.string.please_wait));
         }
-
         @Override
         protected String doInBackground(Void... voids) {
             String apiRoute = "/api/getAllUsers";
