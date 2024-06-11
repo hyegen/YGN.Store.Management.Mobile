@@ -34,6 +34,9 @@ public class Product implements Serializable {
     public Integer getItemId() {
         return ItemId;
     }
+    public Boolean getSelected() {
+        return isSelected;
+    }
 
     public void setItemCode(String itemCode) {
         this.ItemCode = itemCode;
@@ -46,6 +49,9 @@ public class Product implements Serializable {
     }
     public void setUnitPrice(String unitPrice) {
         this.UnitPrice = Double.valueOf(unitPrice);
+    }
+    public void setSelected(Boolean isSelected) {
+        this.isSelected = true;
     }
 
 public void setAmount(Integer amount) {

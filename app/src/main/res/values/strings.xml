@@ -4,4 +4,6 @@
     <string name="purchasing">Satınalma</string>
     <string name="toplam_fiyat">Toplam Fiyat</string>
     <string name="reports">Raporlar</string>
+    <string name="loading">Yükleniyor</string>
+    <string name="please_wait">Lütfen Bekleyin</string>
 </resources>

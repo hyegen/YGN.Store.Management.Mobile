@@ -33,17 +33,18 @@ public class ProductSelectionAdapter extends ArrayAdapter<Product> {
         this.context = context;
         this.resource = pResource;
         //this.quantities = quantities;
-        this.quantities = new ArrayList<>(Collections.nCopies(pObjects.size(), 0)); // Her bir ürün için sıfır miktarı içeren bir liste oluştur
-
+        this.quantities = new ArrayList<>(Collections.nCopies(pObjects.size(), 0));
     }
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
+
         String itemName = getItem(position).getItemName();
         String itemCode = getItem(position).getItemCode();
         String unitPrice = String.valueOf(getItem(position).getUnitPrice());
 
         ArrayList<Integer> addedItemIds = new ArrayList<>();
-        ArrayList<Product> products = getProducts(); // Adapter içindeki ürünleri al
+        ArrayList<Product> products = getProducts();
 
         for (Product product : products) {
             addedItemIds.add(product.ItemId);
@@ -87,6 +88,7 @@ public class ProductSelectionAdapter extends ArrayAdapter<Product> {
                         } else {
                             quantities.add(quantity);
                         }
+                        editTextQuantity.requestFocus();
                     } catch (NumberFormatException e) {
                     }
                 } else {
@@ -98,12 +100,6 @@ public class ProductSelectionAdapter extends ArrayAdapter<Product> {
         txtItemName.setText(itemName);
         txtUnitPrice.setText(unitPrice);
         checkBox.setTag(getItem(position));
-
-    /*    if (addedItemIds.contains(getItem(position).ItemId)) {
-            convertView.setBackgroundColor(Color.RED);
-        } else {
-            convertView.setBackgroundColor(Color.WHITE);
-        }*/
 
         return convertView;
     }

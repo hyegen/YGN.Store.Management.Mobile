@@ -2,7 +2,9 @@ package com.example.ygn_store_management.Activities.MainActivities;
 
 
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -17,41 +19,30 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.BufferedInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.ygn_store_management.Activities.PrintTestActivities.TestPrintActivity;
-import com.example.ygn_store_management.Activities.PurchasingActivities.PurchasingDetailActivity;
-import com.example.ygn_store_management.Activities.ReportActivities.ReportStockAmountActivity;
-import com.example.ygn_store_management.Managers.RequestManager;
 import com.example.ygn_store_management.R;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class LoginActivity extends AppCompatActivity {
-
     private Spinner usernameSpinner;
     private Button loginButton;
     private Button settingButton;
     private Button infoButton;
-    private Button btnPurchasing;
     private EditText edtPassword;
     private static String apiUrl;
-    private ArrayList<String> users= new ArrayList<>();;
+    private ArrayList<String> users = new ArrayList<>();
     private static final String TAG = "LoginActivity";
+    protected ProgressDialog pleaseWait;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +53,10 @@ public class LoginActivity extends AppCompatActivity {
         events();
         initialize();
     }
-    private void initialize(){
+    private void initialize() {
         new fetchUsers().execute();
     }
-    private void events(){
+    private void events() {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,25 +95,31 @@ public class LoginActivity extends AppCompatActivity {
             }
         });*/
     }
-    private void findViews(){
+    private void findViews() {
         loginButton = findViewById(R.id.loginButton);
         settingButton = findViewById(R.id.settingButton);
         edtPassword = findViewById(R.id.passwordEditText);
-        infoButton=findViewById(R.id.btnInfo);
+        infoButton = findViewById(R.id.btnInfo);
         usernameSpinner = findViewById(R.id.usernameSpinner);
     }
-    private void getSharedPreferences(){
+    private void getSharedPreferences() {
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         String savedIpAddress = prefs.getString("ipAddress", "");
         apiUrl = "http://" + savedIpAddress;
     }
-    private void login(){
+    private void login() {
         String username = usernameSpinner.getSelectedItem().toString();
         String password = edtPassword.getText().toString();
 
-        new LoginTask(username,password).execute();
+        new LoginTask(username, password).execute();
     }
     private class fetchUsers extends AsyncTask<Void, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pleaseWait = ProgressDialog.show(LoginActivity.this, LoginActivity.this.getResources().getString(R.string.loading), LoginActivity.this.getResources().getString(R.string.please_wait));
+        }
+
         @Override
         protected String doInBackground(Void... voids) {
             String apiRoute = "/api/getAllUsers";
@@ -151,6 +148,9 @@ public class LoginActivity extends AppCompatActivity {
         @SuppressLint("ResourceType")
         @Override
         protected void onPostExecute(String jsonData) {
+            if (pleaseWait != null) {
+                pleaseWait.dismiss();
+            }
             try {
                 ArrayList<String> users = new ArrayList<>();
                 JSONArray jsonArray = new JSONArray(jsonData);
@@ -160,9 +160,10 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 usernameSpinner.setAdapter(new ArrayAdapter<String>(LoginActivity.this,
                         android.R.layout.simple_spinner_dropdown_item, users));
-            }catch (JSONException e) {
+            } catch (JSONException e) {
                 Log.e(TAG, "Hata: " + e.getMessage());
             }
+
         }
     }
     private class LoginTask extends AsyncTask<Void, Void, String> {
@@ -173,6 +174,7 @@ public class LoginActivity extends AppCompatActivity {
             this.username = username;
             this.password = password;
         }
+
 
         @Override
         protected String doInBackground(Void... voids) {
@@ -207,16 +209,17 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(LoginActivity.this, "Hata !", Toast.LENGTH_SHORT).show();
                 }
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
         }
+
         @Override
         protected void onPostExecute(String success) {
-            if (success!= null && success.equals("200")) {
+            if (success != null && success.equals("200")) {
                 Intent intent = new Intent(LoginActivity.this, MainCardViewActivity.class);
-               startActivity(intent);
+                startActivity(intent);
                 Toast.makeText(LoginActivity.this, "Giriş Başarılı.", Toast.LENGTH_SHORT).show();
                 finish();
             } else {
@@ -224,5 +227,4 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     }
-
 }

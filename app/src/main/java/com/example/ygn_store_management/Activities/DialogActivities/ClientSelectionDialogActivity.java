@@ -1,6 +1,7 @@
 package com.example.ygn_store_management.Activities.DialogActivities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -57,7 +58,6 @@ public class ClientSelectionDialogActivity extends AppCompatActivity {
                 String itemDescription = client.getClientCodeAndNameAndSurname();
 
                 Intent intent = new Intent(ClientSelectionDialogActivity.this, ProductSelectionDialogActivity.class);
-
                 intent.putExtra("selectedClientId", itemId);
                 intent.putExtra("ClientCodeAndNameAndSurname", itemDescription);
                 intent.putExtra("IOCode", IOCode);
@@ -66,6 +66,23 @@ public class ClientSelectionDialogActivity extends AppCompatActivity {
             }
         });
     }
+    private void startProductSelectionActivity() {
+        Intent intent = new Intent(this, ProductSelectionDialogActivity.class);
+        intent.putExtra("IOCode", IOCode);
+        startActivityForResult(intent, 1); // Request code 1 for product selection
+    }
+ /*   @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == CLIENT_SELECTION_REQUEST_CODE) {
+                // ClientSelectionActivity'den gelen sonucu yönetin
+                int ioCode = data.getIntExtra("IOCode", -1);
+                String resultValue = data.getStringExtra("result_key");
+                // IOCode'a göre işlemleri yapın veya UI'yi güncelleyin
+            }
+        }
+    }*/
     private void getSharedPreferences() {
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         String savedIpAddress = prefs.getString("ipAddress", "");

@@ -16,6 +16,7 @@ public class MainCardViewActivity extends AppCompatActivity {
     private CardView salesCardView;
     private CardView purchasingCardView;
     private CardView reportsCardView;
+    private static final int CLIENT_SELECTION_REQUEST_CODE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +25,7 @@ public class MainCardViewActivity extends AppCompatActivity {
         findViews();
         events();
     }
+
     private void findViews(){
         salesCardView=findViewById(R.id.salesCardView);
         purchasingCardView=findViewById(R.id.purchasingCardView);
@@ -33,17 +35,19 @@ public class MainCardViewActivity extends AppCompatActivity {
         purchasingCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainCardViewActivity.this, ClientSelectionDialogActivity.class);
+                /*Intent intent = new Intent(MainCardViewActivity.this, ClientSelectionDialogActivity.class);
                 intent.putExtra("IOCode",1);
-                startActivity(intent);
+                startActivity(intent);*/
+                startClientSelectionActivity(1);
             }
         });
         salesCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainCardViewActivity.this, ClientSelectionDialogActivity.class);
+                /*Intent intent = new Intent(MainCardViewActivity.this, ClientSelectionDialogActivity.class);
                 intent.putExtra("IOCode",2);
-                startActivity(intent);
+                startActivity(intent);*/
+                startClientSelectionActivity(2);
             }
         });
         reportsCardView.setOnClickListener(new View.OnClickListener() {
@@ -53,6 +57,11 @@ public class MainCardViewActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+    private void startClientSelectionActivity(int ioCode) {
+        Intent intent = new Intent(this, ClientSelectionDialogActivity.class);
+        intent.putExtra("IOCode", ioCode);
+        startActivityForResult(intent, CLIENT_SELECTION_REQUEST_CODE);
     }
     @Override
     public void onBackPressed() {

@@ -1,52 +1,34 @@
 package com.example.ygn_store_management.Activities.DialogActivities;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ygn_store_management.Activities.PurchasingActivities.PurchasingDetailActivity;
-import com.example.ygn_store_management.Activities.ReportActivities.ReportStockAmountActivity;
 import com.example.ygn_store_management.Activities.SalesActivities.SalesDetailActivity;
-import com.example.ygn_store_management.Adapters.ProductAdapter;
-import com.example.ygn_store_management.Adapters.ProductListAdapter;
 import com.example.ygn_store_management.Adapters.ProductSelectionAdapter;
+import com.example.ygn_store_management.Adapters.ProductSelectionAdapterTest;
 import com.example.ygn_store_management.Models.Product;
 import com.example.ygn_store_management.R;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ProductSelectionDialogActivity extends AppCompatActivity {
    private Integer IOCode;
@@ -117,6 +99,7 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new getProductByItemCode().execute(edtSearchItem.getText().toString());
+
             }
         });
     }
@@ -136,7 +119,8 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
     private ArrayList<Product> getSelectedProducts() {
         ArrayList<Product> selectedProducts = new ArrayList<>();
         totalPrice=0.0;
-        ProductSelectionAdapter adapter = (ProductSelectionAdapter) productsListView.getAdapter();
+        //ProductSelectionAdapter adapter = (ProductSelectionAdapter) productsListView.getAdapter();
+        ProductSelectionAdapterTest adapter = (ProductSelectionAdapterTest) productsListView.getAdapter();
         if (adapter != null) {
             int count = adapter.getCount();
             for (int i = 0; i < count; i++) {
@@ -203,11 +187,11 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
 
                     ArrayList<Product> products = new ArrayList<>();
                     products.add(product);
-                    ProductSelectionAdapter adapter = (ProductSelectionAdapter) productsListView.getAdapter();
+                    ProductSelectionAdapterTest adapter = (ProductSelectionAdapterTest) productsListView.getAdapter();
                     if (adapter != null) {
                         adapter.updateData(products);
                     } else {
-                        adapter = new ProductSelectionAdapter(ProductSelectionDialogActivity.this, R.layout.adapter_products_selection, products, inputAmounts);
+                        adapter = new ProductSelectionAdapterTest(ProductSelectionDialogActivity.this, R.layout.adapter_products_selection, products, inputAmounts);
                         productsListView.setAdapter(adapter);
                     }
 

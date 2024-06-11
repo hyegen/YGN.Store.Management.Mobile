@@ -1,5 +1,7 @@
 package com.example.ygn_store_management.Activities.PurchasingActivities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -62,6 +64,36 @@ public class PurchasingDetailActivity extends AppCompatActivity {
         initialize();
         events();
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i("TAG1", "onStart Çalıştı");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("TAG1", "onResume Çalıştı");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i("TAG1", "onPause Çalıştı");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i("TAG1", "onStop Çalıştı");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i("TAG1", "onDestroy Çalıştı");
+    }
     private void getSharedPreferences(){
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         String savedIpAddress = prefs.getString("ipAddress", "");
@@ -78,8 +110,7 @@ public class PurchasingDetailActivity extends AppCompatActivity {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new insertOrderToDb().execute(selectedProducts);
-
+                showConfirmationDialog();
             }
         });
     }
@@ -105,6 +136,27 @@ public class PurchasingDetailActivity extends AppCompatActivity {
         txtTotalPrice = findViewById(R.id.txtTotalPrice);
         confirmButton = findViewById(R.id.confirmButton);
         closeButton = findViewById(R.id.closeButton);
+    }
+    private void showConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Satınalma İşlemini Tamamlamak İstiyor Musunuz?");
+        builder.setPositiveButton("Evet", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                new insertOrderToDb().execute(selectedProducts);
+                dialog.dismiss();
+            }
+        });
+
+        builder.setNegativeButton("Hayır", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
     private class insertOrderToDb extends AsyncTask<ArrayList<Product>, Void, Boolean> {
         @Override
