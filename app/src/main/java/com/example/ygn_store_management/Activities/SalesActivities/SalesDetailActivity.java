@@ -132,22 +132,30 @@ public class SalesDetailActivity extends AppCompatActivity {
                 String formattedDate = isoDateFormat.format(currentDate);
 
                 JSONObject orderObject = new JSONObject();
-                orderObject.put("DateTime", formattedDate);
+                orderObject.put("CreatedDate_", formattedDate);
+                orderObject.put("UpdatedDate_", formattedDate);
+                orderObject.put("HasTax", 0);
+                orderObject.put("PaymentType", 2);
                 orderObject.put("TotalPrice", totalPrice);
                 orderObject.put("IOCode", IOCode);
+                orderObject.put("TransactionCode", 4);
                 orderObject.put("ClientId", selectedClientId);
+                orderObject.put("OrderNote", null);
                 orderObject.put("OrderLines", new JSONArray());
 
                 JSONArray orderLinesArray = orderObject.getJSONArray("OrderLines");
                 for (Product product : selectedProducts) {
                     JSONObject orderLineObject = new JSONObject();
+
                     double lineTotal = product.Amount * product.UnitPrice;
 
                     orderLineObject.put("ItemId", product.getItemId());
                     orderLineObject.put("Amount", product.Amount);
-                    orderLineObject.put("DateTime", formattedDate);
+                    orderLineObject.put("CreatedDate_", formattedDate);
+                    orderLineObject.put("UpdatedDate_", formattedDate);
                     orderLineObject.put("LineTotal", lineTotal);
                     orderLineObject.put("IOCode", IOCode);
+                    orderLineObject.put("TransactionCode", 4);
 
                     orderLinesArray.put(orderLineObject);
                 }
