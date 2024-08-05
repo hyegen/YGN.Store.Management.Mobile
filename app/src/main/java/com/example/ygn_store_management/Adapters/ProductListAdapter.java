@@ -27,7 +27,7 @@ public class ProductListAdapter extends ArrayAdapter<Product> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        // ListView'ın her bir satırını oluştur ve doldur
+        
         View listItem = convertView;
         if (listItem == null) {
             listItem = LayoutInflater.from(mContext).inflate(R.layout.adapter_products, parent, false);
@@ -35,7 +35,7 @@ public class ProductListAdapter extends ArrayAdapter<Product> {
 
         Product currentProduct = mProductList.get(position);
 
-        // Diğer işlemleri yap...
+       
 
         return listItem;
     }
