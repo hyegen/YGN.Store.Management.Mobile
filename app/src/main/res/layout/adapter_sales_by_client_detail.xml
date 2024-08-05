@@ -14,10 +14,10 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/txtClientCode"
+            android:id="@+id/txtOrderFicheNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Client Code" />
+            android:text="Order Fiche Number" />
 
         <TextView
             android:id="@+id/txtClientName"

@@ -1,5 +1,6 @@
 package com.example.ygn_store_management.Activities.ReportActivities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -32,19 +33,20 @@ import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class ReportStockAmountActivity extends AppCompatActivity {
+    protected ProgressDialog pleaseWait;
     private List<String> dataList = new ArrayList<>();
     private SwipeRefreshLayout swipeRefreshLayout;
     private EditText edtSearchItem;
     private ListView productsListView;
     private static String apiUrl;
     private static final String TAG = "ReportStockAmountActivity";
+
     @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_stock_amount);
         getSharedPreferences();
-        setPolicy();
         findViews();
         initialize();
         events();
@@ -58,7 +60,8 @@ public class ReportStockAmountActivity extends AppCompatActivity {
         });
         edtSearchItem.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -66,7 +69,8 @@ public class ReportStockAmountActivity extends AppCompatActivity {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
     }
     private void searchItemByCode(String query) {
@@ -79,25 +83,27 @@ public class ReportStockAmountActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-    private void setPolicy(){
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-    }
-    private void getSharedPreferences(){
+    private void getSharedPreferences() {
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         String savedIpAddress = prefs.getString("ipAddress", "");
         apiUrl = "http://" + savedIpAddress;
     }
-    private void initialize(){
+    private void initialize() {
         new getStockAmounts().execute();
     }
     private void findViews() {
         productsListView = findViewById(R.id.productsListView);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
-        edtSearchItem=findViewById(R.id.edtSearchItem);
+        edtSearchItem = findViewById(R.id.edtSearchItem);
     }
-    private class getStockAmounts extends AsyncTask<Void, Void, String>{
-       @SuppressWarnings("deprecation")
+    private class getStockAmounts extends AsyncTask<Void, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pleaseWait = ProgressDialog.show(ReportStockAmountActivity.this, ReportStockAmountActivity.this.getResources().getString(R.string.loading), ReportStockAmountActivity.this.getResources().getString(R.string.please_wait));
+        }
+
+        @SuppressWarnings("deprecation")
         @Override
         protected String doInBackground(Void... voids) {
             String apiRoute = "/api/GetStockAmount";
@@ -126,19 +132,22 @@ public class ReportStockAmountActivity extends AppCompatActivity {
         @SuppressWarnings("deprecation")
         @Override
         protected void onPostExecute(String jsonData) {
+            if (pleaseWait != null) {
+                pleaseWait.dismiss();
+            }
             if (jsonData != null) {
                 try {
                     ArrayList<Product> products = new ArrayList<>();
                     JSONArray jsonArray = new JSONArray(jsonData);
                     for (int i = 0; i < jsonArray.length(); i++) {
-                        Product product=new Product();
+                        Product product = new Product();
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         product.ItemCode = jsonObject.getString("ItemCode");
                         product.ItemName = jsonObject.getString("ItemName");
                         product.StockAmount = Integer.valueOf(jsonObject.getString("StockAmount"));
                         products.add(product);
                     }
-                    ProductAdapter adapter = new ProductAdapter(ReportStockAmountActivity.this,R.layout.adapter_products,products);
+                    ProductAdapter adapter = new ProductAdapter(ReportStockAmountActivity.this, R.layout.adapter_products, products);
                     productsListView.setAdapter(adapter);
                 } catch (JSONException e) {
                     Log.e(TAG, "Hata: " + e.getMessage());

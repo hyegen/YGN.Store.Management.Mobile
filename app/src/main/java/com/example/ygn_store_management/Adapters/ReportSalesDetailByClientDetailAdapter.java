@@ -28,7 +28,8 @@ public class ReportSalesDetailByClientDetailAdapter extends ArrayAdapter<SalesDe
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        String clientCode = getItem(position).ClientCode;
+
+        String orderFicheNumber = getItem(position).OrderFicheNumber;
         String clientName = getItem(position).ClientName;
         String clientSurname= getItem(position).ClientSurname;
         String firmDescription= getItem(position).FirmDescription;
@@ -42,19 +43,24 @@ public class ReportSalesDetailByClientDetailAdapter extends ArrayAdapter<SalesDe
         LayoutInflater inflater = LayoutInflater.from(context);
         convertView = inflater.inflate(resource,parent,false);
 
-        TextView txtClientCode = convertView.findViewById(R.id.txtClientCode);
+        TextView txtOrderFicheNumber = convertView.findViewById(R.id.txtOrderFicheNumber);
         TextView txtClientName = convertView.findViewById(R.id.txtClientName);
         TextView txtClientSurname = convertView.findViewById(R.id.txtClientSurname);
         TextView txtFirmDescription = convertView.findViewById(R.id.txtFirmDescription);
         TextView txtDate = convertView.findViewById(R.id.txtDate_);
         TextView txtTotalPrice = convertView.findViewById(R.id.txtTotalPriceSales);
 
-        txtClientCode.setText(clientCode);
+        txtOrderFicheNumber.setText(orderFicheNumber);
         txtClientName.setText(clientName);
         txtClientSurname.setText(clientSurname);
-        txtFirmDescription.setText(firmDescription);
         txtDate.setText(date);
         txtTotalPrice.setText(totalPrice);
+
+        if (firmDescription == "null" || firmDescription.isEmpty()) {
+            txtFirmDescription.setText("");
+        }else  {
+            txtFirmDescription.setText(firmDescription);
+        }
 
         return convertView;
     }

@@ -1,5 +1,6 @@
 package com.example.ygn_store_management.Activities.ReportActivities;
 
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReportSalesDetailByClientDetail extends AppCompatActivity {
+    protected ProgressDialog pleaseWait;
     private List<String> dataList = new ArrayList<>();
     private SwipeRefreshLayout swipeRefreshLayout;
     private EditText edtSearchItem;
@@ -109,19 +111,17 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
                 JSONObject jsonObject = new JSONObject(data);
                 SalesDetailByClientDetail sale = new SalesDetailByClientDetail();
 
-                sale.setClientCode(jsonObject.getString("ClientCode"));
                 sale.setClientName(jsonObject.getString("ClientName"));
                 sale.setClientSurname(jsonObject.getString("ClientSurname"));
                 sale.setFirmDescription(jsonObject.getString("FirmDescription"));
                 sale.setDate_(jsonObject.getString("Date_"));
                 sale.setTotalPrice(jsonObject.getString("TotalPrice"));
 
-                String clientCodeUpperCase = sale.getClientCode().toUpperCase();
                 String clientNameUpperName = sale.getClientName().toUpperCase();
                 String clientSurnameUpperCase= sale.getClientSurname().toUpperCase();
                 String firmDescriptionUpperCase= sale.getFirmDescription().toUpperCase();
 
-                if (clientCodeUpperCase.contains(queryUpperCase) || clientNameUpperName.contains(queryUpperCase)|| clientSurnameUpperCase.contains(queryUpperCase)|| firmDescriptionUpperCase.contains((queryUpperCase))) {
+                if (clientNameUpperName.contains(queryUpperCase)|| clientSurnameUpperCase.contains(queryUpperCase)|| firmDescriptionUpperCase.contains((queryUpperCase))) {
                     results.add(sale);
                 }
             } catch (JSONException e) {
@@ -131,6 +131,11 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
         return results;
     }
     private class GetSalesByClientDetail extends AsyncTask<Void, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pleaseWait = ProgressDialog.show(ReportSalesDetailByClientDetail.this, ReportSalesDetailByClientDetail.this.getResources().getString(R.string.loading), ReportSalesDetailByClientDetail.this.getResources().getString(R.string.please_wait));
+        }
         @SuppressWarnings("deprecation")
         @Override
         protected String doInBackground(Void... voids) {
@@ -156,10 +161,12 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
             }
             return dataList.toString();
         }
-
         @SuppressWarnings("deprecation")
         @Override
         protected void onPostExecute(String jsonData) {
+            if (pleaseWait != null) {
+                pleaseWait.dismiss();
+            }
             if (jsonData != null) {
                 try {
                     ArrayList<SalesDetailByClientDetail> sales = new ArrayList<>();
@@ -167,7 +174,8 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         SalesDetailByClientDetail sale=new SalesDetailByClientDetail();
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        sale.ClientCode = jsonObject.getString("ClientCode");
+
+                        sale.OrderFicheNumber = jsonObject.getString("OrderFicheNumber");
                         sale.ClientName = jsonObject.getString("ClientName");
                         sale.ClientSurname = jsonObject.getString("ClientSurname");
                         sale.FirmDescription= jsonObject.getString("FirmDescription");
