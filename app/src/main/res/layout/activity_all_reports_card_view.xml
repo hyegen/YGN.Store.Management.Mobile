@@ -32,7 +32,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/report2"
+        android:id="@+id/cardViewSalesDetailByClientDetail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -48,7 +48,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rapor - 2"
+                android:text="@string/report_sales_detail_by_client_detail"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 

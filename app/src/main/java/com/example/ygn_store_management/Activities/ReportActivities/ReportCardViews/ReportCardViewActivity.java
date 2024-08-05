@@ -8,11 +8,13 @@ import androidx.cardview.widget.CardView;
 
 import com.example.ygn_store_management.Activities.MainActivities.LoginActivity;
 import com.example.ygn_store_management.Activities.MainActivities.MainCardViewActivity;
+import com.example.ygn_store_management.Activities.ReportActivities.ReportSalesDetailByClientDetail;
 import com.example.ygn_store_management.Activities.ReportActivities.ReportStockAmountActivity;
 import com.example.ygn_store_management.R;
 
 public class ReportCardViewActivity extends AppCompatActivity {
     private CardView stockAmountCardView;
+    private CardView salesDetailByClientCardView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,9 +30,17 @@ public class ReportCardViewActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        salesDetailByClientCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ReportCardViewActivity.this, ReportSalesDetailByClientDetail.class);
+                startActivity(intent);
+            }
+        });
     }
     private void findViews() {
         stockAmountCardView=findViewById(R.id.cardViewStockAmount);
+        salesDetailByClientCardView=findViewById(R.id.cardViewSalesDetailByClientDetail);
     }
     @Override
     public void onBackPressed() {

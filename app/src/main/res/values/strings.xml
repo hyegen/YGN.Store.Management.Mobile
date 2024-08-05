@@ -7,4 +7,5 @@
     <string name="loading">Yükleniyor</string>
     <string name="please_wait">Lütfen Bekleyin</string>
     <string name="report_stock_amount">Stok Miktar Raporu</string>
+    <string name="report_sales_detail_by_client_detail">Satış Raporu (Cari Detaylı)</string>
 </resources>

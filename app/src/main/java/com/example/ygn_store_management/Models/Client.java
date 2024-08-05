@@ -8,7 +8,6 @@ public class Client {
     }
     public Integer ClientId;
     public String ClientCodeAndNameAndSurname;
-
     public Integer getClientId() {
         return ClientId;
     }

@@ -1,0 +1,61 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:paddingTop="3dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="3dp"
+    android:paddingBottom="3dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtClientCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Client Code" />
+
+        <TextView
+            android:id="@+id/txtClientName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Client Name" />
+        <TextView
+            android:id="@+id/txtClientSurname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Client Surname" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtFirmDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Firm Description" />
+        <TextView
+            android:id="@+id/txtDate_"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date_" />
+        <TextView
+            android:id="@+id/txtTotalPriceSales"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total Price"
+            android:textStyle="bold"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>
