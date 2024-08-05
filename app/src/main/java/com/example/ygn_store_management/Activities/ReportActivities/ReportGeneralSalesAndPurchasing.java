@@ -41,10 +41,6 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
     private Button btnSearchOrder;
     private TextView txtOrderFicheNumberDescription;
     private TextView txtClientDescription;
-    private TextView txtItemCodeDescription;
-    private TextView txtItemNameDescription;
-    private TextView txtAmountDescription;
-    private TextView txtUnitPriceDescription;
     private TextView txtTotalPriceDescription;
     private TextView txtHasTaxDescription;
     private TextView txtTaxPercentageDescription;
@@ -91,24 +87,6 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
                 else{
                     new GetOrderInformationByOrderFicheNumber().execute(edtSearchOrder.getText().toString());
                 }
-            }
-        });
-        btnSearchOrder.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if (i == EditorInfo.IME_ACTION_SEARCH || keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                    if (edtSearchOrder.getText().toString().isEmpty())
-                    {
-                        Toast.makeText(ReportGeneralSalesAndPurchasing.this, "Sipariş No Giriniz.", Toast.LENGTH_SHORT).show();
-                        setVisibleLinearLayout();
-                    }
-                    else
-                    {
-                        new GetOrderInformationByOrderFicheNumber().execute(edtSearchOrder.getText().toString());
-                        return true;
-                    }
-                }
-                return false;
             }
         });
     }
