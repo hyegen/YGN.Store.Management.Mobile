@@ -53,6 +53,11 @@ public class LoginActivity extends AppCompatActivity {
         events();
         initialize();
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+    }
     private void initialize() {
         new fetchUsers().execute();
     }
@@ -87,13 +92,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-       /* btnPurchasing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, PurchasingDetailActivity.class);
-                startActivity(intent);
-            }
-        });*/
     }
     private void findViews() {
         loginButton = findViewById(R.id.loginButton);
@@ -111,13 +109,18 @@ public class LoginActivity extends AppCompatActivity {
         String username = usernameSpinner.getSelectedItem().toString();
         String password = edtPassword.getText().toString();
 
-        new LoginTask(username, password).execute();
+        if(username.isEmpty()|| password.isEmpty()){
+            Toast.makeText(this, "Kullanıcılar Yüklenemedi, İnternet Bağlantınızı Kontrol ediniz. ", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            new LoginTask(username, password).execute();
+        }
     }
     private class fetchUsers extends AsyncTask<Void, Void, String> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pleaseWait = ProgressDialog.show(LoginActivity.this, LoginActivity.this.getResources().getString(R.string.loading), LoginActivity.this.getResources().getString(R.string.please_wait));
+            //pleaseWait = ProgressDialog.show(LoginActivity.this, LoginActivity.this.getResources().getString(R.string.loading), LoginActivity.this.getResources().getString(R.string.please_wait));
         }
         @Override
         protected String doInBackground(Void... voids) {

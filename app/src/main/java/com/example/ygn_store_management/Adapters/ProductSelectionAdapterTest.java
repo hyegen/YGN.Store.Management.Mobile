@@ -112,6 +112,7 @@ public class ProductSelectionAdapterTest extends ArrayAdapter<Product> {
             holder.txtUnitPrice = convertView.findViewById(R.id.txtUnitPrice);
             holder.checkBox = convertView.findViewById(R.id.itemCheckBox);
             holder.editTextQuantity = convertView.findViewById(R.id.editTextQuantity);
+            holder.editTextQuantity.setText("");
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -127,6 +128,7 @@ public class ProductSelectionAdapterTest extends ArrayAdapter<Product> {
         holder.txtUnitPrice.setText(unitPrice);
         holder.checkBox.setChecked(currentProduct.isSelected);
         holder.checkBox.setTag(currentProduct);
+
 
         holder.checkBox.setOnClickListener(v -> {
             CheckBox cb = (CheckBox) v;

@@ -120,7 +120,7 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
         ArrayList<Product> selectedProducts = new ArrayList<>();
         totalPrice=0.0;
         //ProductSelectionAdapter adapter = (ProductSelectionAdapter) productsListView.getAdapter();
-        ProductSelectionAdapterTest adapter = (ProductSelectionAdapterTest) productsListView.getAdapter();
+        ProductSelectionAdapter adapter = (ProductSelectionAdapter) productsListView.getAdapter();
         if (adapter != null) {
             int count = adapter.getCount();
             for (int i = 0; i < count; i++) {
@@ -182,16 +182,16 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
                     product.ItemId = itemId;
                     product.ItemCode = itemCode;
                     product.ItemName = itemName;
-                    product.StockAmount = stockAmount;
+                    //product.StockAmount = stockAmount;
                     product.UnitPrice = unitPrice;
 
                     ArrayList<Product> products = new ArrayList<>();
                     products.add(product);
-                    ProductSelectionAdapterTest adapter = (ProductSelectionAdapterTest) productsListView.getAdapter();
+                    ProductSelectionAdapter adapter = (ProductSelectionAdapter) productsListView.getAdapter();
                     if (adapter != null) {
                         adapter.updateData(products);
                     } else {
-                        adapter = new ProductSelectionAdapterTest(ProductSelectionDialogActivity.this, R.layout.adapter_products_selection, products, inputAmounts);
+                        adapter = new ProductSelectionAdapter(ProductSelectionDialogActivity.this, R.layout.adapter_products_selection, products, inputAmounts);
                         productsListView.setAdapter(adapter);
                     }
 

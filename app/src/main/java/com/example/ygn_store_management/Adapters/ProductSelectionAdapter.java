@@ -42,6 +42,7 @@ public class ProductSelectionAdapter extends ArrayAdapter<Product> {
         String itemName = getItem(position).getItemName();
         String itemCode = getItem(position).getItemCode();
         String unitPrice = String.valueOf(getItem(position).getUnitPrice());
+        String  amount = String.valueOf(getItem(position).getAmount());
 
         ArrayList<Integer> addedItemIds = new ArrayList<>();
         ArrayList<Product> products = getProducts();
@@ -60,7 +61,12 @@ public class ProductSelectionAdapter extends ArrayAdapter<Product> {
         CheckBox checkBox = convertView.findViewById(R.id.itemCheckBox);
         EditText editTextQuantity = convertView.findViewById(R.id.editTextQuantity);
 
+        txtItemCode.setText(itemCode);
+        txtItemName.setText(itemName);
+        txtUnitPrice.setText(unitPrice);
+        checkBox.setTag(getItem(position));
         checkBox.setChecked(getItem(position).isSelected);
+        editTextQuantity.setText(amount);
 
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,10 +102,7 @@ public class ProductSelectionAdapter extends ArrayAdapter<Product> {
             }
         });
 
-        txtItemCode.setText(itemCode);
-        txtItemName.setText(itemName);
-        txtUnitPrice.setText(unitPrice);
-        checkBox.setTag(getItem(position));
+
 
         return convertView;
     }
