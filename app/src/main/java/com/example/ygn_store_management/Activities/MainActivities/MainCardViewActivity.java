@@ -8,6 +8,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.example.ygn_store_management.Activities.ReportActivities.ReportCardViews.ReportCardViewActivity;
 import com.example.ygn_store_management.Activities.ReportActivities.ReportStockAmountActivity;
 import com.example.ygn_store_management.Activities.DialogActivities.ClientSelectionDialogActivity;
 import com.example.ygn_store_management.R;
@@ -25,7 +26,6 @@ public class MainCardViewActivity extends AppCompatActivity {
         findViews();
         events();
     }
-
     private void findViews(){
         salesCardView=findViewById(R.id.salesCardView);
         purchasingCardView=findViewById(R.id.purchasingCardView);
@@ -53,7 +53,7 @@ public class MainCardViewActivity extends AppCompatActivity {
         reportsCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainCardViewActivity.this, ReportStockAmountActivity.class);
+                Intent intent = new Intent(MainCardViewActivity.this, ReportCardViewActivity.class);
                 startActivity(intent);
             }
         });
