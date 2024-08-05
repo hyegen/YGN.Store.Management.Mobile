@@ -40,7 +40,6 @@ public class ReportStockAmountActivity extends AppCompatActivity {
     private ListView productsListView;
     private static String apiUrl;
     private static final String TAG = "ReportStockAmountActivity";
-
     @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {

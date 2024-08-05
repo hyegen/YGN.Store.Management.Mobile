@@ -111,6 +111,7 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
                 JSONObject jsonObject = new JSONObject(data);
                 SalesDetailByClientDetail sale = new SalesDetailByClientDetail();
 
+                sale.setOrderFicheNumber(jsonObject.getString("OrderFicheNumber"));
                 sale.setClientName(jsonObject.getString("ClientName"));
                 sale.setClientSurname(jsonObject.getString("ClientSurname"));
                 sale.setFirmDescription(jsonObject.getString("FirmDescription"));
@@ -120,8 +121,9 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
                 String clientNameUpperName = sale.getClientName().toUpperCase();
                 String clientSurnameUpperCase= sale.getClientSurname().toUpperCase();
                 String firmDescriptionUpperCase= sale.getFirmDescription().toUpperCase();
+                String orderFicheNumberUpperCase= sale.getOrderFicheNumber().toUpperCase();
 
-                if (clientNameUpperName.contains(queryUpperCase)|| clientSurnameUpperCase.contains(queryUpperCase)|| firmDescriptionUpperCase.contains((queryUpperCase))) {
+                if (orderFicheNumberUpperCase.contains(queryUpperCase) || clientNameUpperName.contains(queryUpperCase)|| clientSurnameUpperCase.contains(queryUpperCase)|| firmDescriptionUpperCase.contains((queryUpperCase))) {
                     results.add(sale);
                 }
             } catch (JSONException e) {

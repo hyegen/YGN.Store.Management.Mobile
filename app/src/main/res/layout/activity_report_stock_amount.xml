@@ -7,11 +7,7 @@
     tools:context=".Activities.ReportActivities.ReportStockAmountActivity"
     android:orientation="vertical">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -87,17 +83,21 @@
                         android:textColor="@color/black"
                         android:textStyle="bold" />
                 </LinearLayout>
-
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/swipe_refresh_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true">
                 <ListView
                     android:id="@+id/productsListView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     tools:listitem="@layout/adapter_products">
                 </ListView>
-
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
             </LinearLayout>
 
         </LinearLayout>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
 </RelativeLayout>
