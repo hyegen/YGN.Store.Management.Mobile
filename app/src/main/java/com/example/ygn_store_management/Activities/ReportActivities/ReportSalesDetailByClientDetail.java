@@ -10,16 +10,10 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.ygn_store_management.Adapters.ProductAdapter;
 import com.example.ygn_store_management.Adapters.ReportSalesDetailByClientDetailAdapter;
-import com.example.ygn_store_management.Models.Product;
 import com.example.ygn_store_management.Models.ReportViews.SalesDetailByClientDetail;
 import com.example.ygn_store_management.R;
 

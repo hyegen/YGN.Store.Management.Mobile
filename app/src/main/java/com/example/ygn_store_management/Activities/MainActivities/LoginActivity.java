@@ -1,14 +1,12 @@
 package com.example.ygn_store_management.Activities.MainActivities;
 
-
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -24,6 +22,8 @@ import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.ygn_store_management.Managers.NetworkUtil;
 import com.example.ygn_store_management.R;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,15 +43,32 @@ public class LoginActivity extends AppCompatActivity {
     private ArrayList<String> users = new ArrayList<>();
     private static final String TAG = "LoginActivity";
     protected ProgressDialog pleaseWait;
+    private static final int DELAY_MILLIS = 3000;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        getSharedPreferences();
-        findViews();
-        events();
-        initialize();
+         if (checkNetwork()){
+             getSharedPreferences();
+             findViews();
+             events();
+             initialize();
+         }
+    }
+    private boolean checkNetwork(){
+        if (!NetworkUtil.isNetworkAvailable(this)) {
+            Toast.makeText(this, "İnternet bağlantısı yok. Uygulama kapanacaktır.", Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    finishAffinity();
+                }
+            }, DELAY_MILLIS);
+            return false;
+        }else {
+            return true;
+        }
     }
     @Override
     public void onBackPressed() {
@@ -120,7 +137,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            //pleaseWait = ProgressDialog.show(LoginActivity.this, LoginActivity.this.getResources().getString(R.string.loading), LoginActivity.this.getResources().getString(R.string.please_wait));
+            pleaseWait = ProgressDialog.show(LoginActivity.this, LoginActivity.this.getResources().getString(R.string.loading), LoginActivity.this.getResources().getString(R.string.please_wait));
         }
         @Override
         protected String doInBackground(Void... voids) {

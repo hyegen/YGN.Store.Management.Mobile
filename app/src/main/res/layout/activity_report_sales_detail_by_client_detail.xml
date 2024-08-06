@@ -29,7 +29,7 @@
         android:id="@+id/edtSearchClient"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Cari Kodu veya Açıklaması"
+        android:hint="Filtreleyiniz"
         android:singleLine="true"
         android:minHeight="48dp"
         android:layout_below="@id/toolbar"/>

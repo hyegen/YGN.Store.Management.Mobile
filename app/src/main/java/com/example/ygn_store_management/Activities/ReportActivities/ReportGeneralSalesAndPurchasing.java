@@ -1,5 +1,6 @@
 package com.example.ygn_store_management.Activities.ReportActivities;
 
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -48,6 +49,7 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
     private TextView txtDateDescription;
     private ListView orderLineListView;
     private LinearLayout orderLineLinearLayout;
+    protected ProgressDialog pleaseWait;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +100,11 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
     }
     private class GetOrderInformationByOrderFicheNumber extends AsyncTask<String, Void, String> {
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pleaseWait = ProgressDialog.show(ReportGeneralSalesAndPurchasing.this, ReportGeneralSalesAndPurchasing.this.getResources().getString(R.string.loading), ReportGeneralSalesAndPurchasing.this.getResources().getString(R.string.please_wait));
+        }
+        @Override
         protected String doInBackground(String... params) {
             String orderFicheNumber = params[0];
             String apiRoute = "/api/GetOrderDetailInformation";
@@ -119,6 +126,9 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
         }
         @Override
         protected void onPostExecute(String jsonData) {
+            if (pleaseWait != null) {
+                pleaseWait.dismiss();
+            }
             if(jsonData.equals("null")){
                 Toast.makeText(ReportGeneralSalesAndPurchasing.this, edtSearchOrder.getText()+" "+"Sipariş Bulunamadı. \nSipariş Numarasını kontrol ediniz", Toast.LENGTH_SHORT).show();
                 edtSearchOrder.setText("");
@@ -134,6 +144,13 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
                     String date_ = jsonResponse.getString("Date_");
 
                     txtOrderFicheNumberDescription.setText(orderFicheNumber);
+
+                    if (clientSurname.isEmpty() || clientSurname=="null")
+                        clientSurname="";
+
+                    if (firmDescription.isEmpty()|| firmDescription=="null")
+                        firmDescription="";
+
                     txtClientDescription.setText(clientName + " "+clientSurname+ " - " +firmDescription);
                     txtDateDescription.setText(date_);
 

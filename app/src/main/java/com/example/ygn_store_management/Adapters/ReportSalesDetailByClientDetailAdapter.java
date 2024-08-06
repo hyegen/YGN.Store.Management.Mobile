@@ -56,11 +56,16 @@ public class ReportSalesDetailByClientDetailAdapter extends ArrayAdapter<SalesDe
         txtDate.setText(date);
         txtTotalPrice.setText(totalPrice);
 
-        if (firmDescription == "null" || firmDescription.isEmpty()) {
+        if (firmDescription == "null" || firmDescription.isEmpty())
             txtFirmDescription.setText("");
-        }else  {
+        else
             txtFirmDescription.setText(firmDescription);
-        }
+
+
+        if (clientSurname=="null" || clientSurname.isEmpty())
+            txtClientSurname.setText("");
+        else
+            txtClientSurname.setText(clientSurname);
 
         return convertView;
     }
