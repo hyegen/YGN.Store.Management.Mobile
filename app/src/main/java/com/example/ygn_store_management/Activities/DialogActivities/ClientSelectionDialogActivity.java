@@ -54,12 +54,12 @@ public class ClientSelectionDialogActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Client client = (Client) parent.getItemAtPosition(position);
 
-                int itemId = client.getClientId();
-                String itemDescription = client.getClientCodeAndNameAndSurname();
+                int clientId = client.getClientId();
+                String clientDescription = client.getClientCodeAndNameAndSurname();
 
                 Intent intent = new Intent(ClientSelectionDialogActivity.this, ProductSelectionDialogActivity.class);
-                intent.putExtra("selectedClientId", itemId);
-                intent.putExtra("ClientCodeAndNameAndSurname", itemDescription);
+                intent.putExtra("selectedClientId", clientId);
+                intent.putExtra("ClientCodeAndNameAndSurname", clientDescription);
                 intent.putExtra("IOCode", IOCode);
 
                 startActivity(intent);
@@ -71,16 +71,6 @@ public class ClientSelectionDialogActivity extends AppCompatActivity {
         intent.putExtra("IOCode", IOCode);
         startActivityForResult(intent, 1); // Request code 1 for product selection
     }
- /*   @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == CLIENT_SELECTION_REQUEST_CODE) {
-                int ioCode = data.getIntExtra("IOCode", -1);
-                String resultValue = data.getStringExtra("result_key");
-            }
-        }
-    }*/
     private void getSharedPreferences() {
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         String savedIpAddress = prefs.getString("ipAddress", "");
@@ -141,4 +131,15 @@ public class ClientSelectionDialogActivity extends AppCompatActivity {
             }
         }
     }
+
+     /*   @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == CLIENT_SELECTION_REQUEST_CODE) {
+                int ioCode = data.getIntExtra("IOCode", -1);
+                String resultValue = data.getStringExtra("result_key");
+            }
+        }
+    }*/
 }

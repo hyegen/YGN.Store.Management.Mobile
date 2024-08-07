@@ -99,7 +99,6 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new getProductByItemCode().execute(edtSearchItem.getText().toString());
-
             }
         });
     }
@@ -161,7 +160,6 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
                 return null;
             }
         }
-
         @Override
         protected void onPostExecute(String jsonData) {
             if(jsonData.equals("null")){
@@ -175,7 +173,7 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
                     int itemId = jsonResponse.getInt("ItemId");
                     String itemCode = jsonResponse.getString("ItemCode");
                     String itemName = jsonResponse.getString("ItemName");
-                    int stockAmount = jsonResponse.getInt("StockAmount");
+                   // int stockAmount = jsonResponse.getInt("StockAmount");
                     double unitPrice = jsonResponse.getDouble("UnitPrice");
 
                     Product product = new Product();

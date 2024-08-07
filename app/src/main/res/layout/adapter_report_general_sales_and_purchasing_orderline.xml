@@ -20,7 +20,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Amount" />
+        android:text="Amount"
+        android:layout_marginLeft="10dp"
+        />
     <TextView
         android:id="@+id/txtUnitPrice"
         android:layout_width="match_parent"

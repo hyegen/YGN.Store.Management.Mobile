@@ -182,13 +182,13 @@ public class SalesDetailActivity extends AppCompatActivity {
                 return false;
             }
         }
-
         @Override
         protected void onPostExecute(Boolean success) {
             if (success) {
                 Toast.makeText(SalesDetailActivity.this, "Satış İşlemi Başarılı.", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(SalesDetailActivity.this, MainCardViewActivity.class);
                 startActivity(intent);
+                finish();
             } else {
                 Toast.makeText(SalesDetailActivity.this, "Ürünler kaydedilirken bir hata oluştu", Toast.LENGTH_SHORT).show();
             }

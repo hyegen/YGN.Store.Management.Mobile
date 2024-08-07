@@ -52,7 +52,6 @@ public class ReportCardViewActivity extends AppCompatActivity {
             }
         });
     }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();

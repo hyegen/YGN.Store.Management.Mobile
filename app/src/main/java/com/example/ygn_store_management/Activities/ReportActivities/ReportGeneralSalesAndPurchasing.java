@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
+
     private static String apiUrl;
     private static final String TAG = "ReportGeneralSalesAndPurchasingActivity";
     private EditText edtSearchOrder;
@@ -142,36 +143,24 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
                     String clientSurname = jsonResponse.getString("ClientSurname");
                     String firmDescription = jsonResponse.getString("FirmDescription");
                     String date_ = jsonResponse.getString("Date_");
-
-                    txtOrderFicheNumberDescription.setText(orderFicheNumber);
-
-                    if (clientSurname.isEmpty() || clientSurname=="null")
-                        clientSurname="";
-
-                    if (firmDescription.isEmpty()|| firmDescription=="null")
-                        firmDescription="";
+                    String orderNote = jsonResponse.getString("OrderNote");
+                    String totalPrice = String.valueOf(jsonResponse.getDouble("TotalPrice"));
+                    String hasTax = jsonResponse.getString("HasTax");
 
                     txtClientDescription.setText(clientName + " "+clientSurname+ " - " +firmDescription);
+                    txtOrderFicheNumberDescription.setText(orderFicheNumber);
+                    txtOrderNoteDescription.setText(orderNote);
                     txtDateDescription.setText(date_);
-
-                   String totalPrice = String.valueOf(jsonResponse.getDouble("TotalPrice"));
-                   txtTotalPriceDescription.setText(totalPrice);
-
-                   String hasTax = jsonResponse.getString("HasTax");
-                   txtHasTaxDescription.setText(hasTax);
+                    txtTotalPriceDescription.setText(totalPrice);
+                    txtHasTaxDescription.setText(hasTax);
 
                    String taxPercentage = String.valueOf(jsonResponse.getDouble("TaxPercentage"));
-                   if (taxPercentage =="null" || taxPercentage.isEmpty())
+
+                   if (taxPercentage.equals("null") || taxPercentage.isEmpty())
                         txtTaxPercentageDescription.setText("0");
                    else
                        txtTaxPercentageDescription.setText(taxPercentage);
 
-                   String orderNote = jsonResponse.getString("OrderNote");
-
-                   if (orderNote=="null"  || orderNote.isEmpty())
-                       txtOrderNoteDescription.setText("");
-                    else
-                        txtOrderNoteDescription.setText(orderNote);
                     JSONArray jsonArray = jsonResponse.getJSONArray("OrderLines");
                     ArrayList<OrderInformationLines> orderLines = new ArrayList<>();
 

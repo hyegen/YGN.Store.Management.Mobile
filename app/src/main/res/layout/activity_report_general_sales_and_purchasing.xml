@@ -151,16 +151,17 @@
                 android:paddingLeft="10dp"
                 android:paddingTop="3dp"
                 android:paddingRight="3dp"
-                android:paddingBottom="3dp">
+                android:paddingBottom="3dp"
+                android:background="@color/gray">
 
                 <TextView
                     android:id="@+id/txtItemCode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Ürün Açklaması"
+                    android:text="Ürün Açıklaması"
                     android:textColor="@color/black"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/txtAmount"
@@ -169,7 +170,9 @@
                     android:layout_weight="1"
                     android:text="Miktar"
                     android:textColor="@color/black"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_marginLeft="10dp"
+                    />
 
                 <TextView
                     android:id="@+id/txtUnitPrice"
@@ -330,6 +333,5 @@
         </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
 
 </RelativeLayout>
