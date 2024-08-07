@@ -48,7 +48,9 @@
                     android:layout_weight="1"
                     android:hint="Sipariş Numarası giriniz"
                     android:minHeight="48dp"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:inputType="number"
+                    />
 
                 <Button
                     android:id="@+id/btnSearchOrder"

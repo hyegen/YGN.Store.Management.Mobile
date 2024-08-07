@@ -92,6 +92,16 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
                 }
             }
         });
+        edtSearchOrder.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                    new GetOrderInformationByOrderFicheNumber().execute(edtSearchOrder.getText().toString());
+                    return true;
+                }
+                return false;
+            }
+        });
     }
     private  void initialize(){
         setVisibleLinearLayout();
@@ -133,6 +143,7 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
             if(jsonData.equals("null")){
                 Toast.makeText(ReportGeneralSalesAndPurchasing.this, edtSearchOrder.getText()+" "+"Sipariş Bulunamadı. \nSipariş Numarasını kontrol ediniz", Toast.LENGTH_SHORT).show();
                 edtSearchOrder.setText("");
+                setVisibleLinearLayout();
             }
             if (jsonData != null) {
                 try {
