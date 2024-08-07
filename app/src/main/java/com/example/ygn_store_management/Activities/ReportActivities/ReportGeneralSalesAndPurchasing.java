@@ -144,7 +144,7 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
                     String firmDescription = jsonResponse.getString("FirmDescription");
                     String date_ = jsonResponse.getString("Date_");
                     String orderNote = jsonResponse.getString("OrderNote");
-                    String totalPrice = String.valueOf(jsonResponse.getDouble("TotalPrice"));
+                    String totalPrice = String.valueOf(jsonResponse.getLong("TotalPrice"));
                     String hasTax = jsonResponse.getString("HasTax");
 
                     txtClientDescription.setText(clientName + " "+clientSurname+ " - " +firmDescription);

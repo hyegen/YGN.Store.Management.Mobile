@@ -82,7 +82,11 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login();
+                if(usernameSpinner.getCount()<=0){
+                    Toast.makeText(LoginActivity.this, "Kullanıcılar Yüklenemedi \nLütfen Bağlantınızı Kontrol Ediniz.", Toast.LENGTH_SHORT).show();
+                }else   {
+                    login();
+                }
             }
         });
         edtPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -125,13 +129,7 @@ public class LoginActivity extends AppCompatActivity {
     private void login() {
         String username = usernameSpinner.getSelectedItem().toString();
         String password = edtPassword.getText().toString();
-
-        if(username.isEmpty()|| password.isEmpty()){
-            Toast.makeText(this, "Kullanıcılar Yüklenemedi, İnternet Bağlantınızı Kontrol ediniz. ", Toast.LENGTH_SHORT).show();
-        }
-        else {
             new LoginTask(username, password).execute();
-        }
     }
     private class fetchUsers extends AsyncTask<Void, Void, String> {
         @Override
