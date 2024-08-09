@@ -82,6 +82,10 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if  (edtPassword.getText().toString().isEmpty()){
+                    Toast.makeText(LoginActivity.this, "Şifre Giriniz.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if(usernameSpinner.getCount()<=0){
                     Toast.makeText(LoginActivity.this, "Kullanıcılar Yüklenemedi \nLütfen Bağlantınızı Kontrol Ediniz.", Toast.LENGTH_SHORT).show();
                 }else   {
@@ -132,11 +136,6 @@ public class LoginActivity extends AppCompatActivity {
             new LoginTask(username, password).execute();
     }
     private class fetchUsers extends AsyncTask<Void, Void, String> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pleaseWait = ProgressDialog.show(LoginActivity.this, LoginActivity.this.getResources().getString(R.string.loading), LoginActivity.this.getResources().getString(R.string.please_wait));
-        }
         @Override
         protected String doInBackground(Void... voids) {
             String apiRoute = "/api/getAllUsers";
