@@ -1,11 +1,9 @@
-package com.example.ygn_store_management.Activities.ReportActivities;
+package com.example.ygn_store_management.Activities.ReportActivities.GeneralReportActivities;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -15,8 +13,6 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.ygn_store_management.Activities.MainActivities.MainCardViewActivity;
-import com.example.ygn_store_management.Activities.ReportActivities.ReportCardViews.ReportCardViewActivity;
 import com.example.ygn_store_management.Adapters.ProductAdapter;
 import com.example.ygn_store_management.Models.Product;
 import com.example.ygn_store_management.R;
@@ -41,6 +37,7 @@ public class ReportStockAmountActivity extends AppCompatActivity {
     private ListView productsListView;
     private static String apiUrl;
     private static final String TAG = "ReportStockAmountActivity";
+    private GetStockAmounts _getStockAmountsTask;
     @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +52,9 @@ public class ReportStockAmountActivity extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new getStockAmounts().execute();
+                //new GetStockAmounts().execute();
+                _getStockAmountsTask = new GetStockAmounts();
+                _getStockAmountsTask.execute();
             }
         });
         edtSearchItem.addTextChangedListener(new TextWatcher() {
@@ -79,9 +78,9 @@ public class ReportStockAmountActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, ReportCardViewActivity.class);
-        startActivity(intent);
-        finish();
+//        Intent intent = new Intent(this, ReportCardViewActivity.class);
+//        startActivity(intent);
+        this.finish();
     }
     private void getSharedPreferences() {
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
@@ -89,14 +88,16 @@ public class ReportStockAmountActivity extends AppCompatActivity {
         apiUrl = "http://" + savedIpAddress;
     }
     private void initialize() {
-        new getStockAmounts().execute();
+        //new GetStockAmounts().execute();
+        _getStockAmountsTask = new GetStockAmounts();
+        _getStockAmountsTask.execute();
     }
     private void findViews() {
         productsListView = findViewById(R.id.productsListView);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
         edtSearchItem = findViewById(R.id.edtSearchItem);
     }
-    private class getStockAmounts extends AsyncTask<Void, Void, String> {
+    private class GetStockAmounts extends AsyncTask<Void, Void, String> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -194,5 +195,22 @@ public class ReportStockAmountActivity extends AppCompatActivity {
             }
         }
         return results;
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (_getStockAmountsTask != null && !_getStockAmountsTask.isCancelled()) {
+            _getStockAmountsTask.cancel(true);
+        }
+
+        if(dataList!=null)
+            dataList.clear();
+
+        swipeRefreshLayout.setRefreshing(false);
+        productsListView.setAdapter(null);
+        edtSearchItem.addTextChangedListener(null);
+
+        if(apiUrl!=null)
+            apiUrl=null;
     }
 }

@@ -8,7 +8,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.ReportActivities.ReportGeneralSalesAndPurchasing"
+    tools:context=".Activities.ReportActivities.GeneralReportActivities.ReportGeneralSalesAndPurchasing"
     android:orientation="vertical">
 
     <LinearLayout
@@ -304,39 +304,16 @@
                     android:textColor="@color/black" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="3dp"
-                android:paddingRight="3dp"
-                android:paddingBottom="3dp">
-
-                <TextView
-                    android:id="@+id/txtOrderNote"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                <Button
+                    android:id="@+id/btnShowOrderNotePopUp"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:backgroundTint="#FFA500"
                     android:text="Sipariş Notu"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    android:visibility="gone"
+                    />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="3dp"
-                android:paddingRight="3dp"
-                android:paddingBottom="3dp">
-
-                <TextView
-                    android:id="@+id/txtOrderNoteDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/black" />
-            </LinearLayout>
         </LinearLayout>
         </LinearLayout>
     </LinearLayout>

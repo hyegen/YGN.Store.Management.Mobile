@@ -86,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Şifre Giriniz.", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 if(usernameSpinner.getCount()<=0){
                     Toast.makeText(LoginActivity.this, "Kullanıcılar Yüklenemedi \nLütfen Bağlantınızı Kontrol Ediniz.", Toast.LENGTH_SHORT).show();
                 }else   {

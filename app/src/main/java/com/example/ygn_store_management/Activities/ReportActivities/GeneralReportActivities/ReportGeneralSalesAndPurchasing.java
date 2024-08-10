@@ -1,12 +1,17 @@
-package com.example.ygn_store_management.Activities.ReportActivities;
+package com.example.ygn_store_management.Activities.ReportActivities.GeneralReportActivities;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,12 +22,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.ygn_store_management.Adapters.ProductAdapter;
 import com.example.ygn_store_management.Adapters.ReportGeneralSalesAndPurchasingAdapter;
-import com.example.ygn_store_management.Models.Product;
 import com.example.ygn_store_management.Models.ReportViews.OrderInformationLines;
 import com.example.ygn_store_management.R;
-import com.google.android.material.transition.MaterialElevationScale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +35,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
 
@@ -41,16 +42,18 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
     private static final String TAG = "ReportGeneralSalesAndPurchasingActivity";
     private EditText edtSearchOrder;
     private Button btnSearchOrder;
+    private Button btnShowOrderNotePopUp;
     private TextView txtOrderFicheNumberDescription;
     private TextView txtClientDescription;
     private TextView txtTotalPriceDescription;
     private TextView txtHasTaxDescription;
     private TextView txtTaxPercentageDescription;
-    private TextView txtOrderNoteDescription;
     private TextView txtDateDescription;
     private ListView orderLineListView;
     private LinearLayout orderLineLinearLayout;
     protected ProgressDialog pleaseWait;
+    public String _currentOrderNote;
+    private GetOrderInformationByOrderFicheNumber _getOrderInformationByOrderFicheNumberTask;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,10 +76,11 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
         txtTotalPriceDescription=findViewById(R.id.txtTotalPriceDescription);
         txtHasTaxDescription=findViewById(R.id.txtHasTaxDescription);
         txtTaxPercentageDescription=findViewById(R.id.txtTaxPercentageDescription);
-        txtOrderNoteDescription=findViewById(R.id.txtOrderNoteDescription);
+       // txtOrderNoteDescription=findViewById(R.id.txtOrderNoteDescription);
         txtDateDescription=findViewById(R.id.txtDateDescription);
         orderLineListView=findViewById(R.id.orderLineListView);
         orderLineLinearLayout=findViewById(R.id.orderLineLinearLayout);
+        btnShowOrderNotePopUp=findViewById(R.id.btnShowOrderNotePopUp);
     }
     private void events() {
         btnSearchOrder.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +92,9 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
                     setVisibleLinearLayout();
                 }
                 else{
-                    new GetOrderInformationByOrderFicheNumber().execute(edtSearchOrder.getText().toString());
+                    //new GetOrderInformationByOrderFicheNumber().execute(edtSearchOrder.getText().toString());
+                    _getOrderInformationByOrderFicheNumberTask = new GetOrderInformationByOrderFicheNumber();
+                    _getOrderInformationByOrderFicheNumberTask.execute(edtSearchOrder.getText().toString());
                 }
             }
         });
@@ -96,12 +102,41 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                    new GetOrderInformationByOrderFicheNumber().execute(edtSearchOrder.getText().toString());
+                   // new GetOrderInformationByOrderFicheNumber().execute(edtSearchOrder.getText().toString());
+                    _getOrderInformationByOrderFicheNumberTask = new GetOrderInformationByOrderFicheNumber();
+                    _getOrderInformationByOrderFicheNumberTask.execute(edtSearchOrder.getText().toString());
                     return true;
                 }
                 return false;
             }
         });
+        btnShowOrderNotePopUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog( _currentOrderNote);
+            }
+        });
+    }
+    private void showDialog(String message) {
+        final Dialog dialog = new Dialog(this);
+
+        dialog.setContentView(R.layout.pop_up_order_note_layout);
+
+        TextView txtPopupMessage = dialog.findViewById(R.id.txtPopupMessage);
+        txtPopupMessage.setText(message);
+
+        dialog.setCancelable(true);
+
+        Button closeButton = dialog.findViewById(R.id.btnClosePopup);
+        closeButton.setOnClickListener(v -> dialog.dismiss());
+
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
+        dialog.show();
     }
     private  void initialize(){
         setVisibleLinearLayout();
@@ -158,9 +193,12 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
                     String totalPrice = String.valueOf(jsonResponse.getLong("TotalPrice"));
                     String hasTax = jsonResponse.getString("HasTax");
 
+                    if (!orderNote.isEmpty())
+                        btnShowOrderNotePopUp.setVisibility(View.VISIBLE);
+
                     txtClientDescription.setText(clientName + " "+clientSurname+ " - " +firmDescription);
                     txtOrderFicheNumberDescription.setText(orderFicheNumber);
-                    txtOrderNoteDescription.setText(orderNote);
+                    //txtOrderNoteDescription.setText(orderNote);
                     txtDateDescription.setText(date_);
                     txtTotalPriceDescription.setText(totalPrice);
                     txtHasTaxDescription.setText(hasTax);
@@ -186,17 +224,55 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
                     }
 
                     ReportGeneralSalesAndPurchasingAdapter adapter = new ReportGeneralSalesAndPurchasingAdapter(ReportGeneralSalesAndPurchasing.this, R.layout.adapter_report_general_sales_and_purchasing_orderline, orderLines);
+
                     orderLineListView.setAdapter(adapter);
                     orderLineLinearLayout.setVisibility(View.VISIBLE);
+
+                    _currentOrderNote=orderNote;
 
                 } catch (JSONException e) {
                     Log.e(TAG, "JSON Hatası: " + e.getMessage());
                 }
                 edtSearchOrder.setText("");
             }
-            else    {
+            else  {
                 setVisibleLinearLayout();
             }
         }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (_getOrderInformationByOrderFicheNumberTask != null && !_getOrderInformationByOrderFicheNumberTask.isCancelled()) {
+            _getOrderInformationByOrderFicheNumberTask.cancel(true);
+        }
+
+        btnSearchOrder.setOnClickListener(null);
+        edtSearchOrder.setOnEditorActionListener(null);
+        txtOrderFicheNumberDescription.setText(null);
+        txtClientDescription.setText(null);
+        txtTotalPriceDescription.setText(null);
+        txtHasTaxDescription.setText(null);
+        txtTaxPercentageDescription.setText(null);
+        txtDateDescription.setText(null);
+        orderLineListView.setAdapter(null);
+
+        orderLineLinearLayout.removeAllViews();
+        btnShowOrderNotePopUp.setOnClickListener(null);
+
+        if(apiUrl!=null)
+            apiUrl=null;
+
+        if(_currentOrderNote!=null)
+            _currentOrderNote=null;
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
+    }
+    private void clearItems(){
+
     }
 }

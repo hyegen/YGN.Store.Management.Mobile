@@ -6,17 +6,17 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.example.ygn_store_management.Activities.MainActivities.LoginActivity;
-import com.example.ygn_store_management.Activities.MainActivities.MainCardViewActivity;
-import com.example.ygn_store_management.Activities.ReportActivities.ReportGeneralSalesAndPurchasing;
-import com.example.ygn_store_management.Activities.ReportActivities.ReportSalesDetailByClientDetail;
-import com.example.ygn_store_management.Activities.ReportActivities.ReportStockAmountActivity;
+import com.example.ygn_store_management.Activities.ReportActivities.GeneralReportActivities.ReportGeneralSalesAndPurchasing;
+import com.example.ygn_store_management.Activities.ReportActivities.PurchasingReports.ReportPurchasingDetailByClientDetail;
+import com.example.ygn_store_management.Activities.ReportActivities.SalesReports.ReportSalesDetailByClientDetail;
+import com.example.ygn_store_management.Activities.ReportActivities.GeneralReportActivities.ReportStockAmountActivity;
 import com.example.ygn_store_management.R;
 
 public class ReportCardViewActivity extends AppCompatActivity {
     private CardView stockAmountCardView;
     private CardView salesDetailByClientCardView;
     private CardView orderQueryCardView;
+    private CardView purchasingDetailByClientCardView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +28,7 @@ public class ReportCardViewActivity extends AppCompatActivity {
         stockAmountCardView=findViewById(R.id.cardViewStockAmount);
         salesDetailByClientCardView=findViewById(R.id.cardViewSalesDetailByClientDetail);
         orderQueryCardView=findViewById(R.id.cardViewOrderQuery);
+        purchasingDetailByClientCardView=findViewById(R.id.cardViewPurchasingDetailByClientDetail);
     }
     private void events() {
         stockAmountCardView.setOnClickListener(new View.OnClickListener() {
@@ -51,12 +52,19 @@ public class ReportCardViewActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        purchasingDetailByClientCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ReportCardViewActivity.this, ReportPurchasingDetailByClientDetail.class);
+                startActivity(intent);
+            }
+        });
     }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, MainCardViewActivity.class);
-        startActivity(intent);
-        finish();
+//        Intent intent = new Intent(this, MainCardViewActivity.class);
+//        startActivity(intent);
+        this.finish();
     }
 }

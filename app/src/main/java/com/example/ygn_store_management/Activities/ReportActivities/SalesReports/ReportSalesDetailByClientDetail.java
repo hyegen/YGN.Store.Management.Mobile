@@ -1,4 +1,4 @@
-package com.example.ygn_store_management.Activities.ReportActivities;
+package com.example.ygn_store_management.Activities.ReportActivities.SalesReports;
 
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
@@ -36,6 +36,7 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
     private ListView salesDetailListview;
     private static String apiUrl;
     private static final String TAG = "ReportSalesByClientDetailActivity";
+    private GetSalesByClientDetail _getSalesByClientDetailTask;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +50,9 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new GetSalesByClientDetail().execute();
+               // new GetSalesByClientDetail().execute();
+                _getSalesByClientDetailTask = new GetSalesByClientDetail();
+                _getSalesByClientDetailTask.execute();
             }
         });
         edtSearchItem.addTextChangedListener(new TextWatcher() {
@@ -66,7 +69,9 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
         });
     }
     private void initialize() {
-        new GetSalesByClientDetail().execute();
+        //new GetSalesByClientDetail().execute();
+        _getSalesByClientDetailTask = new GetSalesByClientDetail();
+        _getSalesByClientDetailTask.execute();
     }
     private void findViews() {
         salesDetailListview = findViewById(R.id.reportSalesByClientDetilListView);
@@ -188,5 +193,22 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
             }
             swipeRefreshLayout.setRefreshing(false);
         }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (_getSalesByClientDetailTask != null && !_getSalesByClientDetailTask.isCancelled()) {
+            _getSalesByClientDetailTask.cancel(true);
+        }
+
+        salesDetailListview.setAdapter(null);
+        swipeRefreshLayout.setRefreshing(false);
+        edtSearchItem.addTextChangedListener(null);
+
+        if (dataList!=null)
+            dataList.clear();
+
+        if (apiUrl!=null)
+            apiUrl=null;
     }
 }

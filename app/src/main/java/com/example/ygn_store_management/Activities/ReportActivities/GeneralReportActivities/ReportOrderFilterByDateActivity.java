@@ -1,4 +1,4 @@
-package com.example.ygn_store_management.Activities.ReportActivities;
+package com.example.ygn_store_management.Activities.ReportActivities.GeneralReportActivities;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -15,12 +13,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.ygn_store_management.Adapters.ReportGeneralSalesAndPurchasingAdapter;
 import com.example.ygn_store_management.Adapters.ReportOrderFilterByDateAdapter;
-import com.example.ygn_store_management.Adapters.ReportSalesDetailByClientDetailAdapter;
 import com.example.ygn_store_management.Models.ReportViews.OrderFilterByDate;
-import com.example.ygn_store_management.Models.ReportViews.OrderInformationLines;
-import com.example.ygn_store_management.Models.ReportViews.SalesDetailByClientDetail;
 import com.example.ygn_store_management.R;
 
 import org.json.JSONArray;
@@ -35,7 +29,6 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 
 public class ReportOrderFilterByDateActivity extends AppCompatActivity {

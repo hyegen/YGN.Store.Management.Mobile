@@ -4,12 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.example.ygn_store_management.Activities.ReportActivities.ReportCardViews.ReportCardViewActivity;
-import com.example.ygn_store_management.Activities.ReportActivities.ReportStockAmountActivity;
 import com.example.ygn_store_management.Activities.DialogActivities.ClientSelectionDialogActivity;
 import com.example.ygn_store_management.R;
 
@@ -66,8 +64,8 @@ public class MainCardViewActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
+//        Intent intent = new Intent(this, LoginActivity.class);
+//        startActivity(intent);
+        this.finish();
     }
 }
