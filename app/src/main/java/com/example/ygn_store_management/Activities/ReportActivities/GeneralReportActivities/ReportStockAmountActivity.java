@@ -1,6 +1,7 @@
 package com.example.ygn_store_management.Activities.ReportActivities.GeneralReportActivities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ public class ReportStockAmountActivity extends AppCompatActivity {
     private static String apiUrl;
     private static final String TAG = "ReportStockAmountActivity";
     private GetStockAmounts _getStockAmountsTask;
+    private String token;
     @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,11 @@ public class ReportStockAmountActivity extends AppCompatActivity {
         findViews();
         initialize();
         events();
+        getExtras();
+    }
+    private void getExtras() {
+        Intent intent = getIntent();
+        token = intent.getStringExtra("TOKEN");
     }
     private void events() {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -107,11 +114,14 @@ public class ReportStockAmountActivity extends AppCompatActivity {
         @SuppressWarnings("deprecation")
         @Override
         protected String doInBackground(Void... voids) {
+            //String apiRoute = "/api/GetStockAmount";
             String apiRoute = "/api/GetStockAmount";
             try {
                 URL url = new URL(apiUrl + apiRoute);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
+                connection.setRequestProperty("Authorization", "Bearer " + token);
+
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String line;
                 StringBuilder response = new StringBuilder();
@@ -212,5 +222,8 @@ public class ReportStockAmountActivity extends AppCompatActivity {
 
         if(apiUrl!=null)
             apiUrl=null;
+
+        if(token!=null)
+            token=null;
     }
 }

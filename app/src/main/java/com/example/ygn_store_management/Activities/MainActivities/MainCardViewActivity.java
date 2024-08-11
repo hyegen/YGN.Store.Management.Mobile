@@ -9,13 +9,17 @@ import androidx.cardview.widget.CardView;
 
 import com.example.ygn_store_management.Activities.ReportActivities.ReportCardViews.ReportCardViewActivity;
 import com.example.ygn_store_management.Activities.DialogActivities.ClientSelectionDialogActivity;
+import com.example.ygn_store_management.Models.Product;
 import com.example.ygn_store_management.R;
+
+import java.util.ArrayList;
 
 public class MainCardViewActivity extends AppCompatActivity {
     private CardView salesCardView;
     private CardView purchasingCardView;
     private CardView reportsCardView;
     private static final int CLIENT_SELECTION_REQUEST_CODE = 1;
+    private String token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +27,11 @@ public class MainCardViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_card_view);
         findViews();
         events();
+        getExtras();
+    }
+    private void getExtras() {
+        Intent intent = getIntent();
+        token = intent.getStringExtra("TOKEN");
     }
     private void findViews(){
         salesCardView=findViewById(R.id.salesCardView);
@@ -52,6 +61,7 @@ public class MainCardViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainCardViewActivity.this, ReportCardViewActivity.class);
+                intent.putExtra("TOKEN",token);
                 startActivity(intent);
             }
         });
@@ -64,8 +74,15 @@ public class MainCardViewActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-//        Intent intent = new Intent(this, LoginActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
         this.finish();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (token!=null)
+            token=null;
     }
 }

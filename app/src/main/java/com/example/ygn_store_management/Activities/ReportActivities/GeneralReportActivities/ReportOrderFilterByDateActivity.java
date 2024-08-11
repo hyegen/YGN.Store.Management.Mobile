@@ -2,6 +2,7 @@ package com.example.ygn_store_management.Activities.ReportActivities.GeneralRepo
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ public class ReportOrderFilterByDateActivity extends AppCompatActivity {
     private EditText endDateEditText;
     private Button fetchOrderButton;
     private ListView reportSalesByClientDetilListView;
+    private String token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,27 +48,28 @@ public class ReportOrderFilterByDateActivity extends AppCompatActivity {
         getSharedPreferences();
         findViews();
         events();
+        getExtras();
     }
-
+    private void getExtras() {
+        Intent intent = getIntent();
+        token = intent.getStringExtra("TOKEN");
+    }
     private void getSharedPreferences() {
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         String savedIpAddress = prefs.getString("ipAddress", "");
         apiUrl = "http://" + savedIpAddress;
     }
-
     private void findViews() {
         startDateEditText = findViewById(R.id.startDateEditText);
         endDateEditText = findViewById(R.id.endDateEditText);
         fetchOrderButton = findViewById(R.id.fetchOrderButton);
         reportSalesByClientDetilListView = findViewById(R.id.reportSalesByClientDetilListView);
     }
-
     private void events() {
         startDateEditText.setOnClickListener(v -> showDatePickerDialog(startDateEditText));
         endDateEditText.setOnClickListener(v -> showDatePickerDialog(endDateEditText));
         fetchOrderButton.setOnClickListener(v -> getOrder());
     }
-
     private void getOrder() {
         String startDate = (String) startDateEditText.getTag();
         String endDate = (String) endDateEditText.getTag();
@@ -77,7 +80,6 @@ public class ReportOrderFilterByDateActivity extends AppCompatActivity {
             Toast.makeText(this, "Lütfen tarih aralığını seçin", Toast.LENGTH_SHORT).show();
         }
     }
-
     private void showDatePickerDialog(EditText editText) {
         final Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -98,7 +100,6 @@ public class ReportOrderFilterByDateActivity extends AppCompatActivity {
         }, year, month, day);
         datePickerDialog.show();
     }
-
     private class GetOrderByDateFiltered extends AsyncTask<Void, Void, String> {
         private String startDate;
         private String endDate;
@@ -123,6 +124,7 @@ public class ReportOrderFilterByDateActivity extends AppCompatActivity {
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                connection.setRequestProperty("Authorization", "Bearer " + token);
 
                 JSONObject jsonParam = new JSONObject();
                 jsonParam.put("startDate", startDate);

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <!--    tools:context=".Activities.ReportActivities.SalesReports.ReportPurchasingDetailByClientDetail"-->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Cari Detaylı Satınalma Raporu"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <EditText
+        android:id="@+id/edtSearchClient"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Filtreleyiniz"
+        android:singleLine="true"
+        android:minHeight="48dp"
+        android:layout_below="@id/toolbar"/>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout_report_purchasing_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/edtSearchClient">
+
+        <ListView
+            android:id="@+id/reportPurchasingByClientDetailListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/adapter_purchasing_by_client_detail"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</RelativeLayout>

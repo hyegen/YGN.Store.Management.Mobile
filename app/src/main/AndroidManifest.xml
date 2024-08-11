@@ -21,9 +21,6 @@
             android:name=".Activities.ReportActivities.PurchasingReports.ReportPurchasingDetailByClientDetail"
             android:exported="false" />
         <activity
-            android:name=".Activities.BaseActivity.BaseActivity"
-            android:exported="false" />
-        <activity
             android:name=".Activities.ReportActivities.GeneralReportActivities.ReportOrderFilterByDateActivity"
             android:exported="false" />
         <activity

@@ -17,12 +17,18 @@ public class ReportCardViewActivity extends AppCompatActivity {
     private CardView salesDetailByClientCardView;
     private CardView orderQueryCardView;
     private CardView purchasingDetailByClientCardView;
+    private String token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_reports_card_view);
         findViews();
         events();
+        getExtras();
+    }
+    private void getExtras() {
+        Intent intent = getIntent();
+        token = intent.getStringExtra("TOKEN");
     }
     private void findViews() {
         stockAmountCardView=findViewById(R.id.cardViewStockAmount);
@@ -35,6 +41,7 @@ public class ReportCardViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ReportCardViewActivity.this, ReportStockAmountActivity.class);
+                intent.putExtra("TOKEN",token);
                 startActivity(intent);
             }
         });
@@ -42,6 +49,7 @@ public class ReportCardViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ReportCardViewActivity.this, ReportSalesDetailByClientDetail.class);
+                intent.putExtra("TOKEN",token);
                 startActivity(intent);
             }
         });
@@ -49,6 +57,7 @@ public class ReportCardViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ReportCardViewActivity.this, ReportGeneralSalesAndPurchasing.class);
+                intent.putExtra("TOKEN",token);
                 startActivity(intent);
             }
         });
@@ -56,6 +65,7 @@ public class ReportCardViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ReportCardViewActivity.this, ReportPurchasingDetailByClientDetail.class);
+                intent.putExtra("TOKEN",token);
                 startActivity(intent);
             }
         });
@@ -66,5 +76,12 @@ public class ReportCardViewActivity extends AppCompatActivity {
 //        Intent intent = new Intent(this, MainCardViewActivity.class);
 //        startActivity(intent);
         this.finish();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (token!=null)
+            token=null;
     }
 }

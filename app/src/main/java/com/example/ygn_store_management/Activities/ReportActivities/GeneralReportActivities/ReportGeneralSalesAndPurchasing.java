@@ -2,6 +2,7 @@ package com.example.ygn_store_management.Activities.ReportActivities.GeneralRepo
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -54,6 +55,7 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
     protected ProgressDialog pleaseWait;
     public String _currentOrderNote;
     private GetOrderInformationByOrderFicheNumber _getOrderInformationByOrderFicheNumberTask;
+    private String token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +64,11 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
         findViews();
         events();
         initialize();
+        getExtras();
+    }
+    private void getExtras() {
+        Intent intent = getIntent();
+        token = intent.getStringExtra("TOKEN");
     }
     private void getSharedPreferences() {
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
@@ -158,6 +165,8 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
                 URL url = new URL(apiUrl + apiRoute + "?orderFicheNumber=" + orderFicheNumber);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
+                connection.setRequestProperty("Authorization", "Bearer " + token);
+
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String line;
                 StringBuilder response = new StringBuilder();
@@ -266,13 +275,13 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
         if(_currentOrderNote!=null)
             _currentOrderNote=null;
 
+        if (token!=null)
+            token=null;
     }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         this.finish();
     }
-    private void clearItems(){
 
-    }
 }

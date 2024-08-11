@@ -1,4 +1,4 @@
-package com.example.ygn_store_management.Activities.ReportActivities.SalesReports;
+package com.example.ygn_store_management.Activities.ReportActivities.PurchasingReports;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -14,8 +14,8 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.ygn_store_management.Adapters.ReportSalesDetailByClientDetailAdapter;
-import com.example.ygn_store_management.Models.ReportViews.SalesDetailByClientDetail;
+import com.example.ygn_store_management.Adapters.ReportPurchasingDetailByClientDetailAdapter;
+import com.example.ygn_store_management.Models.ReportViews.PurchasingDetailByClientDetail;
 import com.example.ygn_store_management.R;
 
 import org.json.JSONArray;
@@ -29,20 +29,20 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReportSalesDetailByClientDetail extends AppCompatActivity {
+public class ReportPurchasingDetailByClientDetail extends AppCompatActivity {
     protected ProgressDialog pleaseWait;
     private List<String> dataList = new ArrayList<>();
     private SwipeRefreshLayout swipeRefreshLayout;
     private EditText edtSearchItem;
-    private ListView salesDetailListview;
+    private ListView purchasingDetailListview;
     private static String apiUrl;
-    private static final String TAG = "ReportSalesByClientDetailActivity";
-    private GetSalesByClientDetail _getSalesByClientDetailTask;
+    private static final String TAG = "ReportPurchasingDetailByClientDetail";
+    private GetPurchasingByClientDetail _getPurchasingByClientDetailTask;
     private String token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_report_sales_detail_by_client_detail);
+        setContentView(R.layout.activity_report_purchasing_detail_by_client_detail);
         getSharedPreferences();
         findViews();
         initialize();
@@ -57,9 +57,8 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-               // new GetSalesByClientDetail().execute();
-                _getSalesByClientDetailTask = new GetSalesByClientDetail();
-                _getSalesByClientDetailTask.execute();
+                _getPurchasingByClientDetailTask = new GetPurchasingByClientDetail();
+                _getPurchasingByClientDetailTask.execute();
             }
         });
         edtSearchItem.addTextChangedListener(new TextWatcher() {
@@ -76,13 +75,12 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
         });
     }
     private void initialize() {
-        //new GetSalesByClientDetail().execute();
-        _getSalesByClientDetailTask = new GetSalesByClientDetail();
-        _getSalesByClientDetailTask.execute();
+        _getPurchasingByClientDetailTask = new GetPurchasingByClientDetail();
+        _getPurchasingByClientDetailTask.execute();
     }
     private void findViews() {
-        salesDetailListview = findViewById(R.id.reportSalesByClientDetilListView);
-        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout_report_sales_detail);
+        purchasingDetailListview = findViewById(R.id.reportPurchasingByClientDetailListView);
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout_report_purchasing_detail);
         edtSearchItem=findViewById(R.id.edtSearchClient);
     }
     private void getSharedPreferences() {
@@ -91,46 +89,46 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
         apiUrl = "http://" + savedIpAddress;
     }
     private void searchItemByCode(String query) {
-        new searchSalesDetail().execute(query);
+        new searchPurchasingDetail().execute(query);
     }
-    private class searchSalesDetail extends AsyncTask<String, Void, ArrayList<SalesDetailByClientDetail>> {
+    private class searchPurchasingDetail extends AsyncTask<String, Void, ArrayList<PurchasingDetailByClientDetail>> {
         @Override
-        protected ArrayList<SalesDetailByClientDetail> doInBackground(String... params) {
+        protected ArrayList<PurchasingDetailByClientDetail> doInBackground(String... params) {
             String query = params[0];
             return performSearch(query);
         }
 
         @Override
-        protected void onPostExecute(ArrayList<SalesDetailByClientDetail> sales) {
-            ReportSalesDetailByClientDetailAdapter adapter = new ReportSalesDetailByClientDetailAdapter(ReportSalesDetailByClientDetail.this, R.layout.adapter_sales_by_client_detail, sales);
-            salesDetailListview.setAdapter(adapter);
+        protected void onPostExecute(ArrayList<PurchasingDetailByClientDetail> purchases) {
+            ReportPurchasingDetailByClientDetailAdapter adapter = new ReportPurchasingDetailByClientDetailAdapter(ReportPurchasingDetailByClientDetail.this, R.layout.adapter_purchasing_by_client_detail, purchases);
+            purchasingDetailListview.setAdapter(adapter);
             swipeRefreshLayout.setRefreshing(false);
         }
     }
-    private ArrayList<SalesDetailByClientDetail> performSearch(String query) {
-        ArrayList<SalesDetailByClientDetail> results = new ArrayList<>();
+    private ArrayList<PurchasingDetailByClientDetail> performSearch(String query) {
+        ArrayList<PurchasingDetailByClientDetail> results = new ArrayList<>();
 
         String queryUpperCase = query.toUpperCase();
 
         for (String data : dataList) {
             try {
                 JSONObject jsonObject = new JSONObject(data);
-                SalesDetailByClientDetail sale = new SalesDetailByClientDetail();
+                PurchasingDetailByClientDetail purchase = new PurchasingDetailByClientDetail();
 
-                sale.setOrderFicheNumber(jsonObject.getString("OrderFicheNumber"));
-                sale.setClientName(jsonObject.getString("ClientName"));
-                sale.setClientSurname(jsonObject.getString("ClientSurname"));
-                sale.setFirmDescription(jsonObject.getString("FirmDescription"));
-                sale.setDate_(jsonObject.getString("Date_"));
-                sale.setTotalPrice(jsonObject.getString("TotalPrice"));
+                purchase.setOrderFicheNumber(jsonObject.getString("OrderFicheNumber"));
+                purchase.setClientName(jsonObject.getString("ClientName"));
+                purchase.setClientSurname(jsonObject.getString("ClientSurname"));
+                purchase.setFirmDescription(jsonObject.getString("FirmDescription"));
+                purchase.setDate_(jsonObject.getString("Date_"));
+                purchase.setTotalPrice(jsonObject.getString("TotalPrice"));
 
-                String clientNameUpperName = sale.getClientName().toUpperCase();
-                String clientSurnameUpperCase= sale.getClientSurname().toUpperCase();
-                String firmDescriptionUpperCase= sale.getFirmDescription().toUpperCase();
-                String orderFicheNumberUpperCase= sale.getOrderFicheNumber().toUpperCase();
+                String clientNameUpperName = purchase.getClientName().toUpperCase();
+                String clientSurnameUpperCase= purchase.getClientSurname().toUpperCase();
+                String firmDescriptionUpperCase= purchase.getFirmDescription().toUpperCase();
+                String orderFicheNumberUpperCase= purchase.getOrderFicheNumber().toUpperCase();
 
                 if (orderFicheNumberUpperCase.contains(queryUpperCase) || clientNameUpperName.contains(queryUpperCase)|| clientSurnameUpperCase.contains(queryUpperCase)|| firmDescriptionUpperCase.contains((queryUpperCase))) {
-                    results.add(sale);
+                    results.add(purchase);
                 }
             } catch (JSONException e) {
                 Log.e(TAG, "Hata: " + e.getMessage());
@@ -138,16 +136,16 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
         }
         return results;
     }
-    private class GetSalesByClientDetail extends AsyncTask<Void, Void, String> {
+    private class GetPurchasingByClientDetail extends AsyncTask<Void, Void, String> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pleaseWait = ProgressDialog.show(ReportSalesDetailByClientDetail.this, ReportSalesDetailByClientDetail.this.getResources().getString(R.string.loading), ReportSalesDetailByClientDetail.this.getResources().getString(R.string.please_wait));
+            pleaseWait = ProgressDialog.show(ReportPurchasingDetailByClientDetail.this, ReportPurchasingDetailByClientDetail.this.getResources().getString(R.string.loading), ReportPurchasingDetailByClientDetail.this.getResources().getString(R.string.please_wait));
         }
         @SuppressWarnings("deprecation")
         @Override
         protected String doInBackground(Void... voids) {
-            String apiRoute = "/api/GetSalesByClientDetail";
+            String apiRoute = "/api/GetPurchasingByClientDetail";
             try {
                 URL url = new URL(apiUrl + apiRoute);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -179,23 +177,23 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
             }
             if (jsonData != null) {
                 try {
-                    ArrayList<SalesDetailByClientDetail> sales = new ArrayList<>();
+                    ArrayList<PurchasingDetailByClientDetail> purchases = new ArrayList<>();
                     JSONArray jsonArray = new JSONArray(jsonData);
                     for (int i = 0; i < jsonArray.length(); i++) {
-                        SalesDetailByClientDetail sale=new SalesDetailByClientDetail();
+                        PurchasingDetailByClientDetail purchase=new PurchasingDetailByClientDetail();
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                        sale.OrderFicheNumber = jsonObject.getString("OrderFicheNumber");
-                        sale.ClientName = jsonObject.getString("ClientName");
-                        sale.ClientSurname = jsonObject.getString("ClientSurname");
-                        sale.FirmDescription= jsonObject.getString("FirmDescription");
-                        sale.Date_= jsonObject.getString("Date_");
-                        sale.TotalPrice = Double.valueOf(jsonObject.getString("TotalPrice"));
+                        purchase.OrderFicheNumber = jsonObject.getString("OrderFicheNumber");
+                        purchase.ClientName = jsonObject.getString("ClientName");
+                        purchase.ClientSurname = jsonObject.getString("ClientSurname");
+                        purchase.FirmDescription= jsonObject.getString("FirmDescription");
+                        purchase.Date_= jsonObject.getString("Date_");
+                        purchase.TotalPrice = Double.valueOf(jsonObject.getString("TotalPrice"));
 
-                        sales.add(sale);
+                        purchases.add(purchase);
                     }
-                    ReportSalesDetailByClientDetailAdapter adapter = new ReportSalesDetailByClientDetailAdapter(ReportSalesDetailByClientDetail.this,R.layout.adapter_sales_by_client_detail,sales);
-                    salesDetailListview.setAdapter(adapter);
+                    ReportPurchasingDetailByClientDetailAdapter adapter = new ReportPurchasingDetailByClientDetailAdapter(ReportPurchasingDetailByClientDetail.this,R.layout.adapter_purchasing_by_client_detail,purchases);
+                    purchasingDetailListview.setAdapter(adapter);
                 } catch (JSONException e) {
                     Log.e(TAG, "Hata: " + e.getMessage());
                 }
@@ -206,11 +204,11 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (_getSalesByClientDetailTask != null && !_getSalesByClientDetailTask.isCancelled()) {
-            _getSalesByClientDetailTask.cancel(true);
+        if (_getPurchasingByClientDetailTask != null && !_getPurchasingByClientDetailTask.isCancelled()) {
+            _getPurchasingByClientDetailTask.cancel(true);
         }
 
-        salesDetailListview.setAdapter(null);
+        purchasingDetailListview.setAdapter(null);
         swipeRefreshLayout.setRefreshing(false);
         edtSearchItem.addTextChangedListener(null);
 
@@ -218,7 +216,7 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
             dataList.clear();
 
         if (apiUrl!=null)
-            apiUrl = null;
+            apiUrl=null;
 
         if (token!=null)
             token=null;

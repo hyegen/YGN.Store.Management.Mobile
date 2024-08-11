@@ -192,24 +192,15 @@ public class LoginActivity extends AppCompatActivity {
             this.password = password;
         }
 
-
         @Override
         protected String doInBackground(Void... voids) {
             try {
-                String apiRoute = apiUrl + "/api/login/{userName}/{password}";
-                String user = username;
-                String pass = password;
-
-                apiRoute = apiRoute.replace("{userName}", URLEncoder.encode(user, "UTF-8"));
-                apiRoute = apiRoute.replace("{password}", URLEncoder.encode(pass, "UTF-8"));
+                String apiRoute = apiUrl + "/api/authenticate?userName=" + URLEncoder.encode(username, "UTF-8") + "&password=" + URLEncoder.encode(password, "UTF-8");
 
                 URL url = new URL(apiRoute);
-
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
+                urlConnection.setRequestMethod("POST");
                 urlConnection.setRequestProperty("Content-Type", "application/json");
-
-                urlConnection.connect();
 
                 int statusCode = urlConnection.getResponseCode();
 
@@ -222,20 +213,25 @@ public class LoginActivity extends AppCompatActivity {
                     while ((chunks = buff.readLine()) != null) {
                         dta.append(chunks);
                     }
-                    return String.valueOf(statusCode);
+
+                    JSONObject jsonResponse = new JSONObject(dta.toString());
+                    String token = jsonResponse.getString("token");
+
+                    return token;
                 } else {
-                    Toast.makeText(LoginActivity.this, "Hata !", Toast.LENGTH_SHORT).show();
+                    return null;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                return null;
             }
-            return null;
         }
 
         @Override
-        protected void onPostExecute(String success) {
-            if (success != null && success.equals("200")) {
+        protected void onPostExecute(String token) {
+            if (token != null) {
                 Intent intent = new Intent(LoginActivity.this, MainCardViewActivity.class);
+                intent.putExtra("TOKEN", token);
                 startActivity(intent);
                 Toast.makeText(LoginActivity.this, "Giriş Başarılı.", Toast.LENGTH_SHORT).show();
                 finish();
@@ -244,4 +240,66 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     }
+
+//    private class LoginTask extends AsyncTask<Void, Void, String> {
+//        private String username;
+//        private String password;
+//
+//        public LoginTask(String username, String password) {
+//            this.username = username;
+//            this.password = password;
+//        }
+//
+//
+//        @Override
+//        protected String doInBackground(Void... voids) {
+//            try {
+//                String apiRoute = apiUrl + "/api/login/{userName}/{password}";
+//                String user = username;
+//                String pass = password;
+//
+//                apiRoute = apiRoute.replace("{userName}", URLEncoder.encode(user, "UTF-8"));
+//                apiRoute = apiRoute.replace("{password}", URLEncoder.encode(pass, "UTF-8"));
+//
+//                URL url = new URL(apiRoute);
+//
+//                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+//                urlConnection.setRequestMethod("GET");
+//                urlConnection.setRequestProperty("Content-Type", "application/json");
+//
+//                urlConnection.connect();
+//
+//                int statusCode = urlConnection.getResponseCode();
+//
+//                if (statusCode == 200) {
+//                    InputStream it = new BufferedInputStream(urlConnection.getInputStream());
+//                    InputStreamReader read = new InputStreamReader(it);
+//                    BufferedReader buff = new BufferedReader(read);
+//                    StringBuilder dta = new StringBuilder();
+//                    String chunks;
+//                    while ((chunks = buff.readLine()) != null) {
+//                        dta.append(chunks);
+//                    }
+//                    return String.valueOf(statusCode);
+//                } else {
+//                    Toast.makeText(LoginActivity.this, "Hata !", Toast.LENGTH_SHORT).show();
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String success) {
+//            if (success != null && success.equals("200")) {
+//                Intent intent = new Intent(LoginActivity.this, MainCardViewActivity.class);
+//                startActivity(intent);
+//                Toast.makeText(LoginActivity.this, "Giriş Başarılı.", Toast.LENGTH_SHORT).show();
+//                finish();
+//            } else {
+//                Toast.makeText(LoginActivity.this, "Giriş Başarısız.", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
 }
