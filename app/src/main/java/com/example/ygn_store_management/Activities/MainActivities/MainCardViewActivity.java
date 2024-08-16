@@ -3,6 +3,7 @@ package com.example.ygn_store_management.Activities.MainActivities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -18,6 +19,7 @@ public class MainCardViewActivity extends AppCompatActivity {
     private CardView salesCardView;
     private CardView purchasingCardView;
     private CardView reportsCardView;
+    private LinearLayout linearLayoutMainCardView;
     private static final int CLIENT_SELECTION_REQUEST_CODE = 1;
     private String token;
     @Override
@@ -37,6 +39,7 @@ public class MainCardViewActivity extends AppCompatActivity {
         salesCardView=findViewById(R.id.salesCardView);
         purchasingCardView=findViewById(R.id.purchasingCardView);
         reportsCardView=findViewById(R.id.reportsCardView);
+        linearLayoutMainCardView=findViewById(R.id.linearLayoutMainCardView);
     }
     private void events(){
         purchasingCardView.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +85,6 @@ public class MainCardViewActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        if (token!=null)
-            token=null;
+
     }
 }

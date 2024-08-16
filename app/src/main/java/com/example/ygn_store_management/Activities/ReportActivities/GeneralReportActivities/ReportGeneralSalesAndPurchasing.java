@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
@@ -52,6 +54,7 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
     private TextView txtDateDescription;
     private ListView orderLineListView;
     private LinearLayout orderLineLinearLayout;
+    private RelativeLayout relativeLayoutReportGeneralSalesAndPurchasing;
     protected ProgressDialog pleaseWait;
     public String _currentOrderNote;
     private GetOrderInformationByOrderFicheNumber _getOrderInformationByOrderFicheNumberTask;
@@ -88,6 +91,7 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
         orderLineListView=findViewById(R.id.orderLineListView);
         orderLineLinearLayout=findViewById(R.id.orderLineLinearLayout);
         btnShowOrderNotePopUp=findViewById(R.id.btnShowOrderNotePopUp);
+        relativeLayoutReportGeneralSalesAndPurchasing=findViewById(R.id.relativeLayoutReportGeneralSalesAndPurchasing);
     }
     private void events() {
         btnSearchOrder.setOnClickListener(new View.OnClickListener() {
@@ -199,7 +203,13 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
                     String firmDescription = jsonResponse.getString("FirmDescription");
                     String date_ = jsonResponse.getString("Date_");
                     String orderNote = jsonResponse.getString("OrderNote");
-                    String totalPrice = String.valueOf(jsonResponse.getLong("TotalPrice"));
+
+                    double totalPrice = jsonResponse.getDouble("TotalPrice");
+                    DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                    String formattedPrice = decimalFormat.format(totalPrice);
+                    txtTotalPriceDescription.setText(formattedPrice);
+
+
                     String hasTax = jsonResponse.getString("HasTax");
 
                     if (!orderNote.isEmpty())
@@ -209,7 +219,7 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
                     txtOrderFicheNumberDescription.setText(orderFicheNumber);
                     //txtOrderNoteDescription.setText(orderNote);
                     txtDateDescription.setText(date_);
-                    txtTotalPriceDescription.setText(totalPrice);
+
                     txtHasTaxDescription.setText(hasTax);
 
                    String taxPercentage = String.valueOf(jsonResponse.getDouble("TaxPercentage"));
@@ -228,7 +238,8 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
                         orderLine.setItemName(item.getString("ItemName"));
                         orderLine.setAmount(item.getInt("Amount"));
                         orderLine.setUnitPrice(item.getDouble("UnitPrice"));
-                        orderLine.setLineTotal(item.getInt("LineTotal"));
+                       // orderLine.setLineTotal(item.getInt("LineTotal"));
+                        orderLine.setLineTotal(item.getDouble("LineTotal"));
                         orderLines.add(orderLine);
                     }
 
@@ -264,24 +275,36 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
         txtHasTaxDescription.setText(null);
         txtTaxPercentageDescription.setText(null);
         txtDateDescription.setText(null);
+
         orderLineListView.setAdapter(null);
+
+        relativeLayoutReportGeneralSalesAndPurchasing.removeAllViews();
 
         orderLineLinearLayout.removeAllViews();
         btnShowOrderNotePopUp.setOnClickListener(null);
 
-        if(apiUrl!=null)
-            apiUrl=null;
+        apiUrl=null;
+        _currentOrderNote=null;
+        token = null;
 
-        if(_currentOrderNote!=null)
-            _currentOrderNote=null;
-
-        if (token!=null)
-            token=null;
+        this.finish();
     }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         this.finish();
     }
+    @Override
+    protected void onStop() {
+        super.onStop();
 
+        if (_getOrderInformationByOrderFicheNumberTask != null && !_getOrderInformationByOrderFicheNumberTask.isCancelled()) {
+            _getOrderInformationByOrderFicheNumberTask.cancel(true);
+        }
+
+        if (pleaseWait != null && pleaseWait.isShowing()) {
+            pleaseWait.dismiss();
+        }
+
+    }
 }

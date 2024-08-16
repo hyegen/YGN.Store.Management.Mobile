@@ -214,13 +214,34 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
         swipeRefreshLayout.setRefreshing(false);
         edtSearchItem.addTextChangedListener(null);
 
-        if (dataList!=null)
+        salesDetailListview.setAdapter(null);
+
+
+        if(dataList!=null){
             dataList.clear();
+            dataList=null;
+        }
 
-        if (apiUrl!=null)
-            apiUrl = null;
+        apiUrl = null;
+        token=null;
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
 
-        if (token!=null)
-            token=null;
+        if (_getSalesByClientDetailTask != null && !_getSalesByClientDetailTask.isCancelled()) {
+            _getSalesByClientDetailTask.cancel(true);
+        }
+
+        salesDetailListview.setAdapter(null);
+        swipeRefreshLayout.setRefreshing(false);
+        edtSearchItem.addTextChangedListener(null);
+
+        salesDetailListview.setAdapter(null);
+
+        if(dataList!=null){
+            dataList.clear();
+            dataList=null;
+        }
     }
 }

@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.widget.AbsListView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,6 +37,7 @@ public class ReportStockAmountActivity extends AppCompatActivity {
     private List<String> dataList = new ArrayList<>();
     private SwipeRefreshLayout swipeRefreshLayout;
     private EditText edtSearchItem;
+    private LinearLayout linearLayoutStockAmount;
     private ListView productsListView;
     private static String apiUrl;
     private static final String TAG = "ReportStockAmountActivity";
@@ -82,13 +85,7 @@ public class ReportStockAmountActivity extends AppCompatActivity {
     private void searchItemByCode(String query) {
         new searchProduct().execute(query);
     }
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-//        Intent intent = new Intent(this, ReportCardViewActivity.class);
-//        startActivity(intent);
-        this.finish();
-    }
+
     private void getSharedPreferences() {
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         String savedIpAddress = prefs.getString("ipAddress", "");
@@ -103,6 +100,7 @@ public class ReportStockAmountActivity extends AppCompatActivity {
         productsListView = findViewById(R.id.productsListView);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
         edtSearchItem = findViewById(R.id.edtSearchItem);
+        linearLayoutStockAmount = findViewById(R.id.linearLayoutStockAmount);
     }
     private class GetStockAmounts extends AsyncTask<Void, Void, String> {
         @Override
@@ -207,23 +205,49 @@ public class ReportStockAmountActivity extends AppCompatActivity {
         return results;
     }
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+//        Intent intent = new Intent(this, ReportCardViewActivity.class);
+//        startActivity(intent);
+        this.finish();
+    }
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (_getStockAmountsTask != null && !_getStockAmountsTask.isCancelled()) {
             _getStockAmountsTask.cancel(true);
         }
 
+        swipeRefreshLayout.setRefreshing(false);
+        edtSearchItem.addTextChangedListener(null);
+        edtSearchItem.setOnEditorActionListener(null);
+
+        productsListView.setAdapter(null);
+
+        linearLayoutStockAmount.removeAllViews();
+
+        dataList.clear();
+        dataList=null;
+        pleaseWait = null;
+        apiUrl = null;
+
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (_getStockAmountsTask != null && !_getStockAmountsTask.isCancelled()) {
+            _getStockAmountsTask.cancel(true);
+        }
+
+        if (pleaseWait != null && pleaseWait.isShowing()) {
+            pleaseWait.dismiss();
+        }
+
         if(dataList!=null)
             dataList.clear();
 
-        swipeRefreshLayout.setRefreshing(false);
         productsListView.setAdapter(null);
-        edtSearchItem.addTextChangedListener(null);
 
-        if(apiUrl!=null)
-            apiUrl=null;
-
-        if(token!=null)
-            token=null;
     }
 }

@@ -3,6 +3,8 @@ package com.example.ygn_store_management.Activities.ReportActivities.ReportCardV
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -17,6 +19,7 @@ public class ReportCardViewActivity extends AppCompatActivity {
     private CardView salesDetailByClientCardView;
     private CardView orderQueryCardView;
     private CardView purchasingDetailByClientCardView;
+    private LinearLayout linearLayoutAllReportsCardView;
     private String token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,7 @@ public class ReportCardViewActivity extends AppCompatActivity {
         salesDetailByClientCardView=findViewById(R.id.cardViewSalesDetailByClientDetail);
         orderQueryCardView=findViewById(R.id.cardViewOrderQuery);
         purchasingDetailByClientCardView=findViewById(R.id.cardViewPurchasingDetailByClientDetail);
+        linearLayoutAllReportsCardView=findViewById(R.id.linearLayoutAllReportsCardView);
     }
     private void events() {
         stockAmountCardView.setOnClickListener(new View.OnClickListener() {
@@ -77,11 +81,5 @@ public class ReportCardViewActivity extends AppCompatActivity {
 //        startActivity(intent);
         this.finish();
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
 
-        if (token!=null)
-            token=null;
-    }
 }

@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import com.example.ygn_store_management.Models.ReportViews.OrderInformationLines;
 import com.example.ygn_store_management.R;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class ReportGeneralSalesAndPurchasingAdapter extends ArrayAdapter<OrderInformationLines> {
@@ -32,7 +33,11 @@ public class ReportGeneralSalesAndPurchasingAdapter extends ArrayAdapter<OrderIn
         String itemName = getItem(position).ItemName;
         String amount = String.valueOf(getItem(position).Amount);
         String unitPrice = String.valueOf(getItem(position).UnitPrice);
-        String lineTotal = String.valueOf(getItem(position).LineTotal);
+        Double lineTotal = getItem(position).LineTotal;
+
+
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        String formattedPrice = decimalFormat.format(lineTotal);
 
 
         if (convertView==null){
@@ -49,7 +54,7 @@ public class ReportGeneralSalesAndPurchasingAdapter extends ArrayAdapter<OrderIn
         txtItemName.setText(itemName);
         txtAmount.setText(amount);
         txtUnitPrice.setText(unitPrice);
-        txtLineTotal.setText(lineTotal);
+        txtLineTotal.setText(formattedPrice);
 
         return convertView;
     }

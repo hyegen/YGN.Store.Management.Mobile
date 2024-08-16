@@ -15,7 +15,7 @@ public class OrderInformationLines {
     public String ItemName;
     public Integer Amount;
     public Double UnitPrice;
-    public Integer LineTotal;
+    public Double LineTotal;
 
     public void setClientName(String clientName) {
         this.ClientName = clientName;
@@ -56,7 +56,7 @@ public class OrderInformationLines {
     public void setUnitPrice(Double unitPrice) {
         this.UnitPrice = unitPrice;
     }
-    public void setLineTotal(Integer lineTotal) {
+    public void setLineTotal(Double lineTotal) {
         this.LineTotal = lineTotal;
     }
 
@@ -97,7 +97,7 @@ public class OrderInformationLines {
     public Double getUnitPrice() {
         return UnitPrice;
     }
-    public Integer getLineTotal() {
+    public Double getLineTotal() {
         return LineTotal;
     }
 

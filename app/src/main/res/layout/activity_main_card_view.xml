@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_marginTop="12dp"
+    android:id="@+id/linearLayoutMainCardView"
     >
 
     <androidx.cardview.widget.CardView

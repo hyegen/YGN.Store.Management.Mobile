@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -35,6 +36,7 @@ public class ReportPurchasingDetailByClientDetail extends AppCompatActivity {
     private SwipeRefreshLayout swipeRefreshLayout;
     private EditText edtSearchItem;
     private ListView purchasingDetailListview;
+    private RelativeLayout relativeLayoutReportPurchasingDetailByClientDetail;
     private static String apiUrl;
     private static final String TAG = "ReportPurchasingDetailByClientDetail";
     private GetPurchasingByClientDetail _getPurchasingByClientDetailTask;
@@ -82,6 +84,7 @@ public class ReportPurchasingDetailByClientDetail extends AppCompatActivity {
         purchasingDetailListview = findViewById(R.id.reportPurchasingByClientDetailListView);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout_report_purchasing_detail);
         edtSearchItem=findViewById(R.id.edtSearchClient);
+        relativeLayoutReportPurchasingDetailByClientDetail=findViewById(R.id.relativeLayoutReportPurchasingDetailByClientDetail);
     }
     private void getSharedPreferences() {
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
@@ -208,17 +211,34 @@ public class ReportPurchasingDetailByClientDetail extends AppCompatActivity {
             _getPurchasingByClientDetailTask.cancel(true);
         }
 
-        purchasingDetailListview.setAdapter(null);
         swipeRefreshLayout.setRefreshing(false);
         edtSearchItem.addTextChangedListener(null);
 
-        if (dataList!=null)
+        purchasingDetailListview.setAdapter(null);
+
+        relativeLayoutReportPurchasingDetailByClientDetail.removeAllViews();
+
+        if(dataList!=null){
             dataList.clear();
+            dataList=null;
+        }
 
-        if (apiUrl!=null)
-            apiUrl=null;
+        apiUrl=null;
+        token=null;
 
-        if (token!=null)
-            token=null;
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (_getPurchasingByClientDetailTask != null && !_getPurchasingByClientDetailTask.isCancelled()) {
+            _getPurchasingByClientDetailTask.cancel(true);
+        }
+
+        purchasingDetailListview.setAdapter(null);
+
+        if(dataList!=null){
+            dataList.clear();
+            dataList=null;
+        }
     }
 }
