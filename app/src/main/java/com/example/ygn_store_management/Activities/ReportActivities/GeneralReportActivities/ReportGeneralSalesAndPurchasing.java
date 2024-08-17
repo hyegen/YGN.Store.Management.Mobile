@@ -109,18 +109,20 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
                 }
             }
         });
-        edtSearchOrder.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                   // new GetOrderInformationByOrderFicheNumber().execute(edtSearchOrder.getText().toString());
-                    _getOrderInformationByOrderFicheNumberTask = new GetOrderInformationByOrderFicheNumber();
-                    _getOrderInformationByOrderFicheNumberTask.execute(edtSearchOrder.getText().toString());
-                    return true;
-                }
-                return false;
-            }
-        });
+
+//        edtSearchOrder.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                // 'event' null mı değil mi kontrol ediliyor
+//                if (actionId == EditorInfo.IME_ACTION_DONE || (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+//                    _getOrderInformationByOrderFicheNumberTask = new GetOrderInformationByOrderFicheNumber();
+//                    _getOrderInformationByOrderFicheNumberTask.execute(edtSearchOrder.getText().toString());
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+
         btnShowOrderNotePopUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
