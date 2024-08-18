@@ -207,16 +207,25 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
+                    android:paddingLeft="3dp"
                     android:paddingTop="3dp"
                     android:paddingRight="3dp"
                     android:paddingBottom="3dp">
 
-                    <ListView
-                        android:id="@+id/orderLineListView"
-                        android:layout_width="fill_parent"
+<!--                    <ListView-->
+<!--                        android:id="@+id/orderLineListView"-->
+<!--                        android:layout_width="fill_parent"-->
+<!--                        android:layout_height="220dp"-->
+<!--                        tools:listitem="@layout/adapter_report_general_sales_and_purchasing_orderline" />-->
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewOrderLine"
+                        android:layout_width="match_parent"
                         android:layout_height="220dp"
-                        tools:listitem="@layout/adapter_report_general_sales_and_purchasing_orderline" />
+                        android:padding="0dp"
+                        android:clipToPadding="false"
+                        />
 
                 </LinearLayout>
 
