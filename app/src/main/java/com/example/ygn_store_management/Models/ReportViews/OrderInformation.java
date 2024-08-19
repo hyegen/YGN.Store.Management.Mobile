@@ -14,8 +14,6 @@ public class OrderInformation {
     private String OrderNote;
     private List<ReportOrderInformationLines> OrderLines;
 
-    // Getters ve Setters
-
     public String getOrderFicheNumber() {
         return OrderFicheNumber;
     }

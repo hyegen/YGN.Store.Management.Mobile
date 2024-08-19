@@ -7,8 +7,6 @@
     tools:context=".Activities.ReportActivities.GeneralReportActivities.ReportStockAmountActivity"
     android:orientation="vertical">
 
-
-
         <LinearLayout
             android:id="@+id/linearLayoutStockAmount"
             android:layout_width="match_parent"
@@ -19,7 +17,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+
+                >
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -80,6 +80,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:gravity="center"
                         android:text="Stok Miktarı"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
@@ -89,12 +90,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true">
-                <ListView
-                    android:id="@+id/productsListView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:listitem="@layout/adapter_products">
-                </ListView>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewStockAmount"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp"
+                        android:padding="0dp"
+                        android:clipToPadding="false" />
+
                 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
             </LinearLayout>
 

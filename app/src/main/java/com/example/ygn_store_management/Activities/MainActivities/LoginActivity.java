@@ -22,8 +22,17 @@ import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.ygn_store_management.Activities.ReportActivities.GeneralReportActivities.ReportStockAmountActivity;
+import com.example.ygn_store_management.Adapters.ReportOrderLineInformationAdapter;
+import com.example.ygn_store_management.Interfaces.LoginService;
+import com.example.ygn_store_management.Interfaces.StockAmountInformationService;
+import com.example.ygn_store_management.Managers.ApiUtils;
 import com.example.ygn_store_management.Managers.NetworkUtil;
+import com.example.ygn_store_management.Models.LoginResponse;
+import com.example.ygn_store_management.Models.ReportViews.StockAmountInformation;
+import com.example.ygn_store_management.Models.User;
 import com.example.ygn_store_management.R;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,6 +41,13 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
     private Spinner usernameSpinner;
@@ -42,7 +58,6 @@ public class LoginActivity extends AppCompatActivity {
     private static String apiUrl;
     private ArrayList<String> users = new ArrayList<>();
     private static final String TAG = "LoginActivity";
-    protected ProgressDialog pleaseWait;
     private static final int DELAY_MILLIS = 10000;
     @SuppressLint("MissingInflatedId")
     @Override
@@ -55,6 +70,33 @@ public class LoginActivity extends AppCompatActivity {
              events();
              initialize();
          }
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        usernameSpinner.setAdapter(null);
+
+        loginButton.setOnClickListener(null);
+        settingButton.setOnClickListener(null);
+        infoButton.setOnClickListener(null);
+        edtPassword.setOnEditorActionListener(null);
+
+        if (apiUrl!=null)
+            apiUrl=null;
+
+        if (users!=null)
+        {
+            users.clear();
+            users=null;
+        }
+
+        this.finishAffinity();
     }
     private boolean checkNetwork(){
         if (!NetworkUtil.isNetworkAvailable(this)) {
@@ -71,40 +113,14 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
     private void initialize() {
-        new fetchUsers().execute();
+        GetAllUsers();
     }
     private void events() {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if  (edtPassword.getText().toString().isEmpty()){
-                    Toast.makeText(LoginActivity.this, "Şifre Giriniz.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(usernameSpinner.getCount()<=0){
-                    Toast.makeText(LoginActivity.this, "Kullanıcılar Yüklenemedi \nLütfen Bağlantınızı Kontrol Ediniz.", Toast.LENGTH_SHORT).show();
-                }else   {
-                    login();
-                }
-            }
-        });
-        edtPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                    if  (edtPassword.getText().toString().isEmpty()){
-                        Toast.makeText(LoginActivity.this, "Şifre Giriniz.", Toast.LENGTH_SHORT).show();
-                        return false;
-                    }
-
-                    if(usernameSpinner.getCount()<=0){
-                        Toast.makeText(LoginActivity.this, "Kullanıcılar Yüklenemedi \nLütfen Bağlantınızı Kontrol Ediniz.", Toast.LENGTH_SHORT).show();
-                    }else   {
-                        login();
-                        return true;
-                    }
-                }
-                return false;
+                if (validateLogin())
+                    LoginByRetrofit();
             }
         });
         settingButton.setOnClickListener(new View.OnClickListener() {
@@ -134,141 +150,85 @@ public class LoginActivity extends AppCompatActivity {
         String savedIpAddress = prefs.getString("ipAddress", "");
         apiUrl = "http://" + savedIpAddress;
     }
-    private void login() {
-        String username = usernameSpinner.getSelectedItem().toString();
-        String password = edtPassword.getText().toString();
-            new LoginTask(username, password).execute();
-    }
-    private class fetchUsers extends AsyncTask<Void, Void, String> {
-        @Override
-        protected String doInBackground(Void... voids) {
-            String apiRoute = "/api/getAllUsers";
-            try {
-                URL url = new URL(apiUrl + apiRoute);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String line;
-                StringBuilder response = new StringBuilder();
-                while ((line = reader.readLine()) != null) {
-                    response.append(line);
-                }
+    private void GetAllUsers(){
+        try {
+            Retrofit retrofit = ApiUtils.InitRequestWithoutToken(apiUrl);
+            LoginService apiService = retrofit.create(LoginService.class);
 
-                JSONArray jsonArray = new JSONArray(response.toString());
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    String data = jsonArray.getString(i);
-                    users.add(data);
-                }
-            } catch (Exception e) {
-                Log.e(TAG, "Hata: " + e.getMessage());
-            }
-            return users.toString();
-        }
+            Call<List<User>> call = apiService.GetAllUsers();
+            call.enqueue(new Callback<List<User>>() {
+                @Override
+                public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        List<String> usernames = new ArrayList<>();
+                        for (User user : response.body()) {
+                            usernames.add(user.getUserName());
+                        }
 
-        @SuppressLint("ResourceType")
-        @Override
-        protected void onPostExecute(String jsonData) {
-            if (pleaseWait != null) {
-                pleaseWait.dismiss();
-            }
-            try {
-                ArrayList<String> users = new ArrayList<>();
-                JSONArray jsonArray = new JSONArray(jsonData);
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    users.add(jsonObject.getString("UserName"));
-                }
-                usernameSpinner.setAdapter(new ArrayAdapter<String>(LoginActivity.this,
-                        android.R.layout.simple_spinner_dropdown_item, users));
-            } catch (JSONException e) {
-                Log.e(TAG, "Hata: " + e.getMessage());
-            }
-
-        }
-    }
-    private class LoginTask extends AsyncTask<Void, Void, String> {
-        private String username;
-        private String password;
-
-        public LoginTask(String username, String password) {
-            this.username = username;
-            this.password = password;
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            try {
-                String apiRoute = apiUrl + "/api/authenticate?userName=" + URLEncoder.encode(username, "UTF-8") + "&password=" + URLEncoder.encode(password, "UTF-8");
-
-                URL url = new URL(apiRoute);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setRequestProperty("Content-Type", "application/json");
-
-                int statusCode = urlConnection.getResponseCode();
-
-                if (statusCode == 200) {
-                    InputStream it = new BufferedInputStream(urlConnection.getInputStream());
-                    InputStreamReader read = new InputStreamReader(it);
-                    BufferedReader buff = new BufferedReader(read);
-                    StringBuilder dta = new StringBuilder();
-                    String chunks;
-                    while ((chunks = buff.readLine()) != null) {
-                        dta.append(chunks);
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(LoginActivity.this, android.R.layout.simple_spinner_dropdown_item, usernames);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        usernameSpinner.setAdapter(adapter);
                     }
-
-                    JSONObject jsonResponse = new JSONObject(dta.toString());
-                    String token = jsonResponse.getString("token");
-
-                    return token;
-                } else {
-                    return null;
+                    else{
+                        Toast.makeText(LoginActivity.this, "Kullanıcılar Yüklenirken Hata.", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
+                @Override
+                public void onFailure(Call<List<User>> call, Throwable t) {
+                    Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        } catch (Exception ex) {
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void LoginByRetrofit(){
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(apiUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        LoginService apiService = retrofit.create(LoginService.class);
+
+        Call<LoginResponse> call = apiService.Login(usernameSpinner.getSelectedItem().toString(),edtPassword.getText().toString());
+        call.enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String token = response.body().getToken();
+
+                    if (response.code()==200)
+                    {
+                        Intent intent=  new Intent(LoginActivity.this,MainCardViewActivity.class);
+                        intent.putExtra("TOKEN",token);
+                        startActivity(intent);
+                        Toast.makeText(LoginActivity.this, "Giriş Başarılı", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Toast.makeText(LoginActivity.this, "Giriş Başarısız.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else{
+                    Toast.makeText(LoginActivity.this, "Şifre Yanlış.", Toast.LENGTH_SHORT).show();
+                }
             }
-        }
-
-        @Override
-        protected void onPostExecute(String token) {
-            if (token != null) {
-                Intent intent = new Intent(LoginActivity.this, MainCardViewActivity.class);
-                intent.putExtra("TOKEN", token);
-                startActivity(intent);
-                Toast.makeText(LoginActivity.this, "Giriş Başarılı.", Toast.LENGTH_SHORT).show();
-                finish();
-            } else {
-                Toast.makeText(LoginActivity.this, "Giriş Başarısız.", Toast.LENGTH_SHORT).show();
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
+        });
+    }
+    private boolean validateLogin(){
+        if(edtPassword.getText().toString().isEmpty()){
+            Toast.makeText(this, "Şifre Giriniz.", Toast.LENGTH_SHORT).show();
+            return false;
         }
-    }
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finishAffinity();
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        usernameSpinner.setAdapter(null);
-
-        loginButton.setOnClickListener(null);
-        settingButton.setOnClickListener(null);
-        infoButton.setOnClickListener(null);
-        edtPassword.setOnEditorActionListener(null);
-
-        if (apiUrl!=null)
-            apiUrl=null;
-
-        if (users!=null)
-        {
-            users.clear();
-            users=null;
+        if(usernameSpinner.getCount()==0){
+            Toast.makeText(this, "Kullanıcılar Yüklenirken Hata.", Toast.LENGTH_SHORT).show();
+            return false;
         }
-
-        this.finishAffinity();
+        return true;
     }
-
 }

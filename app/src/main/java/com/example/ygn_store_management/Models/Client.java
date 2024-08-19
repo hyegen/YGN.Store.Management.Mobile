@@ -20,5 +20,4 @@ public class Client {
     public void setClientCodeAndNameAndSurname(String ClientCodeAndNameAndSurname) {
         this.ClientCodeAndNameAndSurname = ClientCodeAndNameAndSurname;
     }
-
 }

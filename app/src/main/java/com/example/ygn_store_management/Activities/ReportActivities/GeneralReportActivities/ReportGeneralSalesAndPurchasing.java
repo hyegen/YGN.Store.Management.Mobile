@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ygn_store_management.Adapters.ReportOrderLineInformationAdapter;
 import com.example.ygn_store_management.Interfaces.OrderLineInformationService;
+import com.example.ygn_store_management.Managers.ApiUtils;
 import com.example.ygn_store_management.Models.ReportViews.OrderInformation;
 import com.example.ygn_store_management.Models.ReportViews.ReportOrderInformationLines;
 import com.example.ygn_store_management.R;
@@ -197,29 +198,8 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
     }
     private void GetData(){
         try {
-            OkHttpClient client = new OkHttpClient.Builder()
-                    .addNetworkInterceptor(new Interceptor() {
-                        @Override
-                        public okhttp3.Response intercept(Chain chain) throws IOException {
-                            Request original = chain.request();
-                            Request.Builder requestBuilder = original.newBuilder()
-                                    .header("Authorization", "Bearer " + token)
-                                    .method(original.method(), original.body());
-
-                            Request request = requestBuilder.build();
-                            return chain.proceed(request);
-                        }
-                    })
-                    .build();
-
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(apiUrl)
-                    .client(client)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-
+            Retrofit retrofit = ApiUtils.InitRequestWithToken(apiUrl,token);
             OrderLineInformationService apiService = retrofit.create(OrderLineInformationService.class);
-
             Call<OrderInformation> call = apiService.GetOrderDetailInformation(token,edtSearchOrder.getText().toString());
             call.enqueue(new Callback<OrderInformation>() {
                 @Override
