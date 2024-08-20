@@ -45,4 +45,7 @@ public class SalesDetailByClientDetail {
         return Date_;
     }
 
+    public Double getTotalPrice(){
+        return TotalPrice;
+    }
 }

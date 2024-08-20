@@ -2,12 +2,13 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".Activities.ReportActivities.GeneralReportActivities.ReportGeneralSalesAndPurchasing"
     android:orientation="vertical"
     android:id="@+id/relativeLayoutReportGeneralSalesAndPurchasing"
@@ -38,10 +39,10 @@
             </androidx.appcompat.widget.Toolbar>
 
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -65,144 +66,175 @@
                     android:backgroundTint="#03A9F4"
                     android:text="Ara" />
             </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/clientInformationCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="4dp"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
                     <LinearLayout
-                        android:id="@+id/orderLineLinearLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:paddingLeft="10dp"
+                        android:paddingTop="3dp"
+                        android:paddingRight="3dp"
+                        android:paddingBottom="3dp">
+
+                        <TextView
+                            android:id="@+id/txtOrderFicheNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/orderfiche_number"
+                            android:textColor="@color/black"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtDate_"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Tarih"
+                            android:textColor="@color/black"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="3dp"
+                        android:paddingRight="3dp"
+                        android:paddingBottom="3dp">
+
+                        <TextView
+                            android:id="@+id/txtOrderFicheNumberDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:id="@+id/txtDateDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="3dp"
+                        android:paddingRight="3dp"
+                        android:paddingBottom="3dp">
+
+                        <TextView
+                            android:id="@+id/txtClient"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Cari Açıklaması"
+                            android:textColor="@color/black"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="3dp"
+                        android:paddingRight="3dp"
+                        android:paddingBottom="3dp">
+
+                        <TextView
+                            android:id="@+id/txtClientDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+
+
+        <androidx.cardview.widget.CardView
+
+            android:id="@+id/orderLineCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="4dp"
+            >
+
             <LinearLayout
+                android:id="@+id/orderLineLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="3dp"
-                android:paddingRight="3dp"
-                android:paddingBottom="3dp">
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/txtOrderFicheNumber"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/orderfiche_number"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
+                    android:paddingLeft="10dp"
+                    android:paddingTop="3dp"
+                    android:paddingRight="3dp"
+                    android:paddingBottom="3dp"
+                    android:background="@color/gray">
 
-                <TextView
-                    android:id="@+id/txtDate_"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Tarih"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/txtItemCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Ürün Açıklaması"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="3dp"
-                android:paddingRight="3dp"
-                android:paddingBottom="3dp">
+                    <TextView
+                        android:id="@+id/txtAmount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Miktar"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="10dp"
+                        />
 
-                <TextView
-                    android:id="@+id/txtOrderFicheNumberDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/black" />
+                    <TextView
+                        android:id="@+id/txtUnitPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Birim Fiyat"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/txtDateDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/black" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="3dp"
-                android:paddingRight="3dp"
-                android:paddingBottom="3dp">
-
-                <TextView
-                    android:id="@+id/txtClient"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Cari Açıklaması"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="3dp"
-                android:paddingRight="3dp"
-                android:paddingBottom="3dp">
-
-                <TextView
-                    android:id="@+id/txtClientDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/black" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="3dp"
-                android:paddingRight="3dp"
-                android:paddingBottom="3dp"
-                android:background="@color/gray">
-
-                <TextView
-                    android:id="@+id/txtItemCode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Ürün Açıklaması"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:id="@+id/txtAmount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Miktar"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="10dp"
-                    />
-
-                <TextView
-                    android:id="@+id/txtUnitPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Birim Fiyat"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txtLineTotal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Satır Toplamı"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/txtLineTotal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Satır Toplamı"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
 
 
-            </LinearLayout>
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -211,13 +243,6 @@
                     android:paddingTop="3dp"
                     android:paddingRight="3dp"
                     android:paddingBottom="3dp">
-
-<!--                    <ListView-->
-<!--                        android:id="@+id/orderLineListView"-->
-<!--                        android:layout_width="fill_parent"-->
-<!--                        android:layout_height="220dp"-->
-<!--                        tools:listitem="@layout/adapter_report_general_sales_and_purchasing_orderline" />-->
-
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerViewOrderLine"
@@ -228,91 +253,91 @@
 
                 </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="3dp"
-                android:paddingRight="3dp"
-                android:paddingBottom="3dp">
-
-
-                <TextView
-                    android:id="@+id/txtTotalPrice"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Toplam Fiyat"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="3dp"
-                android:paddingRight="3dp"
-                android:paddingBottom="3dp">
+                    android:paddingLeft="10dp"
+                    android:paddingTop="3dp"
+                    android:paddingRight="3dp"
+                    android:paddingBottom="3dp">
 
 
-                <TextView
-                    android:id="@+id/txtTotalPriceDescription"
+                    <TextView
+                        android:id="@+id/txtTotalPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Toplam Fiyat"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/black" />
-            </LinearLayout>
+                    android:paddingLeft="10dp"
+                    android:paddingTop="3dp"
+                    android:paddingRight="3dp"
+                    android:paddingBottom="3dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="3dp"
-                android:paddingRight="3dp"
-                android:paddingBottom="3dp">
 
-                <TextView
-                    android:id="@+id/txtHasTax"
+                    <TextView
+                        android:id="@+id/txtTotalPriceDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="KDV Açıklaması"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
+                    android:paddingLeft="10dp"
+                    android:paddingTop="3dp"
+                    android:paddingRight="3dp"
+                    android:paddingBottom="3dp">
 
-                <TextView
-                    android:id="@+id/txtTaxPercentage"
+                    <TextView
+                        android:id="@+id/txtHasTax"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="KDV Açıklaması"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtTaxPercentage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="KDV Oranı"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="KDV Oranı"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    android:paddingLeft="10dp"
+                    android:paddingTop="3dp"
+                    android:paddingRight="3dp"
+                    android:paddingBottom="3dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="3dp"
-                android:paddingRight="3dp"
-                android:paddingBottom="3dp">
+                    <TextView
+                        android:id="@+id/txtHasTaxDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/black" />
 
-                <TextView
-                    android:id="@+id/txtHasTaxDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/black" />
-
-                <TextView
-                    android:id="@+id/txtTaxPercentageDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/black" />
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/txtTaxPercentageDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/black" />
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/btnShowOrderNotePopUp"
@@ -324,9 +349,11 @@
                     android:visibility="gone"
                     />
 
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
         </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
 </RelativeLayout>
 </ScrollView>

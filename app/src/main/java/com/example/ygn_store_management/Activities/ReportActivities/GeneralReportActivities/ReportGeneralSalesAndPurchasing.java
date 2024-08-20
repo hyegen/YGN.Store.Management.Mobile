@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -53,7 +54,8 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
     private TextView txtHasTaxDescription;
     private TextView txtTaxPercentageDescription;
     private TextView txtDateDescription;
-    private LinearLayout orderLineLinearLayout;
+    private CardView orderLineCardView;
+    private CardView clientInformationCardView;
     private RelativeLayout relativeLayoutReportGeneralSalesAndPurchasing;
     protected ProgressDialog pleaseWait;
     public String _currentOrderNote;
@@ -87,7 +89,8 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
 
         relativeLayoutReportGeneralSalesAndPurchasing.removeAllViews();
 
-        orderLineLinearLayout.removeAllViews();
+        orderLineCardView.removeAllViews();
+        clientInformationCardView.removeAllViews();
         btnShowOrderNotePopUp.setOnClickListener(null);
 
         apiUrl=null;
@@ -130,7 +133,8 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
         txtHasTaxDescription=findViewById(R.id.txtHasTaxDescription);
         txtTaxPercentageDescription=findViewById(R.id.txtTaxPercentageDescription);
         txtDateDescription=findViewById(R.id.txtDateDescription);
-        orderLineLinearLayout=findViewById(R.id.orderLineLinearLayout);
+        orderLineCardView=findViewById(R.id.orderLineCardView);
+        clientInformationCardView=findViewById(R.id.clientInformationCardView);
         btnShowOrderNotePopUp=findViewById(R.id.btnShowOrderNotePopUp);
         relativeLayoutReportGeneralSalesAndPurchasing=findViewById(R.id.relativeLayoutReportGeneralSalesAndPurchasing);
         recyclerViewOrderLine = findViewById(R.id.recyclerViewOrderLine);
@@ -188,7 +192,8 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
         setVisibleLinearLayout();
     }
     private void setVisibleLinearLayout(){
-        orderLineLinearLayout.setVisibility(View.GONE);
+        orderLineCardView.setVisibility(View.GONE);
+        clientInformationCardView.setVisibility(View.GONE);
     }
     private void setMembers(){
         recyclerViewOrderLine.setLayoutManager(new LinearLayoutManager(this));
@@ -239,7 +244,8 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
                                 orderInformationLinesList.addAll(orderLines);
                                 orderLineInformationAdapter.notifyDataSetChanged();
 
-                                orderLineLinearLayout.setVisibility(View.VISIBLE);
+                                orderLineCardView.setVisibility(View.VISIBLE);
+                                clientInformationCardView.setVisibility(View.VISIBLE);
                             }
                     }
                     else {

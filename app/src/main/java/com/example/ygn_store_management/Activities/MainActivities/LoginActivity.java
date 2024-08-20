@@ -1,46 +1,25 @@
 package com.example.ygn_store_management.Activities.MainActivities;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-import com.example.ygn_store_management.Activities.ReportActivities.GeneralReportActivities.ReportStockAmountActivity;
-import com.example.ygn_store_management.Adapters.ReportOrderLineInformationAdapter;
 import com.example.ygn_store_management.Interfaces.LoginService;
-import com.example.ygn_store_management.Interfaces.StockAmountInformationService;
 import com.example.ygn_store_management.Managers.ApiUtils;
 import com.example.ygn_store_management.Managers.NetworkUtil;
+import com.example.ygn_store_management.MenuFragments.FragmentReports;
 import com.example.ygn_store_management.Models.LoginResponse;
-import com.example.ygn_store_management.Models.ReportViews.StockAmountInformation;
 import com.example.ygn_store_management.Models.User;
 import com.example.ygn_store_management.R;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
 
 import retrofit2.Call;
@@ -59,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     private ArrayList<String> users = new ArrayList<>();
     private static final String TAG = "LoginActivity";
     private static final int DELAY_MILLIS = 10000;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,6 +184,7 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent=  new Intent(LoginActivity.this,MainCardViewActivity.class);
                         intent.putExtra("TOKEN",token);
                         startActivity(intent);
+
                         Toast.makeText(LoginActivity.this, "Giriş Başarılı", Toast.LENGTH_SHORT).show();
                     }
                     else{

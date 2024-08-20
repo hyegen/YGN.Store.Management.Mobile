@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.ReportActivities.SalesReports.ReportSalesDetailByClientDetail"
-    android:orientation="vertical">
+    android:orientation="vertical"
+
+    >
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -25,26 +27,28 @@
             android:textColor="@color/black" />
     </androidx.appcompat.widget.Toolbar>
 
-    <EditText
-        android:id="@+id/edtSearchClient"
+    <SearchView
+        android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Filtreleyiniz"
-        android:singleLine="true"
-        android:minHeight="48dp"
-        android:layout_below="@id/toolbar"/>
+        android:queryHint="Ara"
+        android:layout_below="@id/toolbar"
+        android:clickable="true"
+        android:layoutDirection="rtl"
+        />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout_report_sales_detail"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/edtSearchClient">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/searchView">
 
-        <ListView
-            android:id="@+id/reportSalesByClientDetilListView"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewSalesReport"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:listitem="@layout/adapter_sales_by_client_detail"/>
+            android:layout_height="220dp"
+            android:padding="0dp"
+            android:clipToPadding="false" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

@@ -9,64 +9,82 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ygn_store_management.Models.ReportViews.SalesDetailByClientDetail;
+import com.example.ygn_store_management.Models.ReportViews.StockAmountInformation;
 import com.example.ygn_store_management.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ReportSalesDetailByClientDetailAdapter extends ArrayAdapter<SalesDetailByClientDetail> {
-    private Context context;
-    private int resource;
-
-    public ReportSalesDetailByClientDetailAdapter(@NonNull Context context, int pResource, @NonNull ArrayList<SalesDetailByClientDetail> pObjects) {
-        super(context, pResource, pObjects);
-        this.context = context;
-        this.resource=pResource;
+public class ReportSalesDetailByClientDetailAdapter extends RecyclerView.Adapter<ReportSalesDetailByClientDetailAdapter.ViewHolder> {
+    private List<SalesDetailByClientDetail> salesDetailByClientDetailList;
+    private List<SalesDetailByClientDetail> filteredList;
+    public ReportSalesDetailByClientDetailAdapter(List<SalesDetailByClientDetail> salesDetailByClientDetailList) {
+        this.salesDetailByClientDetailList = salesDetailByClientDetailList;
+        this.filteredList = new ArrayList<>(salesDetailByClientDetailList);
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
-        String orderFicheNumber = getItem(position).OrderFicheNumber;
-        String clientName = getItem(position).ClientName;
-        String clientSurname= getItem(position).ClientSurname;
-        String firmDescription= getItem(position).FirmDescription;
-        String date= getItem(position).Date_;
-        String totalPrice= String.valueOf(getItem(position).TotalPrice);
-
-
-        if (convertView==null){
-            convertView= LayoutInflater.from(getContext()).inflate(R.layout.adapter_products,parent,false);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_sales_by_client_detail, parent, false);
+        return new ViewHolder(view);
+    }
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        SalesDetailByClientDetail salesDetailByClientDetail = filteredList.get(position);
+        holder.orderFicheTextView.setText(salesDetailByClientDetail.getOrderFicheNumber());
+        holder.clientNameTextView.setText(salesDetailByClientDetail.getClientName());
+        holder.clientSurNameTextView.setText(salesDetailByClientDetail.getClientSurname());
+        holder.firmDescriptionTextView.setText(salesDetailByClientDetail.getFirmDescription());
+        holder.dateTextView.setText(salesDetailByClientDetail.getDate_());
+        holder.totalPriceTextView.setText(String.valueOf(salesDetailByClientDetail.getTotalPrice()));
+    }
+    @Override
+    public int getItemCount() {
+        return filteredList.size();
+    }
+    public void updateData(List<SalesDetailByClientDetail> newData) {
+        salesDetailByClientDetailList.clear();
+        salesDetailByClientDetailList.addAll(newData);
+        filter("");
+    }
+    public void filter(String text) {
+        filteredList.clear();
+        if (text.isEmpty()) {
+            filteredList.addAll(salesDetailByClientDetailList);
+        } else {
+            text = text.toLowerCase();
+            for (SalesDetailByClientDetail item : salesDetailByClientDetailList) {
+                if (item.getClientName().toLowerCase().contains(text) ||
+                        item.getClientSurname().toLowerCase().contains(text)||
+                        item.getFirmDescription().toLowerCase().contains(text)||
+                        item.getOrderFicheNumber().toLowerCase().contains(text)) {
+                    filteredList.add(item);
+                }
+            }
         }
-        LayoutInflater inflater = LayoutInflater.from(context);
-        convertView = inflater.inflate(resource,parent,false);
+        notifyDataSetChanged();
+    }
 
-        TextView txtOrderFicheNumber = convertView.findViewById(R.id.txtOrderFicheNumber);
-        TextView txtClientName = convertView.findViewById(R.id.txtClientName);
-        TextView txtClientSurname = convertView.findViewById(R.id.txtClientSurname);
-        TextView txtFirmDescription = convertView.findViewById(R.id.txtFirmDescription);
-        TextView txtDate = convertView.findViewById(R.id.txtDate_);
-        TextView txtTotalPrice = convertView.findViewById(R.id.txtTotalPriceSales);
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView orderFicheTextView;
+        TextView clientNameTextView;
+        TextView clientSurNameTextView;
+        TextView firmDescriptionTextView;
+        TextView dateTextView;
+        TextView totalPriceTextView;
 
-        txtOrderFicheNumber.setText(orderFicheNumber);
-        txtClientName.setText(clientName);
-        txtClientSurname.setText(clientSurname);
-        txtDate.setText(date);
-        txtTotalPrice.setText(totalPrice);
-
-        if (firmDescription == "null" || firmDescription.isEmpty())
-            txtFirmDescription.setText("");
-        else
-            txtFirmDescription.setText(firmDescription);
-
-
-        if (clientSurname=="null" || clientSurname.isEmpty())
-            txtClientSurname.setText("");
-        else
-            txtClientSurname.setText(clientSurname);
-
-        return convertView;
+        public ViewHolder(@NonNull View stockAmountInformationView) {
+            super(stockAmountInformationView);
+            orderFicheTextView = stockAmountInformationView.findViewById(R.id.txtOrderFicheNumber);
+            clientNameTextView = stockAmountInformationView.findViewById(R.id.txtClientName);
+            clientSurNameTextView = stockAmountInformationView.findViewById(R.id.txtClientSurname);
+            firmDescriptionTextView = stockAmountInformationView.findViewById(R.id.txtFirmDescription);
+            dateTextView = stockAmountInformationView.findViewById(R.id.txtDate_);
+            totalPriceTextView = stockAmountInformationView.findViewById(R.id.txtTotalPriceSales);
+        }
     }
 }
