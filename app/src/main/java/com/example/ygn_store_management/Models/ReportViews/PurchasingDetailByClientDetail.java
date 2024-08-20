@@ -43,4 +43,7 @@ public class PurchasingDetailByClientDetail {
     public String getDate_() {
         return Date_;
     }
+    public Double getTotalPrice(){
+        return TotalPrice;
+    }
 }

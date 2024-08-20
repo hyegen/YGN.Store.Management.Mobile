@@ -1,15 +1,8 @@
 package com.example.ygn_store_management.Activities.ReportActivities.SalesReports;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -18,24 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.ygn_store_management.Activities.ReportActivities.GeneralReportActivities.ReportStockAmountActivity;
 import com.example.ygn_store_management.Adapters.ReportSalesDetailByClientDetailAdapter;
-import com.example.ygn_store_management.Adapters.ReportStockAmountAdapter;
 import com.example.ygn_store_management.Interfaces.ReportSalesDetailByClientDetailService;
-import com.example.ygn_store_management.Interfaces.StockAmountInformationService;
 import com.example.ygn_store_management.Managers.ApiUtils;
 import com.example.ygn_store_management.Models.ReportViews.SalesDetailByClientDetail;
-import com.example.ygn_store_management.Models.ReportViews.StockAmountInformation;
 import com.example.ygn_store_management.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +28,6 @@ import retrofit2.Retrofit;
 public class ReportSalesDetailByClientDetail extends AppCompatActivity {
     private List<String> dataList = new ArrayList<>();
     private SwipeRefreshLayout swipeRefreshLayout;
-    private ListView salesDetailListview;
     private static String apiUrl;
     private static final String TAG = "ReportSalesByClientDetailActivity";
     private String token;
@@ -94,11 +74,9 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
         GetData();
     }
     private void findViews() {
-        salesDetailListview = findViewById(R.id.reportSalesByClientDetilListView);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout_report_sales_detail);
         recyclerViewSalesDetailByClientDetail = findViewById(R.id.recyclerViewSalesReport);
-        searchView = findViewById(R.id.searchView);
-
+        searchView = findViewById(R.id.searchViewSales);
     }
     private void setMembers(){
         recyclerViewSalesDetailByClientDetail.setLayoutManager(new LinearLayoutManager(this));

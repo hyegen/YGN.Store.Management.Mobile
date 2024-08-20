@@ -2,18 +2,10 @@ package com.example.ygn_store_management.Activities.MainActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ReportFragment;
 import androidx.viewpager.widget.ViewPager;
-
-import com.example.ygn_store_management.Activities.ReportActivities.GeneralReportActivities.ReportStockAmountActivity;
 import com.example.ygn_store_management.Adapters.ViewPagerAdapter;
-import com.example.ygn_store_management.MenuFragments.FragmentReports;
 import com.example.ygn_store_management.R;
 import com.google.android.material.tabs.TabLayout;
 

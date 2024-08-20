@@ -1,61 +1,85 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:paddingTop="3dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="3dp"
-    android:paddingBottom="3dp">
+>
 
-    <LinearLayout
-        android:layout_width="0dp"
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:layout_margin="3dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="4dp"
+        >
 
-        <TextView
-            android:id="@+id/txtOrderFicheNumber"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Order Fiche Number" />
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingTop="1dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="1dp"
+                android:paddingBottom="1dp"
+                >
 
-        <TextView
-            android:id="@+id/txtClientName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Client Name" />
-        <TextView
-            android:id="@+id/txtClientSurname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Client Surname" />
+                <TextView
+                    android:id="@+id/txtOrderFicheNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Order Fiche Number"
+                    android:textStyle="bold"/>
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/txtClientName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Client Name" />
+                <TextView
+                    android:id="@+id/txtClientSurname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Client Surname" />
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/txtFirmDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Firm Description" />
-        <TextView
-            android:id="@+id/txtDate_"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Date_" />
-        <TextView
-            android:id="@+id/txtTotalPricePurchasing"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Total Price"
-            android:textStyle="bold"
-            />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingTop="1dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="1dp"
+                android:paddingBottom="1dp"
+                >
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/txtFirmDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Firm Description" />
+                <TextView
+                    android:id="@+id/txtDate_"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Date_" />
+                <TextView
+                    android:id="@+id/txtTotalPricePurchasing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Total Price"
+                    android:textStyle="bold"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
 
 </LinearLayout>

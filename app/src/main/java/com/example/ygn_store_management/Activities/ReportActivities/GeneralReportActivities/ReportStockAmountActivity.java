@@ -20,18 +20,14 @@ import com.example.ygn_store_management.Models.ReportViews.StockAmountInformatio
 import com.example.ygn_store_management.R;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 @SuppressWarnings("deprecation")
 public class ReportStockAmountActivity extends AppCompatActivity {

@@ -58,17 +58,14 @@ public class ReportSalesDetailByClientDetailAdapter extends RecyclerView.Adapter
         } else {
             text = text.toLowerCase();
             for (SalesDetailByClientDetail item : salesDetailByClientDetailList) {
-                if (item.getClientName().toLowerCase().contains(text) ||
-                        item.getClientSurname().toLowerCase().contains(text)||
-                        item.getFirmDescription().toLowerCase().contains(text)||
-                        item.getOrderFicheNumber().toLowerCase().contains(text)) {
-                    filteredList.add(item);
-                }
+                    if (item.getClientName().toLowerCase().contains(text) ||
+                            item.getOrderFicheNumber().toLowerCase().contains(text)) {
+                        filteredList.add(item);
+                    }
             }
         }
         notifyDataSetChanged();
     }
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView orderFicheTextView;
         TextView clientNameTextView;
@@ -77,14 +74,14 @@ public class ReportSalesDetailByClientDetailAdapter extends RecyclerView.Adapter
         TextView dateTextView;
         TextView totalPriceTextView;
 
-        public ViewHolder(@NonNull View stockAmountInformationView) {
-            super(stockAmountInformationView);
-            orderFicheTextView = stockAmountInformationView.findViewById(R.id.txtOrderFicheNumber);
-            clientNameTextView = stockAmountInformationView.findViewById(R.id.txtClientName);
-            clientSurNameTextView = stockAmountInformationView.findViewById(R.id.txtClientSurname);
-            firmDescriptionTextView = stockAmountInformationView.findViewById(R.id.txtFirmDescription);
-            dateTextView = stockAmountInformationView.findViewById(R.id.txtDate_);
-            totalPriceTextView = stockAmountInformationView.findViewById(R.id.txtTotalPriceSales);
+        public ViewHolder(@NonNull View salesReportInformation) {
+            super(salesReportInformation);
+            orderFicheTextView = salesReportInformation.findViewById(R.id.txtOrderFicheNumber);
+            clientNameTextView = salesReportInformation.findViewById(R.id.txtClientName);
+            clientSurNameTextView = salesReportInformation.findViewById(R.id.txtClientSurname);
+            firmDescriptionTextView = salesReportInformation.findViewById(R.id.txtFirmDescription);
+            dateTextView = salesReportInformation.findViewById(R.id.txtDate_);
+            totalPriceTextView = salesReportInformation.findViewById(R.id.txtTotalPriceSales);
         }
     }
 }
