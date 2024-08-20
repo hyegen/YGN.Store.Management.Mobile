@@ -9,65 +9,80 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ygn_store_management.Models.ReportViews.PurchasingDetailByClientDetail;
 import com.example.ygn_store_management.Models.ReportViews.SalesDetailByClientDetail;
 import com.example.ygn_store_management.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ReportPurchasingDetailByClientDetailAdapter extends ArrayAdapter<PurchasingDetailByClientDetail> {
-    private Context context;
-    private int resource;
-
-    public ReportPurchasingDetailByClientDetailAdapter(@NonNull Context context, int pResource, @NonNull ArrayList<PurchasingDetailByClientDetail> pObjects) {
-        super(context, pResource, pObjects);
-        this.context = context;
-        this.resource=pResource;
+public class ReportPurchasingDetailByClientDetailAdapter extends RecyclerView.Adapter<ReportPurchasingDetailByClientDetailAdapter.ViewHolder> {
+    private List<PurchasingDetailByClientDetail> purchasingDetailByClientDetailsList;
+    private List<PurchasingDetailByClientDetail> filteredList;
+    public ReportPurchasingDetailByClientDetailAdapter(List<PurchasingDetailByClientDetail> purchasingDetailByClientDetailsList) {
+        this.purchasingDetailByClientDetailsList = purchasingDetailByClientDetailsList;
+        this.filteredList = new ArrayList<>(purchasingDetailByClientDetailsList);
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
-        String orderFicheNumber = getItem(position).OrderFicheNumber;
-        String clientName = getItem(position).ClientName;
-        String clientSurname= getItem(position).ClientSurname;
-        String firmDescription= getItem(position).FirmDescription;
-        String date= getItem(position).Date_;
-        String totalPrice= String.valueOf(getItem(position).TotalPrice);
-
-
-        if (convertView==null){
-            convertView= LayoutInflater.from(getContext()).inflate(R.layout.adapter_purchasing_by_client_detail,parent,false);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_purchasing_by_client_detail, parent, false);
+        return new ViewHolder(view);
+    }
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        PurchasingDetailByClientDetail purchasingDetailByClientDetail = filteredList.get(position);
+        holder.orderFicheTextView.setText(purchasingDetailByClientDetail.getOrderFicheNumber());
+        holder.clientNameTextView.setText(purchasingDetailByClientDetail.getClientName());
+        holder.clientSurNameTextView.setText(purchasingDetailByClientDetail.getClientSurname());
+        holder.firmDescriptionTextView.setText(purchasingDetailByClientDetail.getFirmDescription());
+        holder.dateTextView.setText(purchasingDetailByClientDetail.getDate_());
+        holder.totalPriceTextView.setText(String.valueOf(purchasingDetailByClientDetail.getTotalPrice()));
+    }
+    @Override
+    public int getItemCount() {
+        return filteredList.size();
+    }
+    public void updateData(List<PurchasingDetailByClientDetail> newData) {
+        purchasingDetailByClientDetailsList.clear();
+        purchasingDetailByClientDetailsList.addAll(newData);
+        filter("");
+    }
+    public void filter(String text) {
+        filteredList.clear();
+        if (text.isEmpty()) {
+            filteredList.addAll(purchasingDetailByClientDetailsList);
+        } else {
+            text = text.toLowerCase();
+            for (PurchasingDetailByClientDetail item : purchasingDetailByClientDetailsList) {
+                    if (item.getClientName().toLowerCase().contains(text) ||
+                            item.getOrderFicheNumber().toLowerCase().contains(text)) {
+                        filteredList.add(item);
+                    }
+            }
         }
-        LayoutInflater inflater = LayoutInflater.from(context);
-        convertView = inflater.inflate(resource,parent,false);
+        notifyDataSetChanged();
+    }
 
-        TextView txtOrderFicheNumber = convertView.findViewById(R.id.txtOrderFicheNumber);
-        TextView txtClientName = convertView.findViewById(R.id.txtClientName);
-        TextView txtClientSurname = convertView.findViewById(R.id.txtClientSurname);
-        TextView txtFirmDescription = convertView.findViewById(R.id.txtFirmDescription);
-        TextView txtDate = convertView.findViewById(R.id.txtDate_);
-        TextView txtTotalPrice = convertView.findViewById(R.id.txtTotalPricePurchasing);
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView orderFicheTextView;
+        TextView clientNameTextView;
+        TextView clientSurNameTextView;
+        TextView firmDescriptionTextView;
+        TextView dateTextView;
+        TextView totalPriceTextView;
 
-        txtOrderFicheNumber.setText(orderFicheNumber);
-        txtClientName.setText(clientName);
-        txtClientSurname.setText(clientSurname);
-        txtDate.setText(date);
-        txtTotalPrice.setText(totalPrice);
-
-        if (firmDescription == "null" || firmDescription.isEmpty())
-            txtFirmDescription.setText("");
-        else
-            txtFirmDescription.setText(firmDescription);
-
-
-        if (clientSurname=="null" || clientSurname.isEmpty())
-            txtClientSurname.setText("");
-        else
-            txtClientSurname.setText(clientSurname);
-
-        return convertView;
+        public ViewHolder(@NonNull View purchasingReportView) {
+            super(purchasingReportView);
+            orderFicheTextView = purchasingReportView.findViewById(R.id.txtOrderFicheNumber);
+            clientNameTextView = purchasingReportView.findViewById(R.id.txtClientName);
+            clientSurNameTextView = purchasingReportView.findViewById(R.id.txtClientSurname);
+            firmDescriptionTextView = purchasingReportView.findViewById(R.id.txtFirmDescription);
+            dateTextView = purchasingReportView.findViewById(R.id.txtDate_);
+            totalPriceTextView = purchasingReportView.findViewById(R.id.txtTotalPricePurchasing);
+        }
     }
 }

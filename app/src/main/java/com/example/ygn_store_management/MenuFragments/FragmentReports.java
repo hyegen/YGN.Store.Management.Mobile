@@ -1,9 +1,8 @@
 
 package com.example.ygn_store_management.MenuFragments;
-/*
+
 import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
@@ -13,58 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.ygn_store_management.Activities.MainActivities.MainCardViewActivity;
-import com.example.ygn_store_management.Activities.ReportActivities.GeneralReportActivities.ReportStockAmountActivity;
-import com.example.ygn_store_management.R;
-
-
-public class FragmentReports extends Fragment {
-    private String token;
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-    private void GetExtras(){
-
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_reports, container, false);
-
-        // CardView'i bul
-        CardView cardViewStockAmount = view.findViewById(R.id.cardViewStockAmount);
-
-        cardViewStockAmount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(, ReportStockAmountActivity.class);
-                intent.putExtra("TOKEN",token);
-                startActivity(intent);
-            }
-        });
-
-        return view;
-        //return inflater.inflate(R.layout.fragment_reports, container, false);
-    }
-}
-*/
-import android.content.Intent;
-import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.example.ygn_store_management.Activities.MainActivities.LoginActivity;
 import com.example.ygn_store_management.Activities.MainActivities.MainCardViewActivity;
 import com.example.ygn_store_management.Activities.ReportActivities.GeneralReportActivities.ReportGeneralSalesAndPurchasing;
 import com.example.ygn_store_management.Activities.ReportActivities.GeneralReportActivities.ReportStockAmountActivity;

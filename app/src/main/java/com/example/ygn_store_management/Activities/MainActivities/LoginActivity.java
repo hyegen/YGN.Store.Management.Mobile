@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -129,6 +130,9 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         String savedIpAddress = prefs.getString("ipAddress", "");
         apiUrl = "http://" + savedIpAddress;
+        if(savedIpAddress.isEmpty() || savedIpAddress==null){
+            Toast.makeText(this, "Ayarlar Sayfasına Url Giriniz.", Toast.LENGTH_SHORT).show();
+        }
     }
     private void GetAllUsers(){
         try {
@@ -155,12 +159,12 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 @Override
                 public void onFailure(Call<List<User>> call, Throwable t) {
-                    Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("HATA",t.getMessage());
                 }
             });
 
         } catch (Exception ex) {
-            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+           Log.e("HATA",ex.getMessage());
         }
     }
     private void LoginByRetrofit(){
@@ -197,7 +201,7 @@ public class LoginActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("HATA",t.getMessage());
             }
         });
     }

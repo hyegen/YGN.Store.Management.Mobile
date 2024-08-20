@@ -28,7 +28,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <SearchView
-        android:id="@+id/searchView"
+        android:id="@+id/searchViewSales"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:queryHint="Ara"
@@ -41,7 +41,7 @@
         android:id="@+id/swipe_refresh_layout_report_sales_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/searchView">
+        android:layout_below="@id/searchViewSales">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewSalesReport"
