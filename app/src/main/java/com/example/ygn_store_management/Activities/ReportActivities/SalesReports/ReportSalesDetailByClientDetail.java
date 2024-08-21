@@ -51,12 +51,12 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
         token = intent.getStringExtra("TOKEN");
     }
     private void events() {
-/*        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
+                GetData();
             }
-        });*/
+        });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
