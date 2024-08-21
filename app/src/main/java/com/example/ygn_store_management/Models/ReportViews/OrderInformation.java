@@ -12,6 +12,7 @@ public class OrderInformation {
     private String HasTax;
     private double TaxPercentage;
     private String OrderNote;
+    private String TransactionDescription;
     private List<ReportOrderInformationLines> OrderLines;
 
     public String getOrderFicheNumber() {
@@ -92,5 +93,9 @@ public class OrderInformation {
 
     public void setOrderLines(List<ReportOrderInformationLines> orderLines) {
         OrderLines = orderLines;
+    }
+
+    public String getTransactionDescription(){
+        return TransactionDescription;
     }
 }

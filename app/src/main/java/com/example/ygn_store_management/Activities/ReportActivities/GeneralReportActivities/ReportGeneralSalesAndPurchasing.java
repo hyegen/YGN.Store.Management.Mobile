@@ -48,6 +48,7 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
     private TextView txtTotalPriceDescription;
     private TextView txtHasTaxDescription;
     private TextView txtTaxPercentageDescription;
+    private TextView txtTransactionDescription;
     private TextView txtDateDescription;
     private CardView orderLineCardView;
     private CardView clientInformationCardView;
@@ -133,6 +134,7 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
         btnShowOrderNotePopUp=findViewById(R.id.btnShowOrderNotePopUp);
         relativeLayoutReportGeneralSalesAndPurchasing=findViewById(R.id.relativeLayoutReportGeneralSalesAndPurchasing);
         recyclerViewOrderLine = findViewById(R.id.recyclerViewOrderLine);
+        txtTransactionDescription = findViewById(R.id.txtTransactionDescription);
     }
     private void events() {
         btnSearchOrder.setOnClickListener(new View.OnClickListener() {
@@ -233,6 +235,8 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
                                     txtTaxPercentageDescription.setText("0");
                                 else
                                     txtTaxPercentageDescription.setText(taxPercentage);
+
+                                txtTransactionDescription.setText(orderInfo.getTransactionDescription());
 
                                 List<ReportOrderInformationLines> orderLines = orderInfo.getOrderLines();
                                 orderInformationLinesList.clear();
