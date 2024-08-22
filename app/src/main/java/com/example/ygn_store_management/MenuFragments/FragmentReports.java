@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.ygn_store_management.Activities.MainActivities.MainCardViewActivity;
 import com.example.ygn_store_management.Activities.ReportActivities.GeneralReportActivities.ReportGeneralSalesAndPurchasing;
+import com.example.ygn_store_management.Activities.ReportActivities.GeneralReportActivities.ReportItemInformationActivity;
 import com.example.ygn_store_management.Activities.ReportActivities.GeneralReportActivities.ReportStockAmountActivity;
 import com.example.ygn_store_management.Activities.ReportActivities.PurchasingReports.ReportPurchasingDetailByClientDetail;
 import com.example.ygn_store_management.Activities.ReportActivities.SalesReports.ReportSalesDetailByClientDetail;
@@ -38,6 +39,7 @@ public class FragmentReports extends Fragment {
         CardView cardViewSalesDetailByClientDetail = view.findViewById(R.id.cardViewSalesDetailByClientDetail);
         CardView cardViewOrderQuery = view.findViewById(R.id.cardViewOrderQuery);
         CardView cardViewPurchasingDetailByClientDetail = view.findViewById(R.id.cardViewPurchasingDetailByClientDetail);
+        CardView cardViewItemInformation = view.findViewById(R.id.cardViewItemInformation);
 
         cardViewStockAmount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +73,14 @@ public class FragmentReports extends Fragment {
                 startActivity(intent);
             }
         });
-
+        cardViewItemInformation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireActivity(), ReportItemInformationActivity.class);
+                intent.putExtra("TOKEN", _currentToken);
+                startActivity(intent);
+            }
+        });
         return view;
     }
 }

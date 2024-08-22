@@ -30,16 +30,20 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
+
+    //region members
     private Spinner usernameSpinner;
     private Button loginButton;
     private Button settingButton;
-    private Button infoButton;
+
     private EditText edtPassword;
     private static String apiUrl;
     private ArrayList<String> users = new ArrayList<>();
     private static final String TAG = "LoginActivity";
     private static final int DELAY_MILLIS = 10000;
+    //endregion
 
+    //region overriden methods
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +69,6 @@ public class LoginActivity extends AppCompatActivity {
 
         loginButton.setOnClickListener(null);
         settingButton.setOnClickListener(null);
-        infoButton.setOnClickListener(null);
         edtPassword.setOnEditorActionListener(null);
 
         if (apiUrl!=null)
@@ -79,6 +82,9 @@ public class LoginActivity extends AppCompatActivity {
 
         this.finishAffinity();
     }
+    //endregion
+
+    //region private methods
     private boolean checkNetwork(){
         if (!NetworkUtil.isNetworkAvailable(this)) {
             Toast.makeText(this, "İnternet bağlantısı yok. Uygulama kapanacaktır.", Toast.LENGTH_SHORT).show();
@@ -111,19 +117,11 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        infoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, InformationActivity.class);
-                startActivity(intent);
-            }
-        });
     }
     private void findViews() {
         loginButton = findViewById(R.id.loginButton);
         settingButton = findViewById(R.id.settingButton);
         edtPassword = findViewById(R.id.passwordEditText);
-        infoButton = findViewById(R.id.btnInfo);
         usernameSpinner = findViewById(R.id.usernameSpinner);
     }
     private void getSharedPreferences() {
@@ -216,4 +214,5 @@ public class LoginActivity extends AppCompatActivity {
         }
         return true;
     }
+    //endregion
 }

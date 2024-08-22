@@ -12,6 +12,5 @@
     <string name="report_order_query">Sipariş Sorgulama</string>
     <string name="orderfiche_number">Sipariş Numarası</string>
     <string name="client">Cari</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="report_item_information">Ürün Sorgula</string>
 </resources>

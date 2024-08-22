@@ -18,7 +18,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".Activities.MenuTestAcitivty.MenuTestActivity"
+            android:name=".Activities.ReportActivities.GeneralReportActivities.ReportItemInformationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.MainActivities.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.ReportActivities.PurchasingReports.ReportPurchasingDetailByClientDetail"
@@ -31,9 +34,6 @@
             android:exported="false" />
         <activity
             android:name=".Activities.ReportActivities.SalesReports.ReportSalesDetailByClientDetail"
-            android:exported="false" />
-        <activity
-            android:name=".Activities.ReportActivities.ReportCardViews.ReportCardViewActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.SalesActivities.SalesDetailActivity"
@@ -51,15 +51,13 @@
             android:name=".Activities.PurchasingActivities.PurchasingDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.MainActivities.InformationActivity"
-            android:exported="false" />
-        <activity
             android:name=".Activities.ReportActivities.GeneralReportActivities.ReportStockAmountActivity"
             android:exported="false" />
         <activity android:name=".Activities.MainActivities.SettingActivity" />
         <activity
-            android:name=".Activities.MainActivities.LoginActivity"
-            android:exported="true">
+            android:name=".Activities.SplashActivities.LoginSplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Design.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

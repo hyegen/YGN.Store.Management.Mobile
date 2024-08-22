@@ -39,6 +39,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
+    //region members
     private static String apiUrl;
     private EditText edtSearchOrder;
     private Button btnSearchOrder;
@@ -59,6 +60,9 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
     private ReportOrderLineInformationAdapter orderLineInformationAdapter;
     private RecyclerView recyclerViewOrderLine;
     private List<ReportOrderInformationLines> orderInformationLinesList;
+    //endregion
+
+    //region overriden methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +115,9 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
         }
 
     }
+    //endregion
+
+    //region private methods
     private void getExtras() {
         Intent intent = getIntent();
         token = intent.getStringExtra("TOKEN");
@@ -272,4 +279,5 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
         }
       return true;
     }
+    //endregion
 }

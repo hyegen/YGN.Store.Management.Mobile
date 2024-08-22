@@ -15,9 +15,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.ygn_store_management.R;
 
 public class SettingActivity extends AppCompatActivity {
+    //region members
     private EditText ipAddressEditText;
     private Button saveButton;
     private Button returnButton;
+    //endregion
+
+    //region overriden methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +30,9 @@ public class SettingActivity extends AppCompatActivity {
         events();
         showSavedIpAddress();
     }
+    //endregion
+
+    //region private methods
     private void findView(){
         ipAddressEditText = findViewById(R.id.ipAddressEditText);
         saveButton = findViewById(R.id.saveButton);
@@ -78,4 +85,5 @@ public class SettingActivity extends AppCompatActivity {
         String savedIpAddress = prefs.getString("ipAddress", "");
         ipAddressEditText.setText(savedIpAddress);
     }
+    //endregion
 }
