@@ -1,11 +1,13 @@
 package com.example.ygn_store_management.Activities.ReportActivities.GeneralReportActivities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,6 +28,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class ReportItemInformationActivity extends AppCompatActivity {
+
+    //region members
     private ImageView itemImageView;
     private TextView txtItemId;
     private TextView txtItemCode;
@@ -36,6 +40,9 @@ public class ReportItemInformationActivity extends AppCompatActivity {
     private Button btnSearchItem;
     private String token;
     private static String apiUrl;
+    //endregion
+
+    //region overriden methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +52,9 @@ public class ReportItemInformationActivity extends AppCompatActivity {
         getExtras();
         events();
     }
+    //endregion
+
+    //region private methods
     private void getExtras() {
         Intent intent = getIntent();
         token = intent.getStringExtra("TOKEN");
@@ -56,26 +66,30 @@ public class ReportItemInformationActivity extends AppCompatActivity {
     }
     private void findViews(){
         itemImageView = findViewById(R.id.itemImageView);
-        txtItemId = findViewById(R.id.txtItemId);
-        txtItemCode = findViewById(R.id.txtItemCode);
-        txtItemName = findViewById(R.id.txtItemName);
-        txtBrand = findViewById(R.id.txtBrand);
-        txtStockAmount = findViewById(R.id.txtStockAmount);
+        txtItemId = findViewById(R.id.txtITemIdDescription);
+        txtItemCode = findViewById(R.id.txtItemCodeDecription);
+        txtItemName = findViewById(R.id.txtItemNameDescription);
+        txtBrand = findViewById(R.id.txtBrandDescription);
+        txtStockAmount = findViewById(R.id.txtStockAmountDescription);
         edtSearchItemCode = findViewById(R.id.edtSearchItemCode);
         btnSearchItem = findViewById(R.id.btnSearchItem);
     }
-    private void events()
-    {
+    private void events(){
         btnSearchItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validateGetData())
+                if (validateGetData()){
                     GetData();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (getCurrentFocus() != null) {
+                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    }
+                }
             }
         });
+
     }
     private void GetData(){
-
         try {
             Retrofit retrofit = ApiUtils.InitRequestWithToken(apiUrl,token);
             ReportItemInformationService apiService = retrofit.create(ReportItemInformationService.class);
@@ -119,4 +133,5 @@ public class ReportItemInformationActivity extends AppCompatActivity {
         }
         return  true;
     }
+    //endregion
 }
