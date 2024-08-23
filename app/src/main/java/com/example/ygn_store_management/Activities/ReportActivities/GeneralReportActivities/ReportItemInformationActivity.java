@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.example.ygn_store_management.Interfaces.ReportItemInformationService;
 import com.example.ygn_store_management.Managers.ApiUtils;
@@ -38,6 +39,8 @@ public class ReportItemInformationActivity extends AppCompatActivity {
     private TextView txtStockAmount;
     private EditText edtSearchItemCode;
     private Button btnSearchItem;
+    private CardView cardViewItemImage;
+    private CardView cardViewItemInformations;
     private String token;
     private static String apiUrl;
     //endregion
@@ -50,6 +53,7 @@ public class ReportItemInformationActivity extends AppCompatActivity {
         findViews();
         getSharedPreferences();
         getExtras();
+        initialize();
         events();
     }
     //endregion
@@ -73,6 +77,8 @@ public class ReportItemInformationActivity extends AppCompatActivity {
         txtStockAmount = findViewById(R.id.txtStockAmountDescription);
         edtSearchItemCode = findViewById(R.id.edtSearchItemCode);
         btnSearchItem = findViewById(R.id.btnSearchItem);
+        cardViewItemImage = findViewById(R.id.cardViewItemImage);
+        cardViewItemInformations = findViewById(R.id.cardViewItemInformations);
     }
     private void events(){
         btnSearchItem.setOnClickListener(new View.OnClickListener() {
@@ -89,8 +95,19 @@ public class ReportItemInformationActivity extends AppCompatActivity {
         });
 
     }
+    private void initialize(){
+        setVisibleGoneCardViews();
+    }
+    private void setVisibleGoneCardViews(){
+        cardViewItemImage.setVisibility(View.GONE);
+        cardViewItemInformations.setVisibility(View.GONE);
+    }
     private void GetData(){
         try {
+
+           if(itemImageView.getDrawable()!=null)
+               clearItems();
+
             Retrofit retrofit = ApiUtils.InitRequestWithToken(apiUrl,token);
             ReportItemInformationService apiService = retrofit.create(ReportItemInformationService.class);
 
@@ -111,7 +128,10 @@ public class ReportItemInformationActivity extends AppCompatActivity {
                         if (item.getItemImage()!=null){
                             byte[] imageBytes = Base64.decode(item.getItemImage(), Base64.DEFAULT);
                             ImageUtils.setImageFromBytes(imageBytes, itemImageView);
+                            cardViewItemImage.setVisibility(View.VISIBLE);
                         }
+
+                        cardViewItemInformations.setVisibility(View.VISIBLE);
                     }
                 }
 
@@ -132,6 +152,10 @@ public class ReportItemInformationActivity extends AppCompatActivity {
             return false;
         }
         return  true;
+    }
+    private void clearItems(){
+        //itemImageView.setImageResource(android.R.color.transparent);
+        itemImageView.setImageResource(R.drawable.noimage);
     }
     //endregion
 }

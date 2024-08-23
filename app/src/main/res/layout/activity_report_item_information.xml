@@ -51,6 +51,7 @@
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewItemImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="10dp"
@@ -73,6 +74,7 @@
 
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewItemInformations"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="3dp"

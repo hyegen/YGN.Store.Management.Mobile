@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ygn_store_management.Models.ReportViews.ReportOrderInformationLines;
 import com.example.ygn_store_management.R;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class ReportOrderLineInformationAdapter  extends RecyclerView.Adapter<ReportOrderLineInformationAdapter.ViewHolder> {
@@ -29,11 +30,15 @@ public class ReportOrderLineInformationAdapter  extends RecyclerView.Adapter<Rep
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            ReportOrderInformationLines orderInformationLine = orderInformationLinesList.get(position);
+        ReportOrderInformationLines orderInformationLine = orderInformationLinesList.get(position);
+
+        double number = orderInformationLine.getLineTotal();
+        String formattedNumber = String.format("%.0f", number);
+
             holder.itemNameTextView.setText(orderInformationLine.getItemName());
             holder.amountTextView.setText(Integer.toString(orderInformationLine.getAmount()));
             holder.unitPriceTextView.setText(Double.toString(orderInformationLine.getUnitPrice()));
-            holder.lineTotalTextView.setText(Double.toString(orderInformationLine.getLineTotal()));
+            holder.lineTotalTextView.setText(formattedNumber);
     }
     @Override
     public int getItemCount() {
