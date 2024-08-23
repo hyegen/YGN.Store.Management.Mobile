@@ -1,5 +1,6 @@
 package com.example.ygn_store_management.Activities.ReportActivities.GeneralReportActivities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,7 +33,6 @@ public class ReportItemInformationActivity extends AppCompatActivity {
 
     //region members
     private ImageView itemImageView;
-    private TextView txtItemId;
     private TextView txtItemCode;
     private TextView txtItemName;
     private TextView txtBrand;
@@ -43,6 +43,7 @@ public class ReportItemInformationActivity extends AppCompatActivity {
     private CardView cardViewItemInformations;
     private String token;
     private static String apiUrl;
+    private ProgressDialog dialog;
     //endregion
 
     //region overriden methods
@@ -70,7 +71,6 @@ public class ReportItemInformationActivity extends AppCompatActivity {
     }
     private void findViews(){
         itemImageView = findViewById(R.id.itemImageView);
-        txtItemId = findViewById(R.id.txtITemIdDescription);
         txtItemCode = findViewById(R.id.txtItemCodeDecription);
         txtItemName = findViewById(R.id.txtItemNameDescription);
         txtBrand = findViewById(R.id.txtBrandDescription);
@@ -111,15 +111,19 @@ public class ReportItemInformationActivity extends AppCompatActivity {
             Retrofit retrofit = ApiUtils.InitRequestWithToken(apiUrl,token);
             ReportItemInformationService apiService = retrofit.create(ReportItemInformationService.class);
 
-            Call<ItemInformation> call = apiService.MobGetItemInformationByItemCode(token,edtSearchItemCode.getText().toString());
+            dialog = new ProgressDialog(ReportItemInformationActivity.this);
+            dialog.setMessage("Lütfen Bekleyiniz");
+            dialog.setTitle("Yükleniyor...");
+            dialog.show();
 
+            Call<ItemInformation> call = apiService.MobGetItemInformationByItemCode(token,edtSearchItemCode.getText().toString());
             call.enqueue(new Callback<ItemInformation>() {
                 @Override
                 public void onResponse(Call<ItemInformation> call, Response<ItemInformation> response) {
                     if (response.isSuccessful() && response.body() != null) {
+                        dialog.dismiss();
                         ItemInformation item = response.body();
 
-                        txtItemId.setText(Integer.toString(item.getId()));
                         txtItemCode.setText(item.getItemCode());
                         txtItemName.setText(item.getItemName());
                         txtBrand.setText(item.getBrand());
@@ -133,18 +137,25 @@ public class ReportItemInformationActivity extends AppCompatActivity {
 
                         cardViewItemInformations.setVisibility(View.VISIBLE);
                     }
+                    else{
+                        Toast.makeText(ReportItemInformationActivity.this, "Ürün Bulunamadı. \nÜrün Kodunu Kontrol Ediniz.", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                        clearItems();
+                    }
                 }
 
                 @Override
                 public void onFailure(Call<ItemInformation> call, Throwable t) {
                     Log.e("HATA",t.getMessage());
+                    dialog.dismiss();
                 }
             });
         }
         catch (Exception ex){
             Log.e("HATA",ex.getMessage());
+            dialog.dismiss();
         }
-
+        //dialog.dismiss();
     }
     private boolean validateGetData(){
         if(edtSearchItemCode.getText().toString().isEmpty()){
@@ -154,8 +165,11 @@ public class ReportItemInformationActivity extends AppCompatActivity {
         return  true;
     }
     private void clearItems(){
-        //itemImageView.setImageResource(android.R.color.transparent);
-        itemImageView.setImageResource(R.drawable.noimage);
+        itemImageView.setImageResource(android.R.color.transparent);
+        txtItemCode.setText(null);
+        txtItemName.setText(null);
+        txtBrand.setText(null);
+        txtStockAmount.setText(null);
     }
     //endregion
 }

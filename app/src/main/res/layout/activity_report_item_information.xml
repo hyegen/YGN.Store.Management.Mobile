@@ -39,6 +39,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:hint="Ürün Kodu Giriniz"
             />
 
         <com.google.android.material.button.MaterialButton
@@ -66,7 +67,7 @@
                 android:id="@+id/itemImageView"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:scaleType="fitXY"
+                android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 />
         </LinearLayout>
@@ -94,13 +95,6 @@
                 android:paddingRight="1dp"
                 android:paddingBottom="1dp"
                 >
-
-                <TextView
-                    android:id="@+id/txtItemId"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:text="Ürün Id"
-                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/txtItemCode"
@@ -139,11 +133,7 @@
                 android:paddingBottom="1dp"
                 >
 
-                <TextView
-                    android:id="@+id/txtITemIdDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Item Id Description" />
+
                 <TextView
                     android:id="@+id/txtItemCodeDecription"
                     android:layout_width="match_parent"

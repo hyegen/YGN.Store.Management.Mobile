@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.SplashActivities.LoginSplashActivity"
-    android:background="@drawable/b846e4725680bc3299967e400ab9e355"
+    android:background="@drawable/loadingsplash"
     >
 
 </androidx.constraintlayout.widget.ConstraintLayout>
