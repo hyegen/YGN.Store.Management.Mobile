@@ -134,6 +134,10 @@ public class ReportItemInformationActivity extends AppCompatActivity {
                             ImageUtils.setImageFromBytes(imageBytes, itemImageView);
                             cardViewItemImage.setVisibility(View.VISIBLE);
                         }
+                        else{
+                            cardViewItemImage.setVisibility(View.VISIBLE);
+                            itemImageView.setImageResource(R.drawable.noimage);
+                        }
 
                         cardViewItemInformations.setVisibility(View.VISIBLE);
                     }
@@ -155,7 +159,6 @@ public class ReportItemInformationActivity extends AppCompatActivity {
             Log.e("HATA",ex.getMessage());
             dialog.dismiss();
         }
-        //dialog.dismiss();
     }
     private boolean validateGetData(){
         if(edtSearchItemCode.getText().toString().isEmpty()){

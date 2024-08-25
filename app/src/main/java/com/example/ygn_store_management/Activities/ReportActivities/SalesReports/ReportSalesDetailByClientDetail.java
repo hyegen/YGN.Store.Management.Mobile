@@ -1,5 +1,6 @@
 package com.example.ygn_store_management.Activities.ReportActivities.SalesReports;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.ygn_store_management.Activities.ReportActivities.PurchasingReports.ReportPurchasingDetailByClientDetail;
 import com.example.ygn_store_management.Adapters.ReportSalesDetailByClientDetailAdapter;
 import com.example.ygn_store_management.Interfaces.ReportSalesDetailByClientDetailService;
 import com.example.ygn_store_management.Managers.ApiUtils;
@@ -26,6 +28,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class ReportSalesDetailByClientDetail extends AppCompatActivity {
+
+    //region members
+    protected ProgressDialog pleaseWait;
     private List<String> dataList = new ArrayList<>();
     private SwipeRefreshLayout swipeRefreshLayout;
     private static String apiUrl;
@@ -35,6 +40,9 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
     private List<SalesDetailByClientDetail> salesDetailByClientDetailList;
     private ReportSalesDetailByClientDetailAdapter reportSalesDetailByClientDetailAdapter;
     private SearchView searchView;
+    //endregion
+
+    //region overriden methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +54,34 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
         initialize();
         events();
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        swipeRefreshLayout.setRefreshing(false);
+
+        if (dataList != null) {
+            dataList.clear();
+            dataList = null;
+        }
+
+        apiUrl = null;
+        token = null;
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        swipeRefreshLayout.setRefreshing(false);
+
+        if (dataList != null) {
+            dataList.clear();
+            dataList = null;
+        }
+    }
+    //endregion
+
+    //region private methods
     private void getExtras() {
         Intent intent = getIntent();
         token = intent.getStringExtra("TOKEN");
@@ -78,7 +114,7 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
         recyclerViewSalesDetailByClientDetail = findViewById(R.id.recyclerViewSalesReport);
         searchView = findViewById(R.id.searchViewSales);
     }
-    private void setMembers(){
+    private void setMembers() {
         recyclerViewSalesDetailByClientDetail.setLayoutManager(new LinearLayoutManager(this));
         salesDetailByClientDetailList = new ArrayList<>();
         reportSalesDetailByClientDetailAdapter = new ReportSalesDetailByClientDetailAdapter(salesDetailByClientDetailList);
@@ -91,57 +127,44 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
     }
     private void GetData() {
         try {
-            Retrofit retrofit = ApiUtils.InitRequestWithToken(apiUrl,token);
+            Retrofit retrofit = ApiUtils.InitRequestWithToken(apiUrl, token);
             ReportSalesDetailByClientDetailService apiService = retrofit.create(ReportSalesDetailByClientDetailService.class);
+
+            pleaseWait = new ProgressDialog(ReportSalesDetailByClientDetail.this);
+            pleaseWait.setMessage("Lütfen Bekleyiniz");
+            pleaseWait.setTitle("Yükleniyor...");
+            pleaseWait.show();
+
 
             Call<List<SalesDetailByClientDetail>> call = apiService.GetSalesByClientDetail(token);
             call.enqueue(new Callback<List<SalesDetailByClientDetail>>() {
                 @Override
                 public void onResponse(Call<List<SalesDetailByClientDetail>> call, Response<List<SalesDetailByClientDetail>> response) {
                     if (response.isSuccessful() && response.body() != null) {
+                        pleaseWait.dismiss();
                         salesDetailByClientDetailList = response.body();
                         reportSalesDetailByClientDetailAdapter.updateData(salesDetailByClientDetailList);
-                    }
-                    else{
+                    } else {
                         Toast.makeText(ReportSalesDetailByClientDetail.this, response.message(), Toast.LENGTH_SHORT).show();
+                        pleaseWait.dismiss();
                     }
                 }
+
                 @Override
                 public void onFailure(Call<List<SalesDetailByClientDetail>> call, Throwable t) {
                     Toast.makeText(ReportSalesDetailByClientDetail.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    pleaseWait.dismiss();
                 }
             });
 
-            if (swipeRefreshLayout.isRefreshing()){
+            if (swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(false);
             }
         } catch (Exception ex) {
             Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            pleaseWait.dismiss();
         }
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    //endregion
 
-        swipeRefreshLayout.setRefreshing(false);
-
-        if(dataList!=null){
-            dataList.clear();
-            dataList=null;
-        }
-
-        apiUrl = null;
-        token=null;
-    }
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        swipeRefreshLayout.setRefreshing(false);
-
-        if(dataList!=null){
-            dataList.clear();
-            dataList=null;
-        }
-    }
 }

@@ -209,12 +209,18 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
         try {
             Retrofit retrofit = ApiUtils.InitRequestWithToken(apiUrl,token);
             OrderLineInformationService apiService = retrofit.create(OrderLineInformationService.class);
+
+            pleaseWait = new ProgressDialog(ReportGeneralSalesAndPurchasing.this);
+            pleaseWait.setMessage("Lütfen Bekleyiniz");
+            pleaseWait.setTitle("Yükleniyor...");
+            pleaseWait.show();
+
             Call<OrderInformation> call = apiService.GetOrderDetailInformation(token,edtSearchOrder.getText().toString());
             call.enqueue(new Callback<OrderInformation>() {
                 @Override
                 public void onResponse(Call<OrderInformation> call, Response<OrderInformation> response) {
                     if (response.isSuccessful() && response.body() != null) {
-
+                        pleaseWait.dismiss();
                             OrderInformation orderInfo = response.body();
                             if (orderInfo != null) {
 
@@ -256,6 +262,7 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
                     }
                     else {
                         Toast.makeText(ReportGeneralSalesAndPurchasing.this, "Sipariş Numarası veya Bilgilerinizi Kontrol Ediniz.", Toast.LENGTH_SHORT).show();
+                        pleaseWait.dismiss();
                         setVisibleLinearLayout();
                     }
                 }
@@ -263,11 +270,13 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<OrderInformation> call, Throwable t) {
                     Toast.makeText(ReportGeneralSalesAndPurchasing.this, "Sipariş Numarası veya Bilgilerinizi Kontrol Ediniz.", Toast.LENGTH_SHORT).show();
+                    pleaseWait.dismiss();
                 }
             });
         }
         catch (Exception ex){
             showDialog(ex.getMessage());
+            pleaseWait.dismiss();
         }
     }
     private boolean validateGetData(){

@@ -19,10 +19,8 @@ import com.example.ygn_store_management.Managers.ApiUtils;
 import com.example.ygn_store_management.Models.ReportViews.StockAmountInformation;
 import com.example.ygn_store_management.R;
 
-
 import java.util.ArrayList;
 import java.util.List;
-
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,6 +29,8 @@ import retrofit2.Retrofit;
 
 @SuppressWarnings("deprecation")
 public class ReportStockAmountActivity extends AppCompatActivity {
+
+    //region members
     protected ProgressDialog pleaseWait;
     private List<String> dataList = new ArrayList<>();
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -41,6 +41,9 @@ public class ReportStockAmountActivity extends AppCompatActivity {
     private RecyclerView recyclerViewStockAmount;
     private List<StockAmountInformation> stockAmountInformationList;
     private ReportStockAmountAdapter reportStockAmountAdapter;
+    //endregion
+
+    //region overriden methods
     @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,44 @@ public class ReportStockAmountActivity extends AppCompatActivity {
         getExtras();
         initialize();
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+//        Intent intent = new Intent(this, ReportCardViewActivity.class);
+//        startActivity(intent);
+        this.finish();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        swipeRefreshLayout.setRefreshing(false);
+        edtSearchItem.addTextChangedListener(null);
+        edtSearchItem.setOnEditorActionListener(null);
+
+        linearLayoutStockAmount.removeAllViews();
+
+        dataList.clear();
+        dataList=null;
+        pleaseWait = null;
+        apiUrl = null;
+
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (pleaseWait != null && pleaseWait.isShowing()) {
+            pleaseWait.dismiss();
+        }
+
+        if(dataList!=null)
+            dataList.clear();
+
+    }
+    //endregion
+
+    //region private methods
     private void getExtras() {
         Intent intent = getIntent();
         token = intent.getStringExtra("TOKEN");
@@ -110,11 +151,17 @@ public class ReportStockAmountActivity extends AppCompatActivity {
             Retrofit retrofit = ApiUtils.InitRequestWithToken(apiUrl,token);
             StockAmountInformationService apiService = retrofit.create(StockAmountInformationService.class);
 
+            pleaseWait = new ProgressDialog(ReportStockAmountActivity.this);
+            pleaseWait.setMessage("Lütfen Bekleyiniz");
+            pleaseWait.setTitle("Yükleniyor...");
+            pleaseWait.show();
+
             Call<List<StockAmountInformation>> call = apiService.GetStockAmount(token);
             call.enqueue(new Callback<List<StockAmountInformation>>() {
                 @Override
                 public void onResponse(Call<List<StockAmountInformation>> call, Response<List<StockAmountInformation>> response) {
                     if (response.isSuccessful() && response.body() != null) {
+                        pleaseWait.dismiss();
                         stockAmountInformationList = response.body();
                         reportStockAmountAdapter.updateData(stockAmountInformationList);
                     }
@@ -122,6 +169,7 @@ public class ReportStockAmountActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<List<StockAmountInformation>> call, Throwable t) {
                     Toast.makeText(ReportStockAmountActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    pleaseWait.dismiss();
                 }
             });
 
@@ -130,45 +178,9 @@ public class ReportStockAmountActivity extends AppCompatActivity {
          }
         } catch (Exception ex) {
             Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-//        Intent intent = new Intent(this, ReportCardViewActivity.class);
-//        startActivity(intent);
-        this.finish();
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        swipeRefreshLayout.setRefreshing(false);
-        edtSearchItem.addTextChangedListener(null);
-        edtSearchItem.setOnEditorActionListener(null);
-
-        linearLayoutStockAmount.removeAllViews();
-
-        dataList.clear();
-        dataList=null;
-        pleaseWait = null;
-        apiUrl = null;
-
-    }
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        /*if (_getStockAmountsTask != null && !_getStockAmountsTask.isCancelled()) {
-            _getStockAmountsTask.cancel(true);
-        }
-*/
-        if (pleaseWait != null && pleaseWait.isShowing()) {
             pleaseWait.dismiss();
         }
-
-        if(dataList!=null)
-            dataList.clear();
-
     }
+    //endregion
+
 }
