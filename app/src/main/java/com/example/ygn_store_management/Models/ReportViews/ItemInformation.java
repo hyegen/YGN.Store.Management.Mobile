@@ -7,6 +7,9 @@ public class ItemInformation {
     private String Brand;
     private int StockAmount;
     private String ItemImage;
+    private double  PurchasingPrice;
+    private double SalesPrice;
+
 
     public int getId() { return Id; }
     public void setId(int id) { Id = id; }
@@ -25,4 +28,20 @@ public class ItemInformation {
 
     public String getItemImage() { return ItemImage; }
     public void setItemImage(String itemImage) { ItemImage = itemImage; }
+
+    public double getPurchasingPrice() {
+        return PurchasingPrice;
+    }
+
+    public void setPurchasingPrice(double purchasingPrice) {
+        PurchasingPrice = purchasingPrice;
+    }
+
+    public double getSalesPrice() {
+        return SalesPrice;
+    }
+
+    public void setSalesPrice(double salesPrice) {
+        SalesPrice = salesPrice;
+    }
 }

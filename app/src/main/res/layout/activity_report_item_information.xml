@@ -4,164 +4,236 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Ürün Detay"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-    </androidx.appcompat.widget.Toolbar>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="3dp"
-        >
-        <EditText
-            android:id="@+id/edtSearchItemCode"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:hint="Ürün Kodu Giriniz"
-            />
+        android:orientation="vertical">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSearchItem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#03A9F4"
-            app:cornerRadius="12dp"
-            android:text="Ara" />
-    </LinearLayout>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewItemImage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="10dp"
-        android:layout_margin="3dp"
-        app:cardElevation="4dp"
-        >
-
-        <LinearLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/itemImageView"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme">
+
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewItemInformations"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="3dp"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="4dp"
-        >
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Ürün Detay"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </androidx.appcompat.widget.Toolbar>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="1dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="1dp"
-                android:paddingBottom="1dp"
-                >
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
 
-                <TextView
-                    android:id="@+id/txtItemCode"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:text="Ürün Kodu"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:id="@+id/txtItemName"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:text="Ürün Adı"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:id="@+id/txtBrand"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:text="Marka"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:id="@+id/txtStockAmount"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:text="Stok Miktarı"
-                    android:textStyle="bold"/>
-            </LinearLayout>
-
-            <LinearLayout
+            <EditText
+                android:id="@+id/edtSearchItemCode"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:paddingTop="1dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="1dp"
-                android:paddingBottom="1dp"
-                >
+                android:layout_height="wrap_content"
+                android:hint="Ürün Kodu Giriniz" />
 
-
-                <TextView
-                    android:id="@+id/txtItemCodeDecription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Item Code Description" />
-                <TextView
-                    android:id="@+id/txtItemNameDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Item Name Description"
-                    />
-                <TextView
-                     android:id="@+id/txtBrandDescription"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:text="Brand Description"
-                />
-                <TextView
-                    android:id="@+id/txtStockAmountDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Stock Amount Description"
-
-                    />
-            </LinearLayout>
-
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSearchItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#03A9F4"
+                app:cornerRadius="12dp"
+                android:text="Ara" />
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
 
-</LinearLayout>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewItemImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="10dp"
+            android:layout_margin="3dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="2dp"
+                    android:gravity="center">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRotateLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:backgroundTint="#FFA500"
+                        android:onClick="buttonRotateLeft"
+                        android:text="Sola"
+                        app:cornerRadius="12dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRotateRight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="20dp"
+                        android:backgroundTint="#FFA500"
+                        android:onClick="buttonRotateRight"
+                        android:text="Sağa"
+                        app:cornerRadius="12dp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/itemImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="350dp"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewItemInformations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Ürün Kodu"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtItemCodeDescription"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Item Code Description" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Ürün Adı"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtItemNameDescription"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Item Name Description" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Marka"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtBrandDescription"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Brand Description" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Alış Fiyatı"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtPurchasingDescription"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Purchasing Description" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Satış Fiyatı"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtSalesDescription"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Sales Description" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Stok Miktarı"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtStockAmountDescription"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Stock Amount Description" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
 </ScrollView>

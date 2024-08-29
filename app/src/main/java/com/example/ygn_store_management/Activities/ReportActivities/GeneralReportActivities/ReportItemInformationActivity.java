@@ -37,6 +37,8 @@ public class ReportItemInformationActivity extends AppCompatActivity {
     private TextView txtItemName;
     private TextView txtBrand;
     private TextView txtStockAmount;
+    private TextView txtPurchasingDescription;
+    private TextView txtSalesDescription;
     private EditText edtSearchItemCode;
     private Button btnSearchItem;
     private CardView cardViewItemImage;
@@ -71,7 +73,7 @@ public class ReportItemInformationActivity extends AppCompatActivity {
     }
     private void findViews(){
         itemImageView = findViewById(R.id.itemImageView);
-        txtItemCode = findViewById(R.id.txtItemCodeDecription);
+        txtItemCode = findViewById(R.id.txtItemCodeDescription);
         txtItemName = findViewById(R.id.txtItemNameDescription);
         txtBrand = findViewById(R.id.txtBrandDescription);
         txtStockAmount = findViewById(R.id.txtStockAmountDescription);
@@ -79,6 +81,8 @@ public class ReportItemInformationActivity extends AppCompatActivity {
         btnSearchItem = findViewById(R.id.btnSearchItem);
         cardViewItemImage = findViewById(R.id.cardViewItemImage);
         cardViewItemInformations = findViewById(R.id.cardViewItemInformations);
+        txtPurchasingDescription = findViewById(R.id.txtPurchasingDescription);
+        txtSalesDescription = findViewById(R.id.txtSalesDescription);
     }
     private void events(){
         btnSearchItem.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +132,8 @@ public class ReportItemInformationActivity extends AppCompatActivity {
                         txtItemName.setText(item.getItemName());
                         txtBrand.setText(item.getBrand());
                         txtStockAmount.setText(Integer.toString(item.getStockAmount()));
+                        txtPurchasingDescription.setText(Double.toString(item.getPurchasingPrice()));
+                        txtSalesDescription.setText(Double.toString(item.getSalesPrice()));
 
                         if (item.getItemImage()!=null){
                             byte[] imageBytes = Base64.decode(item.getItemImage(), Base64.DEFAULT);
@@ -173,6 +179,12 @@ public class ReportItemInformationActivity extends AppCompatActivity {
         txtItemName.setText(null);
         txtBrand.setText(null);
         txtStockAmount.setText(null);
+    }
+    public void buttonRotateLeft(View view){
+        itemImageView.setRotation(itemImageView.getRotation() - 90F);
+    }
+    public void buttonRotateRight(View view){
+        itemImageView.setRotation(itemImageView.getRotation() + 90F);
     }
     //endregion
 }
