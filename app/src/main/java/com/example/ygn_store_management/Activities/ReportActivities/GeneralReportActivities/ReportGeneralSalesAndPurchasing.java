@@ -107,9 +107,6 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
-
-
         if (pleaseWait != null && pleaseWait.isShowing()) {
             pleaseWait.dismiss();
         }
