@@ -33,6 +33,8 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class ReportOrderFilterByDateActivity extends AppCompatActivity {
+
+    //region members
     private static String apiUrl;
     protected ProgressDialog pleaseWait;
     private static final String TAG = "ReportOrderFilterByDateActivity";
@@ -41,6 +43,9 @@ public class ReportOrderFilterByDateActivity extends AppCompatActivity {
     private Button fetchOrderButton;
     private ListView reportSalesByClientDetilListView;
     private String token;
+    //endregion
+
+    //region overriden methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +55,9 @@ public class ReportOrderFilterByDateActivity extends AppCompatActivity {
         events();
         getExtras();
     }
+    //endregion
+
+    //region private methods
     private void getExtras() {
         Intent intent = getIntent();
         token = intent.getStringExtra("TOKEN");
@@ -180,4 +188,5 @@ public class ReportOrderFilterByDateActivity extends AppCompatActivity {
             }
         }
     }
+    //endregion
 }

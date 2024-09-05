@@ -11,6 +11,7 @@ import com.example.ygn_store_management.R;
 
 public class LoginSplashActivity extends AppCompatActivity {
 
+    //region overriden methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,4 +25,5 @@ public class LoginSplashActivity extends AppCompatActivity {
             }
         },3000);
     }
+    //endregion
 }

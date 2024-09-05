@@ -31,7 +31,9 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class ProductSelectionDialogActivity extends AppCompatActivity {
-   private Integer IOCode;
+
+    //region members
+    private Integer IOCode;
     private EditText edtSearchItem;
     private Button confirmButton;
     private ImageButton btnSearch;
@@ -43,6 +45,9 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
     private static String apiUrl;
     private ListView productsListView;
     private ArrayList<Integer> inputAmounts = new ArrayList<>();
+    //endregion
+
+    //region overriden methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +58,9 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
         getSharedPreferences();
         initialize();
     }
+    //endregion
+
+    //region private methods
     private void findViews(){
         productsListView=findViewById(R.id.productSelectionListView);
         edtSearchItem=findViewById(R.id.edtSearchItem);
@@ -201,4 +209,5 @@ public class ProductSelectionDialogActivity extends AppCompatActivity {
 
         }
     }
+    //endregion
 }

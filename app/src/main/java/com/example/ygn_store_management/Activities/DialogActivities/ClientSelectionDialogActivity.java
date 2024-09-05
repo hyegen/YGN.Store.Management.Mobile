@@ -29,11 +29,16 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class ClientSelectionDialogActivity extends AppCompatActivity {
+
+    //region members
     private Integer IOCode;
     private ArrayList<String> clients = new ArrayList<>();
     private static String apiUrl;
     private static final String TAG = "SalesDetailActivity";
     private ListView clientsListView;
+    //endregion
+
+    //region overriden methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +50,9 @@ public class ClientSelectionDialogActivity extends AppCompatActivity {
         initialize();
         events();
     }
+    //endregion
+
+    //region private methods
     private void getExtras() {
         IOCode = getIntent().getIntExtra("IOCode",-1);
     }
@@ -131,15 +139,5 @@ public class ClientSelectionDialogActivity extends AppCompatActivity {
             }
         }
     }
-
-     /*   @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == CLIENT_SELECTION_REQUEST_CODE) {
-                int ioCode = data.getIntExtra("IOCode", -1);
-                String resultValue = data.getStringExtra("result_key");
-            }
-        }
-    }*/
+    //endregion
 }

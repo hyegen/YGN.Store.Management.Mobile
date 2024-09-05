@@ -12,11 +12,13 @@ import com.google.android.material.tabs.TabLayout;
 
 public class MainCardViewActivity extends AppCompatActivity {
 
-    private CardView cardViewStockAmount;
+    //region members
     public String token;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private Bundle testToken;
+    //endregion
+
+    //region overriden methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +28,22 @@ public class MainCardViewActivity extends AppCompatActivity {
         getExtras();
         events();
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        this.finish();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+
+    }
+    //endregion
+
+    //region private methods
     private void getExtras() {
         Intent intent = getIntent();
         token = intent.getStringExtra("TOKEN");
@@ -42,17 +60,5 @@ public class MainCardViewActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
     }
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        this.finish();
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-
-    }
+    //endregion
 }

@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class SalesDetailActivity extends AppCompatActivity {
+    //region members
     private Integer IOCode;
     private ListView selectedProductListView;
     private Button confirmButton;
@@ -48,6 +49,9 @@ public class SalesDetailActivity extends AppCompatActivity {
     private Double totalPrice;
     private static String apiUrl;
     private static final String TAG = "SalesDetailActivity";
+    //endregion
+
+    //region overriden methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +62,9 @@ public class SalesDetailActivity extends AppCompatActivity {
         initialize();
         events();
     }
+    //endregion
+
+    //region private methods
     private void getSharedPreferences(){
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         String savedIpAddress = prefs.getString("ipAddress", "");
@@ -194,4 +201,5 @@ public class SalesDetailActivity extends AppCompatActivity {
             }
         }
     }
+    //endregion
 }
