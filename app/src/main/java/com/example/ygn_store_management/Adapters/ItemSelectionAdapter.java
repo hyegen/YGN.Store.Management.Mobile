@@ -50,9 +50,9 @@ public class ItemSelectionAdapter extends RecyclerView.Adapter<ItemSelectionAdap
         }
 
         public void bind(ItemSelectionDto product) {
-            tvCode.setText(product.getCode());
-            tvName.setText(product.getName());
-            tvAmount.setText("Miktar: " + product.getAmount());
+            tvCode.setText(product.getItemCode());
+            tvName.setText(product.getItemName());
+            tvAmount.setText("Miktar: " + product.getItemAmount());
         }
     }
 }

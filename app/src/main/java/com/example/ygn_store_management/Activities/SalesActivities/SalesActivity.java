@@ -1,7 +1,10 @@
 package com.example.ygn_store_management.Activities.SalesActivities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -13,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ygn_store_management.Activities.DialogActivities.SalesAmountDialogActivity;
 import com.example.ygn_store_management.Adapters.ItemSelectionAdapter;
+import com.example.ygn_store_management.Interfaces.ItemSelectionService;
+import com.example.ygn_store_management.Managers.ApiUtils;
 import com.example.ygn_store_management.Models.Dtos.ItemSelectionDto;
 import com.example.ygn_store_management.R;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -21,7 +26,13 @@ import com.google.zxing.integration.android.IntentResult;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 public class SalesActivity extends AppCompatActivity {
+    private static String apiUrl;
     private EditText etSearch;
     private ImageView ivCamera;
     private RecyclerView recyclerViewItems;
@@ -33,7 +44,7 @@ public class SalesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales);
-
+        getSharedPreferences();
         etSearch = findViewById(R.id.et_search);
         ivCamera = findViewById(R.id.iv_camera);
         recyclerViewItems = findViewById(R.id.rv_products);
@@ -52,6 +63,11 @@ public class SalesActivity extends AppCompatActivity {
             completeOrder();
         });
     }
+    private void getSharedPreferences() {
+        SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
+        String savedIpAddress = prefs.getString("ipAddress", "");
+        apiUrl = "http://" + savedIpAddress;
+    }
     private void startQrScanner() {
         IntentIntegrator integrator = new IntentIntegrator(this);
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
@@ -59,15 +75,30 @@ public class SalesActivity extends AppCompatActivity {
         integrator.initiateScan();
     }
     private void fetchItemDetails(String qrCode) {
+        
+            Retrofit retrofit = ApiUtils.InitRequestWithoutToken(apiUrl);
+            ItemSelectionService apiService = retrofit.create(ItemSelectionService.class);
 
-        //TO DO: Web Servisten qrCode'a göre ürün detayı çekilecek..
-        ItemSelectionDto item = new ItemSelectionDto(qrCode, qrCode, 50.0);
+            Call<ItemSelectionDto> call = apiService.GetItemByItemCode(qrCode);
+            call.enqueue(new Callback<ItemSelectionDto>() {
+                @Override
+                public void onResponse(Call<ItemSelectionDto> call, Response<ItemSelectionDto> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        ItemSelectionDto item = response.body();
+                        if (item != null) {
+                            openSalesAmountDialog(item);
+                        }
+                    }
+                    else {
+                        Toast.makeText(SalesActivity.this, "Sipariş Numarası veya Bilgilerinizi Kontrol Ediniz.", Toast.LENGTH_SHORT).show();
+                    }
+                }
 
-        if(isItemCodeExists(qrCode)){
-            Toast.makeText(this, qrCode+" "+"Kodlu Ürün Zaten Eklenmiş", Toast.LENGTH_SHORT).show();
-        }else{
-            openSalesAmountDialog(item);
-        }
+                @Override
+                public void onFailure(Call<ItemSelectionDto> call, Throwable t) {
+                    Toast.makeText(SalesActivity.this, "Sipariş Numarası veya Bilgilerinizi Kontrol Ediniz.", Toast.LENGTH_SHORT).show();
+                }
+            });
     }
     private void openSalesAmountDialog(ItemSelectionDto item) {
         Intent intent = new Intent(this, SalesAmountDialogActivity.class);
@@ -87,20 +118,29 @@ public class SalesActivity extends AppCompatActivity {
                 Toast.makeText(this, "QR kod okunamadı", Toast.LENGTH_SHORT).show();
             }
         } else {
+            ItemSelectionDto product = (ItemSelectionDto) data.getSerializableExtra(SalesAmountDialogActivity.EXTRA_ITEM);
             if (requestCode == REQUEST_CODE_SALES_AMOUNT && resultCode == RESULT_OK) {
-                ItemSelectionDto item = (ItemSelectionDto) data.getSerializableExtra(SalesAmountDialogActivity.EXTRA_ITEM);
+
+                if(!isItemCodeExists(product.getItemCode())){
                     int amount = data.getIntExtra(SalesAmountDialogActivity.EXTRA_AMOUNT, 0);
-                    if (item != null) {
-                        item.setAmount(amount);
-                        itemList.add(item);
+                    if (product != null) {
+                        product.setItemAmount(amount);
+                        itemList.add(product);
                         itemSelectionAdapter.notifyDataSetChanged();
                     }
+                }
+                else {
+                    Toast.makeText(this, product.getItemCode()+" "+"Kodlu Ürün Zaten Eklenmiş", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                Toast.makeText(this, "Aynı Ürün Zaten Eklenmiş. Başka ürün ekleyiniz.", Toast.LENGTH_SHORT).show();
             }
         }
     }
     private boolean isItemCodeExists(String itemCode) {
         for (ItemSelectionDto item : itemList) {
-            if (item.getCode().equals(itemCode)) {
+            if (item.getItemCode().equals(itemCode)) {
                 return true;
             }
         }

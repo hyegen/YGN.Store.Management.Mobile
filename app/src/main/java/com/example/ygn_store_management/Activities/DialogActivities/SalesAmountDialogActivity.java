@@ -35,7 +35,7 @@ public class SalesAmountDialogActivity extends AppCompatActivity {
         Button btnCancel = findViewById(R.id.btn_cancel);
 
         if (itemSelectionDto != null) {
-            tvProductName.setText(itemSelectionDto.getName());
+            tvProductName.setText(itemSelectionDto.getItemName());
         }
 
         btnOk.setOnClickListener(v -> {

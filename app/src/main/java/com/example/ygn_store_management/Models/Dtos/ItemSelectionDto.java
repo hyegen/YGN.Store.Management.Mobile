@@ -3,35 +3,35 @@ package com.example.ygn_store_management.Models.Dtos;
 import java.io.Serializable;
 
 public class ItemSelectionDto implements Serializable {
-    private String name;
-    private String code;
-    private double price;
-    private int amount;
+    private String ItemCode;
+    private String ItemName;
+    private double ItemPrice;
+    private int ItemAmount;
 
     public ItemSelectionDto(String name, String code, double price) {
-        this.name = name;
-        this.code = code;
-        this.price = price;
-        this.amount = 0;
+        this.ItemCode = code;
+        this.ItemName = name;
+        this.ItemPrice = price;
+        this.ItemAmount = 0;
     }
 
-    public String getName() {
-        return name;
+    public String getItemName() {
+        return ItemName;
     }
 
-    public String getCode() {
-        return code;
+    public String getItemCode() {
+        return ItemCode;
     }
 
-    public double getPrice() {
-        return price;
+    public double getItemPrice() {
+        return ItemPrice;
     }
 
-    public int getAmount() {
-        return amount;
+    public int getItemAmount() {
+        return ItemAmount;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setItemAmount(int amount) {
+        this.ItemAmount = amount;
     }
 }
