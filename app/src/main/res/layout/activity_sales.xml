@@ -1,0 +1,49 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Üst Kısım -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Ürün Ara"
+            android:inputType="text" />
+
+        <ImageView
+            android:id="@+id/iv_camera"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/camera_for_barcode"
+            android:contentDescription="Kamera"
+            android:padding="8dp" />
+    </LinearLayout>
+
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_products"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingTop="16dp" />
+
+    <!-- Siparişi Tamamla Butonu -->
+    <Button
+        android:id="@+id/btn_complete_order"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Siparişi Tamamla"
+        android:backgroundTint="@color/custom_oranage"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="16dp" />
+</LinearLayout>

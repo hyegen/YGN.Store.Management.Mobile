@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.example.ygn_store_management.Activities.MainActivities.MainCardViewActivity;
 import com.example.ygn_store_management.Activities.ReportActivities.GeneralReportActivities.ReportStockAmountActivity;
 import com.example.ygn_store_management.Activities.ReportActivities.SalesReports.ReportSalesDetailByClientDetail;
+import com.example.ygn_store_management.Activities.SalesActivities.SalesActivity;
 import com.example.ygn_store_management.R;
 
 public class FragmentOrders extends Fragment {
@@ -43,8 +44,8 @@ public class FragmentOrders extends Fragment {
         cardViewSales.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(requireActivity(), ReportStockAmountActivity.class);
-                intent.putExtra("TOKEN", _currentToken);
+                Intent intent = new Intent(requireActivity(), SalesActivity.class);
+               // intent.putExtra("TOKEN", _currentToken);
                 startActivity(intent);
             }
         });
