@@ -21,26 +21,34 @@ import com.example.ygn_store_management.Activities.ReportActivities.SalesReports
 import com.example.ygn_store_management.R;
 
 public class FragmentReports extends Fragment {
+    CardView cardViewStockAmount;
+    CardView cardViewSalesDetailByClientDetail;
+    CardView cardViewOrderQuery;
+    CardView cardViewPurchasingDetailByClientDetail;
+    CardView cardViewItemInformation;
     private String _currentToken;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        MainCardViewActivity mainCardViewActivity= (MainCardViewActivity) getActivity();
-        _currentToken = mainCardViewActivity.token;
+        setToken();
 
         View view = inflater.inflate(R.layout.fragment_reports, container, false);
+        cardViewStockAmount = view.findViewById(R.id.cardViewStockAmount);
+        cardViewSalesDetailByClientDetail = view.findViewById(R.id.cardViewSalesDetailByClientDetail);
+        cardViewOrderQuery = view.findViewById(R.id.cardViewOrderQuery);
+        cardViewPurchasingDetailByClientDetail = view.findViewById(R.id.cardViewPurchasingDetailByClientDetail);
+        cardViewItemInformation = view.findViewById(R.id.cardViewItemInformation);
+        events();
 
-        CardView cardViewStockAmount = view.findViewById(R.id.cardViewStockAmount);
-        CardView cardViewSalesDetailByClientDetail = view.findViewById(R.id.cardViewSalesDetailByClientDetail);
-        CardView cardViewOrderQuery = view.findViewById(R.id.cardViewOrderQuery);
-        CardView cardViewPurchasingDetailByClientDetail = view.findViewById(R.id.cardViewPurchasingDetailByClientDetail);
-        CardView cardViewItemInformation = view.findViewById(R.id.cardViewItemInformation);
-
+        return view;
+    }
+    private void events(){
         cardViewStockAmount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +89,10 @@ public class FragmentReports extends Fragment {
                 startActivity(intent);
             }
         });
-        return view;
+    }
+    private void setToken(){
+        MainCardViewActivity mainCardViewActivity = (MainCardViewActivity) getActivity();
+        _currentToken = mainCardViewActivity.token;
     }
 }
+
