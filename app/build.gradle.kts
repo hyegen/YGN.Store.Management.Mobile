@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.ygn_store_management"
+    namespace = "com.ygn.ygn_store_management"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.ygn_store_management"
+        applicationId = "com.ygn.ygn_store_management"
         minSdk = 28
         targetSdk = 34
         versionCode = 1
