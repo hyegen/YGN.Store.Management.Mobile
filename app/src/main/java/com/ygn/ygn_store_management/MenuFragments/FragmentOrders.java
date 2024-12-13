@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ygn.ygn_store_management.Activities.DialogActivities.ClientSelectionDialogActivity;
 import com.ygn.ygn_store_management.Activities.MainActivities.MainCardViewActivity;
 import com.ygn.ygn_store_management.Activities.ReportActivities.SalesReports.ReportSalesDetailByClientDetail;
 import com.ygn.ygn_store_management.Activities.SalesActivities.SalesActivity;
@@ -43,9 +44,16 @@ public class FragmentOrders extends Fragment {
         cardViewSales.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                /*Intent clientSelectionIntent = new Intent(requireActivity(), ClientSelectionDialogActivity.class);
+                clientSelectionIntent.putExtra("TOKEN",_currentToken);
+                clientSelectionIntent.putExtra("IOCode",1);
+                startActivity(clientSelectionIntent);*/
+
                 Intent intent = new Intent(requireActivity(), SalesActivity.class);
-               // intent.putExtra("TOKEN", _currentToken);
+                intent.putExtra("TOKEN", _currentToken);
                 startActivity(intent);
+
             }
         });
         cardViewPurchasing.setOnClickListener(new View.OnClickListener() {

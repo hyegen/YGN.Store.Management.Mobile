@@ -1,41 +1,47 @@
 package com.ygn.ygn_store_management.Activities.DialogActivities;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.ygn.ygn_store_management.Activities.SalesActivities.SalesActivity;
+import com.ygn.ygn_store_management.Adapters.ClientSelectionAdapter;
+import com.ygn.ygn_store_management.Interfaces.ClientSelectionService;
+import com.ygn.ygn_store_management.Managers.ApiUtils;
+import com.ygn.ygn_store_management.Models.Dtos.ClientSelectionDto;
 import com.ygn.ygn_store_management.R;
-import com.ygn.ygn_store_management.Adapters.ClientAdapter;
 import com.ygn.ygn_store_management.Models.Client;
 
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class ClientSelectionDialogActivity extends AppCompatActivity {
 
     //region members
     private Integer IOCode;
+    private String _currentToken;
     private ArrayList<String> clients = new ArrayList<>();
     private static String apiUrl;
     private static final String TAG = "SalesDetailActivity";
     private ListView clientsListView;
+    private List<ClientSelectionDto> clientSelectionDtoList;
+    private ClientSelectionAdapter clientSelectionAdapter;
+    private RecyclerView recyclerViewClientSelection;
     //endregion
 
     //region overriden methods
@@ -44,40 +50,29 @@ public class ClientSelectionDialogActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_client_selection_dialog);
-        getExtras();
-        findViews();
         getSharedPreferences();
-        initialize();
+        findViews();
+        setMembers();
         events();
+        getExtras();
+        initialize();
+
     }
     //endregion
 
     //region private methods
     private void getExtras() {
         IOCode = getIntent().getIntExtra("IOCode",-1);
+        _currentToken = getIntent().getStringExtra("TOKEN");
     }
     private void events() {
-        clientsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Client client = (Client) parent.getItemAtPosition(position);
 
-                int clientId = client.getClientId();
-                String clientDescription = client.getClientCodeAndNameAndSurname();
-
-                Intent intent = new Intent(ClientSelectionDialogActivity.this, ProductSelectionDialogActivity.class);
-                intent.putExtra("selectedClientId", clientId);
-                intent.putExtra("ClientCodeAndNameAndSurname", clientDescription);
-                intent.putExtra("IOCode", IOCode);
-
-                startActivity(intent);
-            }
-        });
     }
-    private void startProductSelectionActivity() {
-        Intent intent = new Intent(this, ProductSelectionDialogActivity.class);
-        intent.putExtra("IOCode", IOCode);
-        startActivityForResult(intent, 1); // Request code 1 for product selection
+    private void setMembers(){
+        recyclerViewClientSelection.setLayoutManager(new LinearLayoutManager(this));
+        clientSelectionDtoList = new ArrayList<>();
+        clientSelectionAdapter = new ClientSelectionAdapter(clientSelectionDtoList);
+        recyclerViewClientSelection.setAdapter(clientSelectionAdapter);
     }
     private void getSharedPreferences() {
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
@@ -85,58 +80,54 @@ public class ClientSelectionDialogActivity extends AppCompatActivity {
         apiUrl = "http://" + savedIpAddress;
     }
     private void initialize() {
-        new fetchClients().execute();
+        GetAllClient();
     }
     private void findViews() {
-        clientsListView = findViewById(R.id.clientSelectionListViewTest);
-    }
-    private class fetchClients extends AsyncTask<Void, Void, String> {
-        @Override
-        protected String doInBackground(Void... voids) {
-            String apiRoute = "/api/getAllClientsByCodeAndNameAndSurname";
-            try {
-                URL url = new URL(apiUrl + apiRoute);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String line;
-                StringBuilder response = new StringBuilder();
-                while ((line = reader.readLine()) != null) {
-                    response.append(line);
-                }
+        recyclerViewClientSelection=findViewById(R.id.recyclerViewClientSelection);
 
-                JSONArray jsonArray = new JSONArray(response.toString());
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    String data = jsonArray.getString(i);
-                    clients.add(data);
+    }
+    private void GetAllClient(){
+        try {
+            Retrofit retrofit = ApiUtils.InitRequestWithoutToken(apiUrl);
+            ClientSelectionService apiService = retrofit.create(ClientSelectionService.class);
+
+          /*  pleaseWait = new ProgressDialog(ReportPurchasingDetailByClientDetail.this);
+            pleaseWait.setMessage("Lütfen Bekleyiniz");
+            pleaseWait.setTitle("Yükleniyor...");
+            pleaseWait.show();*/
+        try {
+            Call<List<ClientSelectionDto>> call = apiService.GetAllClient();
+            call.enqueue(new Callback<List<ClientSelectionDto>>() {
+                @Override
+                public void onResponse(Call<List<ClientSelectionDto>> call, Response<List<ClientSelectionDto>> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        // pleaseWait.dismiss();
+                        clientSelectionAdapter = new ClientSelectionAdapter(response.body());
+                        recyclerViewClientSelection.setAdapter(clientSelectionAdapter);
+                    }
+                    else{
+                        Toast.makeText(ClientSelectionDialogActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                        // pleaseWait.dismiss();
+                    }
                 }
-            } catch (Exception e) {
-                Log.e(TAG, "Hata: " + e.getMessage());
-            }
-            return clients.toString();
+                @Override
+                public void onFailure(Call<List<ClientSelectionDto>> call, Throwable t) {
+                    Toast.makeText(ClientSelectionDialogActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    //pleaseWait.dismiss();
+                }
+            });
+        }catch (Exception ex)
+        {
+
         }
 
-        @SuppressLint("ResourceType")
-        @Override
-        protected void onPostExecute(String jsonData) {
-            try {
-                ArrayList<Client> clients = new ArrayList<>();
-                JSONArray jsonArray = new JSONArray(jsonData);
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    Client client = new Client();
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    client.ClientId = Integer.valueOf(jsonObject.getString("ClientId"));
-                    client.ClientCodeAndNameAndSurname = jsonObject.getString("ClientCodeAndNameAndSurname");
-                    clients.add(client);
-                }
-                ClientAdapter adapter = new ClientAdapter(ClientSelectionDialogActivity.this, R.layout.adapter_client_selection, clients);
-                clientsListView.setAdapter(adapter);
-                clientsListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-                clientsListView.setItemsCanFocus(false);
 
-            } catch (JSONException e) {
-                Log.e(TAG, "Hata: " + e.getMessage());
-            }
+           /* if (swipeRefreshLayout.isRefreshing()){
+                swipeRefreshLayout.setRefreshing(false);
+            }*/
+        } catch (Exception ex) {
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            //pleaseWait.dismiss();
         }
     }
     //endregion

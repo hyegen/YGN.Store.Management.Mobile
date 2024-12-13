@@ -30,6 +30,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class SalesActivity extends AppCompatActivity {
+    private String _currentToken;
+    private Integer _selectedClientId;
+    private String _clientCodeAndNameAndSurname;
+    private Integer _ioCode;
+
     private static String apiUrl;
     private EditText etSearch;
     private ImageView ivCamera;
@@ -43,28 +48,42 @@ public class SalesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales);
         getSharedPreferences();
-        etSearch = findViewById(R.id.et_search);
-        ivCamera = findViewById(R.id.iv_camera);
-        recyclerViewItems = findViewById(R.id.rv_products);
-        btnCompleteOrder = findViewById(R.id.btn_complete_order);
-
-        itemSelectionAdapter = new ItemSelectionAdapter(itemList);
-        recyclerViewItems.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewItems
-                .setAdapter(itemSelectionAdapter);
-
-        ivCamera.setOnClickListener(v -> {
-            startQrScanner();
-        });
-
-        btnCompleteOrder.setOnClickListener(v -> {
-            completeOrder();
-        });
+        getExtras();
+        findViews();
+        initialize();
+        events();
     }
     private void getSharedPreferences() {
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         String savedIpAddress = prefs.getString("ipAddress", "");
         apiUrl = "http://" + savedIpAddress;
+    }
+    private void getExtras(){
+        _currentToken = getIntent().getStringExtra("TOKEN");
+        _selectedClientId = getIntent().getIntExtra("selectedClientId",-1);
+        _clientCodeAndNameAndSurname = getIntent().getStringExtra("ClientCodeAndNameAndSurname");
+        _ioCode = getIntent().getIntExtra("IOCode",-1);
+    }
+    private void findViews()
+    {
+        etSearch = findViewById(R.id.et_search);
+        ivCamera = findViewById(R.id.iv_camera);
+        recyclerViewItems = findViewById(R.id.rv_products);
+        btnCompleteOrder = findViewById(R.id.btn_complete_order);
+    }
+    private void events(){
+        ivCamera.setOnClickListener(v -> {
+            startQrScanner();
+        });
+        btnCompleteOrder.setOnClickListener(v -> {
+            completeOrder();
+        });
+    }
+    private void initialize(){
+        itemSelectionAdapter = new ItemSelectionAdapter(itemList);
+        recyclerViewItems.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewItems
+                .setAdapter(itemSelectionAdapter);
     }
     private void startQrScanner() {
         IntentIntegrator integrator = new IntentIntegrator(this);
@@ -103,39 +122,31 @@ public class SalesActivity extends AppCompatActivity {
         intent.putExtra(SalesAmountDialogActivity.EXTRA_ITEM, item);
         startActivityForResult(intent, REQUEST_CODE_SALES_AMOUNT);
     }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+   @Override
+   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+       super.onActivityResult(requestCode, resultCode, data);
 
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (result != null) {
-            if (result.getContents() != null) {
-                String qrCode = result.getContents();
-                fetchItemDetails(qrCode);
-            } else {
-                Toast.makeText(this, "QR kod okunamadı", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            ItemSelectionDto product = (ItemSelectionDto) data.getSerializableExtra(SalesAmountDialogActivity.EXTRA_ITEM);
-            if (requestCode == REQUEST_CODE_SALES_AMOUNT && resultCode == RESULT_OK) {
+       IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+       if (result != null && result.getContents() != null) {
+           String qrCode = result.getContents();
+           if (isItemCodeExists(qrCode)) {
+               Toast.makeText(this, "Ürün Zaten Eklenmiş. Başka ürün ekleyiniz", Toast.LENGTH_SHORT).show();
+               return;
+           }
+           fetchItemDetails(qrCode);
+       } else if (requestCode == REQUEST_CODE_SALES_AMOUNT && resultCode == RESULT_OK) {
+           ItemSelectionDto product = (ItemSelectionDto) data.getSerializableExtra(SalesAmountDialogActivity.EXTRA_ITEM);
+           if (product != null) {
+               int amount = data.getIntExtra(SalesAmountDialogActivity.EXTRA_AMOUNT, 0);
+               product.setItemAmount(amount);
+               itemList.add(product);
+               itemSelectionAdapter.notifyDataSetChanged();
+           }
+       } else {
+           Toast.makeText(this, "Tarama başarısız. Lütfen tekrar deneyin.", Toast.LENGTH_SHORT).show();
+       }
+   }
 
-                if(!isItemCodeExists(product.getItemCode())){
-                    int amount = data.getIntExtra(SalesAmountDialogActivity.EXTRA_AMOUNT, 0);
-                    if (product != null) {
-                        product.setItemAmount(amount);
-                        itemList.add(product);
-                        itemSelectionAdapter.notifyDataSetChanged();
-                    }
-                }
-                else {
-                    Toast.makeText(this, product.getItemCode()+" "+"Kodlu Ürün Zaten Eklenmiş", Toast.LENGTH_SHORT).show();
-                }
-            }
-            else{
-                Toast.makeText(this, "Aynı Ürün Zaten Eklenmiş. Başka ürün ekleyiniz.", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
     private boolean isItemCodeExists(String itemCode) {
         for (ItemSelectionDto item : itemList) {
             if (item.getItemCode().equals(itemCode)) {
