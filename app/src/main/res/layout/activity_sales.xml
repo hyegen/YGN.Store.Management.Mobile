@@ -29,7 +29,6 @@
             android:padding="8dp" />
     </LinearLayout>
 
-    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_products"
         android:layout_width="match_parent"
@@ -37,7 +36,6 @@
         android:layout_weight="1"
         android:paddingTop="16dp" />
 
-    <!-- Siparişi Tamamla Butonu -->
     <Button
         android:id="@+id/btn_complete_order"
         android:layout_width="match_parent"
