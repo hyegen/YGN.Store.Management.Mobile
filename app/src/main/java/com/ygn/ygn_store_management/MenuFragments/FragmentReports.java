@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ygn.ygn_store_management.Activities.MainActivities.MainCardViewActivity;
+import com.ygn.ygn_store_management.Activities.ReportActivities.GeneralReportActivities.ReportCashProceedByClientDetailActivity;
 import com.ygn.ygn_store_management.Activities.ReportActivities.GeneralReportActivities.ReportGeneralSalesAndPurchasing;
 import com.ygn.ygn_store_management.Activities.ReportActivities.GeneralReportActivities.ReportItemInformationActivity;
 import com.ygn.ygn_store_management.Activities.ReportActivities.GeneralReportActivities.ReportStockAmountActivity;
@@ -26,6 +27,7 @@ public class FragmentReports extends Fragment {
     CardView cardViewOrderQuery;
     CardView cardViewPurchasingDetailByClientDetail;
     CardView cardViewItemInformation;
+    CardView cardViewCashProceedClientDetail;
     private String _currentToken;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,6 +46,7 @@ public class FragmentReports extends Fragment {
         cardViewOrderQuery = view.findViewById(R.id.cardViewOrderQuery);
         cardViewPurchasingDetailByClientDetail = view.findViewById(R.id.cardViewPurchasingDetailByClientDetail);
         cardViewItemInformation = view.findViewById(R.id.cardViewItemInformation);
+        cardViewCashProceedClientDetail = view.findViewById(R.id.cardViewCashProceedByClientDetail);
         events();
 
         return view;
@@ -85,6 +88,14 @@ public class FragmentReports extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(requireActivity(), ReportItemInformationActivity.class);
+                intent.putExtra("TOKEN", _currentToken);
+                startActivity(intent);
+            }
+        });
+        cardViewCashProceedClientDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireActivity(), ReportCashProceedByClientDetailActivity.class);
                 intent.putExtra("TOKEN", _currentToken);
                 startActivity(intent);
             }

@@ -104,7 +104,7 @@
                         android:paddingBottom="3dp">
 
                         <TextView
-                            android:id="@+id/txtOrderFicheNumber"
+                            android:id="@+id/txtId"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

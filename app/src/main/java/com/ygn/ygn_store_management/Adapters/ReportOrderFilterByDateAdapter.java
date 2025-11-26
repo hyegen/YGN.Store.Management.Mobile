@@ -43,7 +43,7 @@ public class ReportOrderFilterByDateAdapter extends ArrayAdapter<OrderFilterByDa
         LayoutInflater inflater = LayoutInflater.from(context);
         convertView = inflater.inflate(resource,parent,false);
 
-        TextView txtOrderFicheNumber = convertView.findViewById(R.id.txtOrderFicheNumber);
+        TextView txtOrderFicheNumber = convertView.findViewById(R.id.txtId);
         TextView txtClientName = convertView.findViewById(R.id.txtClientName);
         TextView txtClientSurname = convertView.findViewById(R.id.txtClientSurname);
         TextView txtFirmDescription = convertView.findViewById(R.id.txtFirmDescription);

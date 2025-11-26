@@ -13,6 +13,7 @@
     <string name="orderfiche_number">Sipariş Numarası</string>
     <string name="client">Cari</string>
     <string name="report_item_information">Ürün Sorgula</string>
+    <string name="report_cashproceed_client_detail">Tahsilatlar</string>
     <string name="sales_card_view">Satış</string>
     <string name="purchasing_card_view">Satınalma</string>
     <!-- TODO: Remove or change this placeholder text -->

@@ -2,30 +2,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:paddingTop="3dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="3dp"
-    android:paddingBottom="3dp">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
-
-    <TextView
-        android:id="@+id/txtClientId"
-        android:layout_width="0dp"
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:maxWidth="48dp"
-         android:text="ClientId"
-         android:textStyle="bold"
-         android:singleLine="true" />
+        android:layout_margin="3dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="4dp"
+        android:id="@+id/cardViewClientCashProceed"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            >
+                 <TextView
+                     android:id="@+id/txtClientId"
+                     android:layout_width="0dp"
+                     android:layout_height="wrap_content"
+                     android:layout_weight="1"
+                     android:maxWidth="48dp"
+                      android:text="ClientId"
+                      android:textStyle="bold"
+                      android:singleLine="true" />
 
-    <TextView
-        android:id="@+id/txtClientDescription"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:text="ClientCodeAndNameAndSurname" />
-
+                 <TextView
+                     android:id="@+id/txtClientDescription"
+                     android:layout_width="0dp"
+                     android:layout_height="wrap_content"
+                     android:layout_weight="2"
+                     android:text="ClientCodeAndNameAndSurname" />
+                     </LinearLayout>
+                 </androidx.cardview.widget.CardView>
 
 </LinearLayout>

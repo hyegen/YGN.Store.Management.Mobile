@@ -27,10 +27,10 @@
             >
 
             <TextView
-                android:id="@+id/txtId"
+                android:id="@+id/txtReportSpendingClientDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Order Fiche Number"
+                android:text="Client Desc"
                 android:textStyle="bold"
                 />
 

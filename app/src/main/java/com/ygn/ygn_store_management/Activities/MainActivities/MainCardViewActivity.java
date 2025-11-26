@@ -37,8 +37,6 @@ public class MainCardViewActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-
     }
     //endregion
 

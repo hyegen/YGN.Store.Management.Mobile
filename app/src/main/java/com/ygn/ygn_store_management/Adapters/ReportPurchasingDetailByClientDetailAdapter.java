@@ -73,7 +73,7 @@ public class ReportPurchasingDetailByClientDetailAdapter extends RecyclerView.Ad
 
         public ViewHolder(@NonNull View purchasingReportView) {
             super(purchasingReportView);
-            orderFicheTextView = purchasingReportView.findViewById(R.id.txtOrderFicheNumber);
+            orderFicheTextView = purchasingReportView.findViewById(R.id.txtId);
             clientNameTextView = purchasingReportView.findViewById(R.id.txtClientName);
             clientSurNameTextView = purchasingReportView.findViewById(R.id.txtClientSurname);
             firmDescriptionTextView = purchasingReportView.findViewById(R.id.txtFirmDescription);

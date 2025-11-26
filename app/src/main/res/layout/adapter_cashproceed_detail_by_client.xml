@@ -31,14 +31,14 @@
                     android:id="@+id/txtId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Order Fiche Number"
-                    android:textStyle="bold"/>
+                    android:text="Id"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txtClientName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Client Name" />
+                    android:text="Client Desc" />
                 <TextView
                     android:id="@+id/txtClientSurname"
                     android:layout_width="match_parent"

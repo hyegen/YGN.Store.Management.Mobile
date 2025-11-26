@@ -19,12 +19,12 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0:
-                return new FragmentOrders();
+          //  case 0:
+           //     return new FragmentOrders();
             case 1:
                 return new FragmentReports();
-            case 2:
-                return new FragmentSettings();
+          //  case 2:
+          //      return new FragmentSettings();
             default:
                 return new FragmentReports();
         }
@@ -32,18 +32,18 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 1;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
+           // case 0:
+            ///    return "Sipariş";
             case 0:
-                return "Sipariş";
-            case 1:
                 return "Raporlama";
-            case 2:
-                return "Ayarlar";
+         //  case 2:
+          //      return "Ayarlar";
             default:
                 return "";
         }

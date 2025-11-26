@@ -69,7 +69,7 @@ public class ReportItemInformationActivity extends AppCompatActivity {
     private void getSharedPreferences() {
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         String savedIpAddress = prefs.getString("ipAddress", "");
-        apiUrl = "http://" + savedIpAddress;
+        apiUrl = "https://" + savedIpAddress;
     }
     private void findViews(){
         itemImageView = findViewById(R.id.itemImageView);
