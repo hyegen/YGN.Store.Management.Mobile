@@ -16,6 +16,7 @@ import com.ygn.ygn_store_management.Activities.MainActivities.MainCardViewActivi
 import com.ygn.ygn_store_management.Activities.ReportActivities.GeneralReportActivities.ReportCashProceedByClientDetailActivity;
 import com.ygn.ygn_store_management.Activities.ReportActivities.GeneralReportActivities.ReportGeneralSalesAndPurchasing;
 import com.ygn.ygn_store_management.Activities.ReportActivities.GeneralReportActivities.ReportItemInformationActivity;
+import com.ygn.ygn_store_management.Activities.ReportActivities.GeneralReportActivities.ReportOrderFilterByDateActivity;
 import com.ygn.ygn_store_management.Activities.ReportActivities.GeneralReportActivities.ReportStockAmountActivity;
 import com.ygn.ygn_store_management.Activities.ReportActivities.PurchasingReports.ReportPurchasingDetailByClientDetail;
 import com.ygn.ygn_store_management.Activities.ReportActivities.SalesReports.ReportSalesDetailByClientDetail;
@@ -28,6 +29,7 @@ public class FragmentReports extends Fragment {
     CardView cardViewPurchasingDetailByClientDetail;
     CardView cardViewItemInformation;
     CardView cardViewCashProceedClientDetail;
+    CardView cardViewOrderFilterByDateReport;
     private String _currentToken;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,14 +41,16 @@ public class FragmentReports extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         setToken();
-
         View view = inflater.inflate(R.layout.fragment_reports, container, false);
+
+
         cardViewStockAmount = view.findViewById(R.id.cardViewStockAmount);
         cardViewSalesDetailByClientDetail = view.findViewById(R.id.cardViewSalesDetailByClientDetail);
         cardViewOrderQuery = view.findViewById(R.id.cardViewOrderQuery);
         cardViewPurchasingDetailByClientDetail = view.findViewById(R.id.cardViewPurchasingDetailByClientDetail);
         cardViewItemInformation = view.findViewById(R.id.cardViewItemInformation);
         cardViewCashProceedClientDetail = view.findViewById(R.id.cardViewCashProceedByClientDetail);
+        cardViewOrderFilterByDateReport = view.findViewById(R.id.cardViewOrderFilterByDateReport);
         events();
 
         return view;
@@ -96,6 +100,14 @@ public class FragmentReports extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(requireActivity(), ReportCashProceedByClientDetailActivity.class);
+                intent.putExtra("TOKEN", _currentToken);
+                startActivity(intent);
+            }
+        });
+        cardViewOrderFilterByDateReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireActivity(), ReportOrderFilterByDateActivity.class);
                 intent.putExtra("TOKEN", _currentToken);
                 startActivity(intent);
             }

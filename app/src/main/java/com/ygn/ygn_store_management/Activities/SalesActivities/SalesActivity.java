@@ -87,12 +87,15 @@ public class SalesActivity extends AppCompatActivity {
     }
     private void startQrScanner() {
         IntentIntegrator integrator = new IntentIntegrator(this);
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-        integrator.setPrompt("QR Kodu Tarayın");
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+        integrator.setPrompt("Barkodu okutun");
+        integrator.setBeepEnabled(true);
+        integrator.setOrientationLocked(true);
         integrator.initiateScan();
     }
+
     private void fetchItemDetails(String qrCode) {
-        
+
             Retrofit retrofit = ApiUtils.InitRequestWithoutToken(apiUrl);
             ItemSelectionService apiService = retrofit.create(ItemSelectionService.class);
 
@@ -122,30 +125,42 @@ public class SalesActivity extends AppCompatActivity {
         intent.putExtra(SalesAmountDialogActivity.EXTRA_ITEM, item);
         startActivityForResult(intent, REQUEST_CODE_SALES_AMOUNT);
     }
-   @Override
-   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-       super.onActivityResult(requestCode, resultCode, data);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-       IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-       if (result != null && result.getContents() != null) {
-           String qrCode = result.getContents();
-           if (isItemCodeExists(qrCode)) {
-               Toast.makeText(this, "Ürün Zaten Eklenmiş. Başka ürün ekleyiniz", Toast.LENGTH_SHORT).show();
-               return;
-           }
-           fetchItemDetails(qrCode);
-       } else if (requestCode == REQUEST_CODE_SALES_AMOUNT && resultCode == RESULT_OK) {
-           ItemSelectionDto product = (ItemSelectionDto) data.getSerializableExtra(SalesAmountDialogActivity.EXTRA_ITEM);
-           if (product != null) {
-               int amount = data.getIntExtra(SalesAmountDialogActivity.EXTRA_AMOUNT, 0);
-               product.setItemAmount(amount);
-               itemList.add(product);
-               itemSelectionAdapter.notifyDataSetChanged();
-           }
-       } else {
-           Toast.makeText(this, "Tarama başarısız. Lütfen tekrar deneyin.", Toast.LENGTH_SHORT).show();
-       }
-   }
+        // 🔹 1. Barkod sonucu
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            if (result.getContents() != null) {
+                String barcode = result.getContents();
+
+                if (isItemCodeExists(barcode)) {
+                    Toast.makeText(this, "Bu ürün zaten eklendi!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                fetchItemDetails(barcode);
+            }
+            return; // ❗ MUTLAKA
+        }
+
+        // 🔹 2. Dialog sonucu
+        if (requestCode == REQUEST_CODE_SALES_AMOUNT && resultCode == RESULT_OK && data != null) {
+
+            ItemSelectionDto item =
+                    (ItemSelectionDto) data.getSerializableExtra(SalesAmountDialogActivity.EXTRA_ITEM);
+
+            int amount = data.getIntExtra(SalesAmountDialogActivity.EXTRA_AMOUNT, 0);
+
+            if (item != null && amount > 0) {
+                item.setItemAmount(amount);
+                itemList.add(item);
+                itemSelectionAdapter.notifyItemInserted(itemList.size() - 1);
+            }
+        }
+    }
+
 
     private boolean isItemCodeExists(String itemCode) {
         for (ItemSelectionDto item : itemList) {

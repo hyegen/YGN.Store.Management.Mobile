@@ -25,7 +25,6 @@ public class MainCardViewActivity extends AppCompatActivity {
         findViews();
         initialize();
         getExtras();
-        events();
     }
     @Override
     public void onBackPressed() {
@@ -49,9 +48,7 @@ public class MainCardViewActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
     }
-    private void events(){
 
-    }
     private void initialize(){
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);

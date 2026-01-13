@@ -1,46 +1,23 @@
 package com.ygn.ygn_store_management.Models.ReportViews;
 
+import com.google.gson.annotations.SerializedName;
+
 public class OrderFilterByDate {
-    public String OrderFicheNumber;
-    public String ClientName;
-    public String ClientSurname;
-    public String FirmDescription;
-    public String Date_;
-    public Double TotalPrice;
+    @SerializedName("OrderFicheNumber")
+    public int orderFicheNumber;
 
-    public void setClientName(String clientName) {
-        this.ClientName = clientName;
-    }
-    public void setOrderFicheNumber(String orderFicheNumber) {
-        this.OrderFicheNumber = orderFicheNumber;
-    }
-    public void setClientSurname(String clientSurname) {
-        this.ClientSurname = clientSurname;
-    }
-    public void setFirmDescription(String firmDescription) {
-        this.FirmDescription = firmDescription;
-    }
-    public void setDate_(String date) {
-        this.Date_ = date;
-    }
-    public void setTotalPrice(String totalPrice) {
-        this.TotalPrice = Double.valueOf(totalPrice);
-    }
+    @SerializedName("ClientName")
+    public String clientName;
 
+    @SerializedName("ClientSurname")
+    public String clientSurname;
 
-    public String getClientName() {
-        return ClientName;
-    }
-    public String getOrderFicheNumber() {
-        return OrderFicheNumber;
-    }
-    public String getClientSurname() {
-        return ClientSurname;
-    }
-    public String getFirmDescription() {
-        return FirmDescription;
-    }
-    public String getDate_() {
-        return Date_;
-    }
+    @SerializedName("FirmDescription")
+    public String firmDescription;
+
+    @SerializedName("Date_")
+    public String date;
+
+    @SerializedName("TotalPrice")
+    public double totalPrice;
 }
