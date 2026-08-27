@@ -126,8 +126,8 @@ public class LoginActivity extends AppCompatActivity {
     private void getSharedPreferences() {
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
         String savedIpAddress = prefs.getString("ipAddress", "");
-       // apiUrl = "http://" + savedIpAddress;
-        apiUrl = "https://" + savedIpAddress;
+        apiUrl = "http://" + savedIpAddress;
+       // apiUrl = "https://" + savedIpAddress;
         if(savedIpAddress.isEmpty() || savedIpAddress==null){
             Toast.makeText(this, "Ayarlar Sayfasına Url Giriniz.", Toast.LENGTH_SHORT).show();
         }
