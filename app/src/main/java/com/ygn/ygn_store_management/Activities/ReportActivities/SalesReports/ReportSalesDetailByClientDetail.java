@@ -4,14 +4,19 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.ygn.ygn_store_management.Activities.ReportActivities.GeneralReportActivities.ReportGeneralSalesAndPurchasing;
 import com.ygn.ygn_store_management.Adapters.ReportSalesDetailByClientDetailAdapter;
 import com.ygn.ygn_store_management.Interfaces.ReportSalesDetailByClientDetailService;
 import com.ygn.ygn_store_management.Managers.ApiUtils;
@@ -39,6 +44,7 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
     private List<SalesDetailByClientDetail> salesDetailByClientDetailList;
     private ReportSalesDetailByClientDetailAdapter reportSalesDetailByClientDetailAdapter;
     private SearchView searchView;
+    private CardView reportCardView;
     //endregion
 
     //region overriden methods
@@ -104,6 +110,42 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
                 return false;
             }
         });
+
+        recyclerViewSalesDetailByClientDetail.addOnChildAttachStateChangeListener(
+                new RecyclerView.OnChildAttachStateChangeListener() {
+
+                    @Override
+                    public void onChildViewAttachedToWindow(@NonNull View view) {
+
+                        CardView cardOrder = view.findViewById(R.id.cardOrder);
+
+                        cardOrder.setOnLongClickListener(v -> {
+
+                            TextView txtId = view.findViewById(R.id.txtId);
+
+                            String orderFicheNumber = txtId.getText().toString();
+
+                            Intent intent = new Intent(
+                                    ReportSalesDetailByClientDetail.this,
+                                    ReportGeneralSalesAndPurchasing.class
+                            );
+
+                            intent.putExtra(
+                                    "OrderFicheNumber",
+                                    orderFicheNumber
+                            );
+
+                            startActivity(intent);
+
+                            return true;
+                        });
+                    }
+
+                    @Override
+                    public void onChildViewDetachedFromWindow(@NonNull View view) {
+                    }
+                }
+        );
     }
     private void initialize() {
         GetData();
@@ -112,6 +154,8 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout_report_sales_detail);
         recyclerViewSalesDetailByClientDetail = findViewById(R.id.recyclerViewSalesReport);
         searchView = findViewById(R.id.searchViewSales);
+        reportCardView=findViewById(R.id.cardOrder);
+
     }
     private void setMembers() {
         recyclerViewSalesDetailByClientDetail.setLayoutManager(new LinearLayoutManager(this));

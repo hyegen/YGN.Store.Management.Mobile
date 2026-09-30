@@ -37,6 +37,8 @@ public class ReportSalesDetailByClientDetailAdapter extends RecyclerView.Adapter
         holder.firmDescriptionTextView.setText(salesDetailByClientDetail.getFirmDescription());
         holder.dateTextView.setText(salesDetailByClientDetail.getDate_());
         holder.totalPriceTextView.setText(String.valueOf(salesDetailByClientDetail.getTotalPrice()));
+
+
     }
     @Override
     public int getItemCount() {

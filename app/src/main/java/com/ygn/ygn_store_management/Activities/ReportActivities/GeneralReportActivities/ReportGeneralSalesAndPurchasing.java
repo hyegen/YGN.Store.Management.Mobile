@@ -60,6 +60,8 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
     private ReportOrderLineInformationAdapter orderLineInformationAdapter;
     private RecyclerView recyclerViewOrderLine;
     private List<ReportOrderInformationLines> orderInformationLinesList;
+
+    private String _getCurrentOrderFicheNumber;
     //endregion
 
     //region overriden methods
@@ -73,6 +75,7 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
         initialize();
         setMembers();
         getExtras();
+        GetData();
     }
     @Override
     protected void onDestroy() {
@@ -118,6 +121,7 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
     private void getExtras() {
         Intent intent = getIntent();
         token = intent.getStringExtra("TOKEN");
+        _getCurrentOrderFicheNumber= intent.getStringExtra("OrderFicheNumber");
     }
     private void getSharedPreferences() {
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
@@ -212,7 +216,8 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
             pleaseWait.setTitle("Yükleniyor...");
             pleaseWait.show();
 
-            Call<OrderInformation> call = apiService.GetOrderDetailInformation(token,edtSearchOrder.getText().toString());
+            //Call<OrderInformation> call = apiService.GetOrderDetailInformation(token,edtSearchOrder.getText().toString());
+            Call<OrderInformation> call = apiService.GetOrderDetailInformationWithoutToken(_getCurrentOrderFicheNumber);
             call.enqueue(new Callback<OrderInformation>() {
                 @Override
                 public void onResponse(Call<OrderInformation> call, Response<OrderInformation> response) {
@@ -277,7 +282,14 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
         }
     }
     private boolean validateGetData(){
-        if (edtSearchOrder.getText().toString().isEmpty())
+      /*  if (edtSearchOrder.getText().toString().isEmpty())
+        {
+            Toast.makeText(ReportGeneralSalesAndPurchasing.this, "Sipariş No Giriniz.", Toast.LENGTH_SHORT).show();
+            setVisibleLinearLayout();
+            return false;
+        }*/
+
+        if (_getCurrentOrderFicheNumber.isEmpty())
         {
             Toast.makeText(ReportGeneralSalesAndPurchasing.this, "Sipariş No Giriniz.", Toast.LENGTH_SHORT).show();
             setVisibleLinearLayout();

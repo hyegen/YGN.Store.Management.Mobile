@@ -10,4 +10,7 @@ import retrofit2.http.Query;
 public interface OrderLineInformationService {
     @GET("/api/GetOrderDetailInformation")
     Call<OrderInformation> GetOrderDetailInformation(@Header("Authorization") String token, @Query("orderFicheNumber") String orderFicheNumber);
+
+    @GET("/api/GetOrderDetailInformation")
+    Call<OrderInformation> GetOrderDetailInformationWithoutToken(@Query("orderFicheNumber") String orderFicheNumber);
 }
