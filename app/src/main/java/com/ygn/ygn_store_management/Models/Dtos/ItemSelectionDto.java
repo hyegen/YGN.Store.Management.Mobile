@@ -3,10 +3,10 @@ package com.ygn.ygn_store_management.Models.Dtos;
 import java.io.Serializable;
 
 public class ItemSelectionDto implements Serializable {
-    private String ItemCode;
-    private String ItemName;
-    private double ItemPrice;
-    private int ItemAmount;
+    public String ItemCode;
+    public String ItemName;
+    public double ItemPrice;
+    public int ItemAmount;
 
     public ItemSelectionDto(String name, String code, double price) {
         this.ItemCode = code;

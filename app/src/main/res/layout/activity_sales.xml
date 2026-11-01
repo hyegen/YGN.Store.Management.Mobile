@@ -1,47 +1,84 @@
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="12dp">
 
-    <!-- Üst Kısım -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Yeni Sipariş"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:paddingBottom="12dp"/>
+
+
+    <TextView
+        android:id="@+id/txtOrderFicheNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:padding="10dp"
+        android:text="Fiş No: Yükleniyor..."
+        android:textColor="#333333"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+    <Spinner
+        android:id="@+id/spinnerClients"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/et_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Ürün Ara"
-            android:inputType="text" />
+            android:hint="Ürün kodu"
+            android:inputType="text"
+            android:singleLine="true"/>
 
-        <ImageView
-            android:id="@+id/iv_camera"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/camera_for_barcode"
-            android:contentDescription="Kamera"
-            android:padding="8dp" />
+        <Button
+            android:id="@+id/btnSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ara"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_products"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingTop="16dp" />
+        android:layout_weight="1"/>
+
+    <Button
+        android:id="@+id/btnDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tarih Seç"/>
+
+    <TextView
+        android:id="@+id/txtTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Toplam: 0,00 TL"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="end"
+        android:padding="12dp"/>
 
     <Button
         android:id="@+id/btn_complete_order"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Siparişi Tamamla"
-        android:backgroundTint="@color/custom_oranage"
-        android:textColor="@android:color/white"
-        android:layout_marginTop="16dp" />
+        android:text="Siparişi Kaydet"/>
+
 </LinearLayout>
