@@ -57,35 +57,26 @@ import retrofit2.Retrofit;
 
 
 public class SalesActivity extends AppCompatActivity {
-
     private String _currentToken;
     private Integer _selectedClientId;
     private String _clientCodeAndNameAndSurname;
     private Integer _ioCode;
-
     private static String apiUrl;
-
     private Spinner spinnerClients;
-
     private List<Client> clientList = new ArrayList<>();
-
     private ArrayAdapter<Client> clientAdapter;
     private EditText etSearch;
     private Button btnSearch, btnDate, btnCompleteOrder;
     private TextView txtTotal;
     private RecyclerView recyclerViewItems;
-
     private final List<Item> itemList = new ArrayList<>();
     private final Map<Integer, Integer> amounts = new HashMap<>();
     private TextView txtOrderFicheNumber;
     private String _orderFicheNumber = null;
     private final Map<Integer, Double> unitPrices = new HashMap<>();
     private SalesItemAdapter adapter;
-
     private Calendar selectedDate = Calendar.getInstance();
-
     private boolean isSaving = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,7 +91,6 @@ public class SalesActivity extends AppCompatActivity {
         fetchClients();
         fetchOrderFicheNumber();
     }
-
     private void getSharedPreferences() {
         SharedPreferences prefs =
                 getSharedPreferences("MY_PREFS", MODE_PRIVATE);
@@ -108,7 +98,6 @@ public class SalesActivity extends AppCompatActivity {
         String ip = prefs.getString("ipAddress", "");
         apiUrl = "https://" + ip;
     }
-
     private void getExtras() {
         _currentToken = getIntent().getStringExtra("TOKEN");
 
@@ -121,7 +110,6 @@ public class SalesActivity extends AppCompatActivity {
 
         _ioCode = getIntent().getIntExtra("IOCode", -1);
     }
-
     private void findViews() {
         spinnerClients = findViewById(R.id.spinnerClients);
         etSearch = findViewById(R.id.et_search);
@@ -131,8 +119,6 @@ public class SalesActivity extends AppCompatActivity {
         recyclerViewItems = findViewById(R.id.rv_products);
         btnCompleteOrder = findViewById(R.id.btn_complete_order);
     }
-
-
     private void initialize() {
         txtOrderFicheNumber =
                 findViewById(R.id.txtOrderFicheNumber);
@@ -161,8 +147,6 @@ public class SalesActivity extends AppCompatActivity {
 
 
     }
-
-
     private void events() {
 
         btnSearch.setOnClickListener(v -> searchItem());
@@ -210,7 +194,6 @@ public class SalesActivity extends AppCompatActivity {
 
         btnCompleteOrder.setOnClickListener(v -> completeOrder());
     }
-
     private void searchItem() {
 
         String itemCode =
@@ -257,9 +240,6 @@ public class SalesActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
-
     private void addItem(Item item) {
 
         for (Item existing : itemList) {
@@ -299,9 +279,6 @@ public class SalesActivity extends AppCompatActivity {
 
         updateTotal();
     }
-
-
-
     private double getUnitPrice(Item item) {
 
         Double price = (_ioCode != null && _ioCode == 1)
@@ -310,23 +287,6 @@ public class SalesActivity extends AppCompatActivity {
 
         return price == null ? 0 : price;
     }
-
-    private double calculateTotal() {
-
-        double total = 0;
-
-        for (Item item : itemList) {
-
-            int amount = amounts.containsKey(item.getId())
-                    ? amounts.get(item.getId()) : 0;
-
-            total += getUnitPrice(item) * amount;
-        }
-
-        return total;
-    }
-
-
     private void updateTotal() {
 
         double total = 0;
@@ -346,9 +306,6 @@ public class SalesActivity extends AppCompatActivity {
                 new Locale("tr", "TR"),
                 "Toplam: %,.2f TL", total));
     }
-
-
-
     private void selectDate() {
 
         int year = selectedDate.get(Calendar.YEAR);
@@ -385,8 +342,6 @@ public class SalesActivity extends AppCompatActivity {
 
         datePickerDialog.show();
     }
-
-
     private void updateDateButton() {
 
         SimpleDateFormat format =
@@ -396,7 +351,6 @@ public class SalesActivity extends AppCompatActivity {
         btnDate.setText(format.format(
                 selectedDate.getTime()));
     }
-
     private void completeOrder() {
 
         if (isSaving) return;
@@ -499,8 +453,6 @@ public class SalesActivity extends AppCompatActivity {
 
         saveOrder(order);
     }
-
-
     private void saveOrder(Order order) {
 
         Retrofit retrofit =
@@ -602,9 +554,6 @@ public class SalesActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
-
     private void fetchClients() {
 
         Retrofit retrofit =
@@ -693,7 +642,6 @@ public class SalesActivity extends AppCompatActivity {
                     }
                 });
     }
-
     private void fetchOrderFicheNumber() {
 
         Retrofit retrofit =

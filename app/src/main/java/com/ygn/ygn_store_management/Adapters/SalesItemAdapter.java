@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ygn.ygn_store_management.Models.Item;
 import com.ygn.ygn_store_management.R;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -81,7 +83,7 @@ public class SalesItemAdapter
             );
         } else {
             holder.itemView.setBackgroundColor(
-                    Color.parseColor("#F0F0F0")
+                    Color.parseColor("#D0D0D0")
             );
         }
         Item item = items.get(position);
@@ -108,8 +110,16 @@ public class SalesItemAdapter
                 ? unitPrices.get(itemId) : 0;
 
         holder.etAmount.setText(String.valueOf(amount));
+        //holder.etUnitPrice.setText(String.valueOf(price));
+
+        DecimalFormat decimalFormat = new DecimalFormat(
+                "0.##",
+                new DecimalFormatSymbols(new Locale("tr", "TR"))
+        );
+
         holder.etUnitPrice.setText(
-                String.valueOf(price));
+                decimalFormat.format(price)
+        );
 
         updateLineTotal(holder, amount, price);
 
