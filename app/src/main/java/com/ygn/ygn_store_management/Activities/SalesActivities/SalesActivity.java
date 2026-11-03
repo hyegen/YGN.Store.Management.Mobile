@@ -1,43 +1,37 @@
 
 package com.ygn.ygn_store_management.Activities.SalesActivities;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ygn.ygn_store_management.Activities.DialogActivities.SalesAmountDialogActivity;
-import com.ygn.ygn_store_management.Adapters.ItemSelectionAdapter;
 import com.ygn.ygn_store_management.Adapters.SalesItemAdapter;
 import com.ygn.ygn_store_management.Interfaces.ClientService;
-import com.ygn.ygn_store_management.Interfaces.ItemSelectionService;
 import com.ygn.ygn_store_management.Interfaces.ItemService;
 import com.ygn.ygn_store_management.Interfaces.OrderService;
 import com.ygn.ygn_store_management.Managers.ApiUtils;
 import com.ygn.ygn_store_management.Models.Client;
-import com.ygn.ygn_store_management.Models.Dtos.ItemSelectionDto;
 import com.ygn.ygn_store_management.Models.Item;
 import com.ygn.ygn_store_management.Models.Order;
 import com.ygn.ygn_store_management.Models.OrderLine;
 import com.ygn.ygn_store_management.R;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 
 import java.text.Collator;
 import java.text.SimpleDateFormat;
@@ -55,6 +49,26 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.pdf.PdfDocument;
+import android.os.CancellationSignal;
+import android.os.ParcelFileDescriptor;
+import android.print.PageRange;
+import android.print.PrintAttributes;
+import android.print.PrintDocumentAdapter;
+import android.print.PrintDocumentInfo;
+import android.print.PrintManager;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.NumberFormat;
+import java.util.Date;
 
 public class SalesActivity extends AppCompatActivity {
     private String _currentToken;
@@ -85,11 +99,16 @@ public class SalesActivity extends AppCompatActivity {
         getSharedPreferences();
         getExtras();
         findViews();
-
         initialize();
         events();
         fetchClients();
         fetchOrderFicheNumber();
+    }
+    @Override
+    public void onConfigurationChanged(
+            @NonNull Configuration newConfig) {
+
+        super.onConfigurationChanged(newConfig);
     }
     private void getSharedPreferences() {
         SharedPreferences prefs =
@@ -387,26 +406,26 @@ public class SalesActivity extends AppCompatActivity {
         );
 
         Order order = new Order();
-        order.OrderNumber = _orderFicheNumber;
+        order.setOrderNumber(_orderFicheNumber);
 
-        order.CreatedDate_ = orderDate;
-        order.ClientId = _selectedClientId;
-        order.IOCode = 2;
-        order.TransactionCode = 4;
+        order.setCreatedDate_(orderDate);
+        order.setClientId(_selectedClientId);
+        order.setIOCode(2);
+        order.setTransactionCode(4);
 
 
 
         // Geçici değerler: gerçek kullanıcı ve ödeme
         // bilgilerine göre güncellenecek.
-        order.OrderCreatedUserId = 1;
-        order.PaymentType = 1;
+        order.setOrderCreatedUserId(1);
+        order.setPaymentType(1);
 
-        order.HasTax = false;
-        order.TaxPercentage = 0;
-        order.isCompleted = false;
-        order.OrderNote = null;
+        order.setHasTax(false);
+        order.setTaxPercentage(0);
+        order.setCompleted(false);
+        order.setOrderNote(null);
 
-        order.OrderLines = new ArrayList<>();
+        order.setOrderLines(new ArrayList<>());
 
         double total = 0;
 
@@ -444,16 +463,17 @@ public class SalesActivity extends AppCompatActivity {
             line.TransactionCode = 4;
 
             line.CreatedDate_ = orderDate;
-            order.OrderLines.add(line);
+            order.getOrderLines().add(line);
 
             total += line.LineTotal;
         }
 
-        order.TotalPrice = total;
+        order.setTotalPrice(total);
 
-        saveOrder(order);
+       // saveOrder(order);
+        showSaveDialog(order);
     }
-    private void saveOrder(Order order) {
+/*    private void saveOrder(Order order) {
 
         Retrofit retrofit =
                 ApiUtils.InitRequestWithToken(
@@ -468,7 +488,7 @@ public class SalesActivity extends AppCompatActivity {
         service.saveOrder(_currentToken,order)
                 .enqueue(new Callback<ResponseBody>() {
 
-                    /*@Override
+                    *//*@Override
                     public void onResponse(
                             Call<ResponseBody> call,
                             Response<ResponseBody> response) {
@@ -494,7 +514,7 @@ public class SalesActivity extends AppCompatActivity {
                                     Toast.LENGTH_LONG).show();
                         }
                     }
-*/
+*//*
                     @Override
                     public void onResponse(
                             Call<ResponseBody> call,
@@ -553,7 +573,99 @@ public class SalesActivity extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
                     }
                 });
+    }*/
+
+
+
+
+
+    private void saveOrder(Order order, boolean printAfterSave) {
+
+        if (isSaving) return;
+
+        Retrofit retrofit =
+                ApiUtils.InitRequestWithToken(apiUrl, _currentToken);
+
+        OrderService service =
+                retrofit.create(OrderService.class);
+
+        isSaving = true;
+        btnCompleteOrder.setEnabled(false);
+
+        service.saveOrder(_currentToken, order)
+                .enqueue(new Callback<ResponseBody>() {
+
+                    @Override
+                    public void onResponse(
+                            Call<ResponseBody> call,
+                            Response<ResponseBody> response) {
+
+                        isSaving = false;
+                        btnCompleteOrder.setEnabled(true);
+
+                        if (response.isSuccessful()) {
+
+                            Toast.makeText(
+                                    SalesActivity.this,
+                                    "Sipariş başarıyla kaydedildi",
+                                    Toast.LENGTH_LONG
+                            ).show();
+
+                            setResult(RESULT_OK);
+
+                            if (printAfterSave) {
+
+                                // PDF oluşturma ve yazdırma
+                                // işlemini buraya ekleyeceğiz.
+                                printSavedOrder(order);
+
+                            } else {
+                                finish();
+                            }
+
+                        } else {
+
+                            String errorMessage = "";
+
+                            try {
+                                if (response.errorBody() != null) {
+                                    errorMessage =
+                                            response.errorBody().string();
+                                }
+                            } catch (Exception e) {
+                                errorMessage = e.getMessage();
+                            }
+
+                            Log.e("ORDER_SAVE",
+                                    "HTTP: " + response.code()
+                                            + " | Hata: " + errorMessage);
+
+                            Toast.makeText(
+                                    SalesActivity.this,
+                                    "Kayıt hatası: " + response.code()
+                                            + "\n" + errorMessage,
+                                    Toast.LENGTH_LONG
+                            ).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(
+                            Call<ResponseBody> call,
+                            Throwable t) {
+
+                        isSaving = false;
+                        btnCompleteOrder.setEnabled(true);
+
+                        Toast.makeText(
+                                SalesActivity.this,
+                                "Bağlantı hatası: " + t.getMessage(),
+                                Toast.LENGTH_LONG
+                        ).show();
+                    }
+                });
     }
+
     private void fetchClients() {
 
         Retrofit retrofit =
@@ -705,6 +817,318 @@ public class SalesActivity extends AppCompatActivity {
                         ).show();
                     }
                 });
+    }
+
+
+    private void showSaveDialog(Order order) {
+
+        if (isSaving) return;
+
+        String[] options = {
+                "Kaydet",
+                "Kaydet ve Yazdır"
+        };
+
+        new AlertDialog.Builder(this)
+                .setTitle("Sipariş İşlemi")
+                .setItems(options, (dialog, which) -> {
+
+                    if (which == 0) {
+                        saveOrder(order, false);
+                    } else if (which == 1) {
+                        saveOrder(order, true);
+                    }
+
+                })
+                .setNegativeButton("İptal", null)
+                .show();
+    }
+
+
+    private File createOrderPdf(Order order) throws IOException {
+
+        PdfDocument document = new PdfDocument();
+
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(10);
+
+        int pageWidth = 595;
+        int pageHeight = 842;
+        int margin = 35;
+        int pageNumber = 1;
+
+        NumberFormat money = NumberFormat.getNumberInstance(
+                new Locale("tr", "TR"));
+        money.setMinimumFractionDigits(2);
+        money.setMaximumFractionDigits(2);
+
+        try {
+
+            PdfDocument.Page page = document.startPage(
+                    new PdfDocument.PageInfo.Builder(
+                            pageWidth, pageHeight, pageNumber).create());
+
+            Canvas canvas = page.getCanvas();
+            int y = margin;
+
+            // BAŞLIK
+            paint.setTextSize(18);
+            paint.setFakeBoldText(true);
+            canvas.drawText("SİPARİŞ FİŞİ", 205, y + 20, paint);
+
+            paint.setTextSize(10);
+            paint.setFakeBoldText(false);
+
+            y += 60;
+
+            canvas.drawText(
+                    "Fiş No: " + order.getOrderNumber(),
+                    margin, y, paint);
+
+            String date = new SimpleDateFormat(
+                    "dd.MM.yyyy",
+                    new Locale("tr", "TR"))
+                    .format(selectedDate.getTime());
+
+            canvas.drawText(
+                    "Tarih: " + date,
+                    400, y, paint);
+
+            y += 25;
+
+            String clientName =
+                    _clientCodeAndNameAndSurname == null
+                            ? ""
+                            : _clientCodeAndNameAndSurname;
+
+            canvas.drawText(
+                    "Cari: " + clientName,
+                    margin, y, paint);
+
+            y += 30;
+
+            // TABLO BAŞLIĞI
+            paint.setFakeBoldText(true);
+
+            canvas.drawLine(margin, y, 560, y, paint);
+
+            y += 20;
+
+            canvas.drawText("ÜRÜN", 35, y, paint);
+            canvas.drawText("MİKTAR", 320, y, paint);
+            canvas.drawText("FİYAT", 405, y, paint);
+            canvas.drawText("TOPLAM", 490, y, paint);
+
+            paint.setFakeBoldText(false);
+
+            y += 10;
+            canvas.drawLine(margin, y, 560, y, paint);
+
+            double generalTotal = 0;
+
+            // ÜRÜNLER
+            for (Item item : itemList) {
+
+                int amount = amounts.containsKey(item.getId())
+                        ? amounts.get(item.getId()) : 0;
+
+                double unitPrice =
+                        unitPrices.containsKey(item.getId())
+                                ? unitPrices.get(item.getId()) : 0;
+
+                double lineTotal = amount * unitPrice;
+                generalTotal += lineTotal;
+
+                // Sayfa dolduysa yeni sayfa
+                if (y + 35 > pageHeight - 80) {
+
+                    document.finishPage(page);
+                    pageNumber++;
+
+                    page = document.startPage(
+                            new PdfDocument.PageInfo.Builder(
+                                    pageWidth, pageHeight, pageNumber)
+                                    .create());
+
+                    canvas = page.getCanvas();
+                    y = margin;
+
+                    paint.setFakeBoldText(true);
+                    canvas.drawText(
+                            "SİPARİŞ FİŞİ - DEVAM",
+                            margin, y, paint);
+                    paint.setFakeBoldText(false);
+
+                    y += 30;
+                }
+
+                y += 25;
+
+                String itemName = item.getItemName() == null
+                        ? ""
+                        : item.getItemName();
+
+                // Ürün adı çok uzunsa kes
+                itemName = itemName.substring(
+                        0, Math.min(itemName.length(), 43));
+
+                canvas.drawText(
+                        itemName, 35, y, paint);
+
+                canvas.drawText(
+                        String.valueOf(amount),
+                        320, y, paint);
+
+                canvas.drawText(
+                        money.format(unitPrice),
+                        405, y, paint);
+
+                canvas.drawText(
+                        money.format(lineTotal),
+                        490, y, paint);
+
+                y += 10;
+                canvas.drawLine(margin, y, 560, y, paint);
+            }
+
+            // GENEL TOPLAM
+            if (y + 45 > pageHeight - margin) {
+
+                document.finishPage(page);
+                pageNumber++;
+
+                page = document.startPage(
+                        new PdfDocument.PageInfo.Builder(
+                                pageWidth, pageHeight, pageNumber)
+                                .create());
+
+                canvas = page.getCanvas();
+                y = margin;
+            }
+
+            y += 35;
+
+            paint.setFakeBoldText(true);
+            paint.setTextSize(12);
+
+            canvas.drawText(
+                    "GENEL TOPLAM: " + money.format(generalTotal) + " TL",
+                    320, y, paint);
+
+            document.finishPage(page);
+
+            File pdfFile = new File(
+                    getCacheDir(),
+                    "Siparis_" + order.getOrderNumber() + ".pdf");
+
+            try (FileOutputStream output =
+                         new FileOutputStream(pdfFile)) {
+
+                document.writeTo(output);
+            }
+
+            return pdfFile;
+
+        } finally {
+            document.close();
+        }
+    }
+
+
+
+    private void printPdf(File pdfFile) {
+
+        PrintManager printManager =
+                (PrintManager) getSystemService(Context.PRINT_SERVICE);
+
+        PrintDocumentAdapter adapter = new PrintDocumentAdapter() {
+
+            @Override
+            public void onLayout(
+                    PrintAttributes oldAttributes,
+                    PrintAttributes newAttributes,
+                    CancellationSignal cancellationSignal,
+                    LayoutResultCallback callback,
+                    Bundle extras) {
+
+                if (cancellationSignal.isCanceled()) {
+                    callback.onLayoutCancelled();
+                    return;
+                }
+
+                PrintDocumentInfo info =
+                        new PrintDocumentInfo.Builder(pdfFile.getName())
+                                .setContentType(
+                                        PrintDocumentInfo.CONTENT_TYPE_DOCUMENT)
+                                .build();
+
+                callback.onLayoutFinished(info, true);
+            }
+
+            @Override
+            public void onWrite(
+                    PageRange[] pages,
+                    ParcelFileDescriptor destination,
+                    CancellationSignal cancellationSignal,
+                    WriteResultCallback callback) {
+
+                try (FileInputStream input =
+                             new FileInputStream(pdfFile);
+                     FileOutputStream output =
+                             new FileOutputStream(
+                                     destination.getFileDescriptor())) {
+
+                    byte[] buffer = new byte[8192];
+                    int length;
+
+                    while ((length = input.read(buffer)) != -1) {
+
+                        if (cancellationSignal.isCanceled()) {
+                            callback.onWriteCancelled();
+                            return;
+                        }
+
+                        output.write(buffer, 0, length);
+                    }
+
+                    output.flush();
+                    callback.onWriteFinished(
+                            new PageRange[]{PageRange.ALL_PAGES});
+
+                } catch (Exception e) {
+                    callback.onWriteFailed(e.getMessage());
+                }
+            }
+        };
+
+        PrintAttributes attributes =
+                new PrintAttributes.Builder()
+                        .setMediaSize(PrintAttributes.MediaSize.ISO_A4)
+                        .build();
+
+        printManager.print("Sipariş Fişi", adapter, attributes);
+    }
+
+
+    private void printSavedOrder(Order order) {
+
+        try {
+            File pdfFile = createOrderPdf(order);
+
+            printPdf(pdfFile);
+
+        } catch (Exception e) {
+
+            Log.e("PDF_PRINT", "PDF oluşturulamadı", e);
+
+            Toast.makeText(
+                    this,
+                    "Sipariş kaydedildi fakat PDF oluşturulamadı: "
+                            + e.getMessage(),
+                    Toast.LENGTH_LONG
+            ).show();
+        }
     }
 
 

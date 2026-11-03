@@ -23,9 +23,15 @@
         <activity
             android:name=".Activities.DialogActivities.SalesAmountDialogActivity"
             android:exported="false" />
+   <!--     <activity
+            android:name=".Activities.SalesActivities.SalesActivity"
+            android:exported="false" />-->
+
         <activity
             android:name=".Activities.SalesActivities.SalesActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+
         <activity
             android:name=".Activities.ReportActivities.GeneralReportActivities.ReportItemInformationActivity"
             android:exported="false" />
