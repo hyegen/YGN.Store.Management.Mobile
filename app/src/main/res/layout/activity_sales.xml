@@ -71,7 +71,12 @@
             android:layout_weight="1"
             android:hint="Ürün kodu"
             android:inputType="text"
-            android:singleLine="true"/>
+            android:singleLine="true"
+
+            android:imeOptions="actionSearch"
+
+
+            />
 
         <Button
             android:id="@+id/btnSearch"

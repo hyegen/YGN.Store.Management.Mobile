@@ -2,14 +2,18 @@ package com.ygn.ygn_store_management.Activities.ReportActivities.GeneralReportAc
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -75,7 +79,10 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
         initialize();
         setMembers();
         getExtras();
-        GetData();
+
+        if (validateGetData()) {
+            GetData();
+        }
     }
     @Override
     protected void onDestroy() {
@@ -120,8 +127,17 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
     //region private methods
     private void getExtras() {
         Intent intent = getIntent();
+
         token = intent.getStringExtra("TOKEN");
-        _getCurrentOrderFicheNumber= intent.getStringExtra("OrderFicheNumber");
+
+        _getCurrentOrderFicheNumber =
+                intent.getStringExtra("OrderFicheNumber");
+
+        if (_getCurrentOrderFicheNumber != null &&
+                !_getCurrentOrderFicheNumber.trim().isEmpty()) {
+
+            edtSearchOrder.setText(_getCurrentOrderFicheNumber);
+        }
     }
     private void getSharedPreferences() {
         SharedPreferences prefs = getSharedPreferences("MY_PREFS", MODE_PRIVATE);
@@ -145,19 +161,36 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
         txtTransactionDescription = findViewById(R.id.txtTransactionDescription);
     }
     private void events() {
-        btnSearchOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               if (validateGetData())
-                   GetData();
-            }
-        });
         btnShowOrderNotePopUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog( _currentOrderNote);
             }
         });
+
+
+        btnSearchOrder.setOnClickListener(v -> {
+            searchOrder();
+        });
+
+        edtSearchOrder.setSingleLine(true);
+        edtSearchOrder.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+
+        edtSearchOrder.setOnEditorActionListener((v, actionId, event) -> {
+
+            if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                    actionId == EditorInfo.IME_ACTION_DONE ||
+                    (event != null &&
+                            event.getKeyCode() == KeyEvent.KEYCODE_ENTER &&
+                            event.getAction() == KeyEvent.ACTION_DOWN)) {
+
+                searchOrder();
+                return true;
+            }
+
+            return false;
+        });
+
 
         //        edtSearchOrder.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 //            @Override
@@ -171,6 +204,21 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
 //                return false;
 //            }
 //        });
+    }
+    private void searchOrder() {
+
+        if (!validateGetData()) return;
+
+        InputMethodManager imm =
+                (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        imm.hideSoftInputFromWindow(
+                edtSearchOrder.getWindowToken(), 0);
+
+        edtSearchOrder.clearFocus();
+
+        GetData();
     }
     private void showDialog(String message) {
         final Dialog dialog = new Dialog(this);
@@ -217,7 +265,12 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
             pleaseWait.show();
 
             //Call<OrderInformation> call = apiService.GetOrderDetailInformation(token,edtSearchOrder.getText().toString());
-            Call<OrderInformation> call = apiService.GetOrderDetailInformationWithoutToken(_getCurrentOrderFicheNumber);
+            String orderFicheNumber =
+                    edtSearchOrder.getText().toString().trim();
+
+            Call<OrderInformation> call =
+                    apiService.GetOrderDetailInformationWithoutToken(
+                            orderFicheNumber);
             call.enqueue(new Callback<OrderInformation>() {
                 @Override
                 public void onResponse(Call<OrderInformation> call, Response<OrderInformation> response) {
@@ -281,21 +334,24 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
             pleaseWait.dismiss();
         }
     }
-    private boolean validateGetData(){
-      /*  if (edtSearchOrder.getText().toString().isEmpty())
-        {
-            Toast.makeText(ReportGeneralSalesAndPurchasing.this, "Sipariş No Giriniz.", Toast.LENGTH_SHORT).show();
-            setVisibleLinearLayout();
-            return false;
-        }*/
+    private boolean validateGetData() {
 
-        if (_getCurrentOrderFicheNumber.isEmpty())
-        {
-            Toast.makeText(ReportGeneralSalesAndPurchasing.this, "Sipariş No Giriniz.", Toast.LENGTH_SHORT).show();
+        String orderFicheNumber =
+                edtSearchOrder.getText().toString().trim();
+
+        if (orderFicheNumber.isEmpty()) {
+
+            Toast.makeText(
+                    this,
+                    "Sipariş No Giriniz.",
+                    Toast.LENGTH_SHORT
+            ).show();
+
             setVisibleLinearLayout();
             return false;
         }
-      return true;
+
+        return true;
     }
     //endregion
 }

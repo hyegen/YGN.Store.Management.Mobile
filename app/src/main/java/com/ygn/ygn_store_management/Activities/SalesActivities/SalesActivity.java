@@ -7,8 +7,10 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -170,7 +172,7 @@ public class SalesActivity extends AppCompatActivity {
 
         btnSearch.setOnClickListener(v -> searchItem());
 
-        etSearch.setOnEditorActionListener(
+    /*    etSearch.setOnEditorActionListener(
                 (v, actionId, event) -> {
 
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -179,7 +181,7 @@ public class SalesActivity extends AppCompatActivity {
                     }
                     return false;
                 });
-
+*/
         btnDate.setOnClickListener(v -> selectDate());
 
         btnCompleteOrder.setOnClickListener(v -> completeOrder());
@@ -212,6 +214,27 @@ public class SalesActivity extends AppCompatActivity {
                 });
 
         btnCompleteOrder.setOnClickListener(v -> completeOrder());
+
+        btnSearch.setOnClickListener(v -> {
+            searchItem();
+            hideKeyboard();
+        });
+
+        etSearch.setOnEditorActionListener((v, actionId, event) -> {
+
+            if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                    actionId == EditorInfo.IME_ACTION_DONE ||
+                    (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER
+                            && event.getAction() == KeyEvent.ACTION_DOWN)) {
+
+                searchItem();
+                hideKeyboard();
+
+                return true;
+            }
+
+            return false;
+        });
     }
     private void searchItem() {
 
@@ -473,112 +496,6 @@ public class SalesActivity extends AppCompatActivity {
        // saveOrder(order);
         showSaveDialog(order);
     }
-/*    private void saveOrder(Order order) {
-
-        Retrofit retrofit =
-                ApiUtils.InitRequestWithToken(
-                        apiUrl, _currentToken);
-
-        OrderService service =
-                retrofit.create(OrderService.class);
-
-        isSaving = true;
-        btnCompleteOrder.setEnabled(false);
-
-        service.saveOrder(_currentToken,order)
-                .enqueue(new Callback<ResponseBody>() {
-
-                    *//*@Override
-                    public void onResponse(
-                            Call<ResponseBody> call,
-                            Response<ResponseBody> response) {
-
-                        isSaving = false;
-                        btnCompleteOrder.setEnabled(true);
-
-                        if (response.isSuccessful()) {
-
-                            Toast.makeText(
-                                    SalesActivity.this,
-                                    "Sipariş başarıyla kaydedildi",
-                                    Toast.LENGTH_LONG).show();
-
-                            setResult(RESULT_OK);
-                            finish();
-
-                        } else {
-
-                            Toast.makeText(
-                                    SalesActivity.this,
-                                    "Kayıt hatası: " + response.code(),
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    }
-*//*
-                    @Override
-                    public void onResponse(
-                            Call<ResponseBody> call,
-                            Response<ResponseBody> response) {
-
-                        isSaving = false;
-                        btnCompleteOrder.setEnabled(true);
-
-                        if (response.isSuccessful()) {
-
-                            Toast.makeText(
-                                    SalesActivity.this,
-                                    "Sipariş başarıyla kaydedildi",
-                                    Toast.LENGTH_LONG
-                            ).show();
-
-                            setResult(RESULT_OK);
-                            finish();
-
-                        } else {
-
-                            String errorMessage = "";
-
-                            try {
-                                if (response.errorBody() != null) {
-                                    errorMessage = response.errorBody().string();
-                                }
-                            } catch (Exception e) {
-                                errorMessage = e.getMessage();
-                            }
-
-                            Log.e("ORDER_SAVE",
-                                    "HTTP: " + response.code()
-                                            + " | Hata: " + errorMessage);
-
-                            Toast.makeText(
-                                    SalesActivity.this,
-                                    "Kayıt hatası: " + response.code()
-                                            + "\n" + errorMessage,
-                                    Toast.LENGTH_LONG
-                            ).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(
-                            Call<ResponseBody> call,
-                            Throwable t) {
-
-                        isSaving = false;
-                        btnCompleteOrder.setEnabled(true);
-
-                        Toast.makeText(
-                                SalesActivity.this,
-                                "Bağlantı hatası: " + t.getMessage(),
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
-    }*/
-
-
-
-
-
     private void saveOrder(Order order, boolean printAfterSave) {
 
         if (isSaving) return;
@@ -665,7 +582,6 @@ public class SalesActivity extends AppCompatActivity {
                     }
                 });
     }
-
     private void fetchClients() {
 
         Retrofit retrofit =
@@ -818,8 +734,6 @@ public class SalesActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
     private void showSaveDialog(Order order) {
 
         if (isSaving) return;
@@ -843,8 +757,6 @@ public class SalesActivity extends AppCompatActivity {
                 .setNegativeButton("İptal", null)
                 .show();
     }
-
-
     private File createOrderPdf(Order order) throws IOException {
 
         PdfDocument document = new PdfDocument();
@@ -1034,9 +946,6 @@ public class SalesActivity extends AppCompatActivity {
             document.close();
         }
     }
-
-
-
     private void printPdf(File pdfFile) {
 
         PrintManager printManager =
@@ -1100,6 +1009,20 @@ public class SalesActivity extends AppCompatActivity {
                     callback.onWriteFailed(e.getMessage());
                 }
             }
+
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+
+                runOnUiThread(() -> {
+                    setResult(RESULT_OK);
+                    finish();
+                });
+            }
+
+
+
         };
 
         PrintAttributes attributes =
@@ -1109,13 +1032,10 @@ public class SalesActivity extends AppCompatActivity {
 
         printManager.print("Sipariş Fişi", adapter, attributes);
     }
-
-
     private void printSavedOrder(Order order) {
 
         try {
             File pdfFile = createOrderPdf(order);
-
             printPdf(pdfFile);
 
         } catch (Exception e) {
@@ -1124,12 +1044,19 @@ public class SalesActivity extends AppCompatActivity {
 
             Toast.makeText(
                     this,
-                    "Sipariş kaydedildi fakat PDF oluşturulamadı: "
-                            + e.getMessage(),
+                    "PDF oluşturulamadı: " + e.getMessage(),
                     Toast.LENGTH_LONG
             ).show();
         }
     }
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
 
+        imm.hideSoftInputFromWindow(
+                etSearch.getWindowToken(), 0);
+
+        etSearch.clearFocus();
+    }
 
 }
