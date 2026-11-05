@@ -18,20 +18,23 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.SalesManagementActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.ReportActivities.GeneralReportActivities.ReportCashProceedByClientDetailActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.DialogActivities.SalesAmountDialogActivity"
             android:exported="false" />
-   <!--     <activity
+        <!--
+     <activity
             android:name=".Activities.SalesActivities.SalesActivity"
-            android:exported="false" />-->
-
+            android:exported="false" />
+        -->
         <activity
             android:name=".Activities.SalesActivities.SalesActivity"
-            android:exported="false"
-            android:configChanges="orientation|screenSize|keyboardHidden" />
-
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="false" />
         <activity
             android:name=".Activities.ReportActivities.GeneralReportActivities.ReportItemInformationActivity"
             android:exported="false" />

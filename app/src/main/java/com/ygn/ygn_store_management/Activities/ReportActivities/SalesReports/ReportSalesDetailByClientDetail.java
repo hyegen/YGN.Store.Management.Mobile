@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +46,7 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
     private ReportSalesDetailByClientDetailAdapter reportSalesDetailByClientDetailAdapter;
     private SearchView searchView;
     private CardView reportCardView;
+    ImageView ivBack;
     //endregion
 
     //region overriden methods
@@ -92,6 +94,9 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
         token = intent.getStringExtra("TOKEN");
     }
     private void events() {
+        ivBack.setOnClickListener(v -> {
+            finish();
+        });
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -155,6 +160,7 @@ public class ReportSalesDetailByClientDetail extends AppCompatActivity {
         recyclerViewSalesDetailByClientDetail = findViewById(R.id.recyclerViewSalesReport);
         searchView = findViewById(R.id.searchViewSales);
         reportCardView=findViewById(R.id.cardOrder);
+        ivBack = findViewById(R.id.ivBack);
 
     }
     private void setMembers() {

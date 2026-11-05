@@ -4,115 +4,232 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="12dp">
+    android:padding="10dp"
+    android:background="#F1F5F9">
 
-    <!-- BAŞLIK -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Yeni  - Satış"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        android:paddingBottom="12dp"/>
-
-    <!-- FİŞ NO SOL - TARİH SAĞ -->
+    <!-- GERİ BUTONU VE BAŞLIK -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingBottom="8dp">
+        android:layout_marginBottom="8dp">
 
-        <!-- FİŞ NUMARASI -->
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_arrow_back"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Geri"
+            android:scaleType="centerInside"
+            android:padding="8dp"
+            android:tint="#263746"/>
+
         <TextView
-            android:id="@+id/txtOrderFicheNumber"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="start"
-            android:text="Fiş No: Yükleniyor..."
-            android:textColor="#333333"
-            android:textSize="15sp"
-            android:textStyle="bold"/>
+            android:text="Yeni Satış"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            android:textColor="#263746"
+            android:gravity="center"
+            android:layout_marginEnd="40dp"/>
 
-        <!-- SİPARİŞ TARİHİ -->
+    </LinearLayout>
+
+    <!-- FİŞ BİLGİLERİ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_blue_light_rounded"
+        android:padding="10dp"
+        android:layout_marginBottom="7dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SATIŞ FİŞİ"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textColor="#607D8B"/>
+
+            <TextView
+                android:id="@+id/txtOrderFicheNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fiş No: Yükleniyor..."
+                android:textColor="#174B70"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginTop="2dp"/>
+
+        </LinearLayout>
+
         <Button
             android:id="@+id/btnDate"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="Tarih Seç"
             android:textSize="12sp"
             android:textColor="#FFFFFF"
-            android:backgroundTint="#03A9F4"
-            android:gravity="center"
-            android:minHeight="40dp"
-            android:layout_marginStart="8dp"/>
+            android:textAllCaps="false"
+            android:background="@drawable/bg_primary_button"
+
+            android:backgroundTint="@null"
+            android:minHeight="0dp"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"/>
 
     </LinearLayout>
 
     <!-- CARİ SEÇİMİ -->
-    <Spinner
-        android:id="@+id/spinnerClients"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="48dp"/>
-
-    <!-- ÜRÜN ARAMA -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:background="@drawable/bg_white_rounded"
+        android:padding="8dp"
+        android:layout_marginBottom="7dp">
 
-        <EditText
-            android:id="@+id/et_search"
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Ürün kodu"
-            android:inputType="text"
-            android:singleLine="true"
+            android:text="CARİ HESAP"
+            android:textColor="#607D8B"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:paddingStart="4dp"/>
 
-            android:imeOptions="actionSearch"
-
-
-            />
-
-        <Button
-            android:id="@+id/btnSearch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#03A9F4"
-            android:text="Ara"/>
+        <Spinner
+            android:id="@+id/spinnerClients"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:minHeight="45dp"/>
 
     </LinearLayout>
 
-    <!-- ÜRÜN LİSTESİ -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_products"
+    <!-- ÜRÜN EKLEME VE LİSTE -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="@drawable/bg_blue_light_rounded"
+        android:padding="9dp">
 
-    <!-- GENEL TOPLAM -->
-    <TextView
-        android:id="@+id/txtTotal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Toplam: 0,00 TL"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:gravity="end"
-        android:padding="12dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ÜRÜN EKLE"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="#174B70"
+            android:paddingBottom="6dp"/>
+
+        <!-- ÜRÜN ARAMA -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_white_rounded"
+            android:padding="4dp"
+            android:layout_marginBottom="7dp">
+
+            <EditText
+                android:id="@+id/et_search"
+                android:layout_width="0dp"
+                android:layout_height="43dp"
+                android:layout_weight="1"
+                android:hint="Ürün kodunu giriniz..."
+                android:inputType="text"
+                android:singleLine="true"
+                android:imeOptions="actionSearch"
+                android:background="@android:color/transparent"
+                android:textSize="14sp"
+                android:paddingStart="10dp"
+                android:paddingEnd="5dp"/>
+
+            <Button
+                android:id="@+id/btnSearch"
+                android:layout_width="75dp"
+                android:layout_height="40dp"
+                android:text="Ara"
+                android:textSize="13sp"
+                android:textColor="#FFFFFF"
+                android:textAllCaps="false"
+                android:background="@drawable/bg_primary_button"
+                android:minHeight="0dp"
+                android:backgroundTint="@null"
+                android:padding="0dp"/>
+
+        </LinearLayout>
+
+        <!-- ÜRÜN LİSTESİ -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_products"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingBottom="5dp"/>
+
+        <!-- GENEL TOPLAM -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_white_rounded"
+            android:padding="10dp"
+            android:layout_marginTop="6dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="GENEL TOPLAM"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textColor="#607D8B"
+                android:gravity="end"/>
+
+            <TextView
+                android:id="@+id/txtTotal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Toplam: 0,00 TL"
+                android:textSize="21sp"
+                android:textStyle="bold"
+                android:textColor="#0277BD"
+                android:gravity="end"
+                android:paddingTop="2dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <!-- SİPARİŞİ KAYDET -->
     <Button
         android:id="@+id/btn_complete_order"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="49dp"
+        android:text="Siparişi Kaydet"
+        android:textSize="15sp"
+        android:backgroundTint="@null"
+        android:textStyle="bold"
         android:textColor="#FFFFFF"
-        android:backgroundTint="#03A9F4"
-        android:text="Siparişi Kaydet"/>
+        android:textAllCaps="false"
+        android:background="@drawable/bg_primary_button"
+        android:layout_marginTop="9dp"
+        android:minHeight="0dp"/>
 
 </LinearLayout>

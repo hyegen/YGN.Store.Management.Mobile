@@ -16,6 +16,8 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +46,7 @@ import retrofit2.Retrofit;
 
 public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
     //region members
+    ImageButton btnBack;
     private static String apiUrl;
     private EditText edtSearchOrder;
     private Button btnSearchOrder;
@@ -57,7 +60,7 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
     private TextView txtDateDescription;
     private CardView orderLineCardView;
     private CardView clientInformationCardView;
-    private RelativeLayout relativeLayoutReportGeneralSalesAndPurchasing;
+    private LinearLayout relativeLayoutReportGeneralSalesAndPurchasing;
     protected ProgressDialog pleaseWait;
     public String _currentOrderNote;
     private String token;
@@ -159,6 +162,10 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
         relativeLayoutReportGeneralSalesAndPurchasing=findViewById(R.id.relativeLayoutReportGeneralSalesAndPurchasing);
         recyclerViewOrderLine = findViewById(R.id.recyclerViewOrderLine);
         txtTransactionDescription = findViewById(R.id.txtTransactionDescription);
+
+         btnBack = findViewById(R.id.btnBack);
+
+
     }
     private void events() {
         btnShowOrderNotePopUp.setOnClickListener(new View.OnClickListener() {
@@ -167,7 +174,9 @@ public class ReportGeneralSalesAndPurchasing extends AppCompatActivity {
                 showDialog( _currentOrderNote);
             }
         });
-
+        btnBack.setOnClickListener(v -> {
+            finish();
+        });
 
         btnSearchOrder.setOnClickListener(v -> {
             searchOrder();

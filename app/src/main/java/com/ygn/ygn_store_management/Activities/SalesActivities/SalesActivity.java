@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -93,6 +94,7 @@ public class SalesActivity extends AppCompatActivity {
     private SalesItemAdapter adapter;
     private Calendar selectedDate = Calendar.getInstance();
     private boolean isSaving = false;
+    ImageButton btnBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,6 +141,8 @@ public class SalesActivity extends AppCompatActivity {
         txtTotal = findViewById(R.id.txtTotal);
         recyclerViewItems = findViewById(R.id.rv_products);
         btnCompleteOrder = findViewById(R.id.btn_complete_order);
+
+         btnBack = findViewById(R.id.btnBack);
     }
     private void initialize() {
         txtOrderFicheNumber =
@@ -169,7 +173,9 @@ public class SalesActivity extends AppCompatActivity {
 
     }
     private void events() {
-
+        btnBack.setOnClickListener(v -> {
+            finish();
+        });
         btnSearch.setOnClickListener(v -> searchItem());
 
     /*    etSearch.setOnEditorActionListener(

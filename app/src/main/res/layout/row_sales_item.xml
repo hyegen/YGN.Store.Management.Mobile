@@ -6,14 +6,13 @@
     android:orientation="vertical"
     android:padding="5dp">
 
-    <!-- ÜRÜN KODU VE ÜRÜN ADI YAN YANA -->
+    <!-- ÜRÜN KODU VE ÜRÜN ADI -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
-        <!-- ÜRÜN KODU -->
         <TextView
             android:id="@+id/txtItemCode"
             android:layout_width="wrap_content"
@@ -22,7 +21,6 @@
             android:textSize="16sp"
             android:layout_marginEnd="10dp"/>
 
-        <!-- ÜRÜN ADI -->
         <TextView
             android:id="@+id/txtItemName"
             android:layout_width="0dp"
@@ -41,7 +39,7 @@
 
         <!-- MİKTAR -->
         <LinearLayout
-            android:layout_width="50dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -50,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:text="Miktar"
                 android:textAlignment="center"
-                android:textSize="10sp"
+                android:textSize="12sp"
                 android:textStyle="bold"/>
 
             <EditText
@@ -65,29 +63,25 @@
         <!-- ÇARPMA İŞARETİ -->
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
             android:text="×"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:gravity="bottom|center_horizontal"
-            android:paddingBottom="12dp"
-            android:layout_gravity="bottom"
-            />
-
+            android:gravity="center"/>
 
         <!-- BİRİM FİYAT -->
         <LinearLayout
-            android:layout_width="65dp"
+            android:layout_width="105dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Birim Fiyat"
+                android:textAlignment="center"
                 android:textSize="12sp"
                 android:textStyle="bold"/>
 
@@ -122,7 +116,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="12dp"
             android:orientation="vertical">
 
             <TextView

@@ -1,375 +1,399 @@
-<?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".Activities.ReportActivities.GeneralReportActivities.ReportGeneralSalesAndPurchasing"
-    android:orientation="vertical"
-    android:id="@+id/relativeLayoutReportGeneralSalesAndPurchasing"
-    >
+    android:layout_height="match_parent"
+    android:background="#F1F5F9"
+    android:fillViewport="true">
 
     <LinearLayout
+        android:id="@+id/relativeLayoutReportGeneralSalesAndPurchasing"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        >
+        android:padding="10dp"
+        tools:context=".Activities.ReportActivities.GeneralReportActivities.ReportGeneralSalesAndPurchasing">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:minHeight="?attr/actionBarSize"
-                android:theme="?attr/actionBarTheme">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Sipariş Detay"
-                    android:textColor="@color/black"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-            </androidx.appcompat.widget.Toolbar>
-
-
+        <!-- BAŞLIK VE GERİ BUTONU -->
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="10dp">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:src="@drawable/ic_arrow_back"
+                android:background="@drawable/bg_white_rounded"
+                android:padding="9dp"
+                android:scaleType="fitCenter"
+                android:contentDescription="Geri" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Sipariş Detay"
+                android:textColor="#263746"
+                android:textSize="19sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="42dp"
+                android:layout_height="42dp" />
+
+        </LinearLayout>
+
+        <!-- SİPARİŞ ARAMA -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginBottom="10dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="3dp"
+            app:cardBackgroundColor="#FFFFFF">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_margin="3dp"
-                >
+                android:gravity="center_vertical"
+                android:padding="10dp">
 
                 <EditText
                     android:id="@+id/edtSearchOrder"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="45dp"
                     android:layout_weight="1"
-                    android:hint="Sipariş Numarası giriniz"
-                    android:minHeight="48dp"
-                    android:singleLine="true"
+                    android:hint="Sipariş numarası giriniz"
                     android:inputType="number"
-                    />
+                    android:singleLine="true"
+                    android:textSize="14sp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="8dp"
+                    android:background="@drawable/bg_white_rounded" />
 
-             <com.google.android.material.button.MaterialButton
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSearchOrder"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#03A9F4"
-                    app:cornerRadius="12dp"
-                    android:text="Ara" />
-            </LinearLayout>
+                    android:layout_width="85dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="8dp"
+                    android:text="Ara"
+                    android:textSize="13sp"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="#0288D1"
+                    app:cornerRadius="10dp" />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/clientInformationCardView"
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- CARİ VE SİPARİŞ BİLGİLERİ -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/clientInformationCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="3dp"
+            app:cardBackgroundColor="#FFFFFF">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="3dp"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="4dp"
-                >
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:id="@+id/txtTransactionDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="SİPARİŞ BİLGİLERİ"
+                    android:textColor="#0288D1"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:paddingBottom="10dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#E5E7EB" />
+
+                <!-- SİPARİŞ NUMARASI / TARİH BAŞLIK -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    >
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
 
                     <TextView
-                        android:id="@+id/txtTransactionDescription"
-                        android:layout_width="match_parent"
+                        android:id="@+id/txtId"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textColor="@color/black"
-                        android:text="Hareket Açıklaması"
-                        android:gravity="center"
-                        android:textStyle="bold"
-                        />
+                        android:text="@string/orderfiche_number"
+                        android:textColor="#64748B"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/txtDate_"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:paddingTop="3dp"
-                        android:paddingRight="3dp"
-                        android:paddingBottom="3dp">
-
-                        <TextView
-                            android:id="@+id/txtId"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/orderfiche_number"
-                            android:textColor="@color/black"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/txtDate_"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Tarih"
-                            android:textColor="@color/black"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:paddingTop="3dp"
-                        android:paddingRight="3dp"
-                        android:paddingBottom="3dp">
-
-                        <TextView
-                            android:id="@+id/txtOrderFicheNumberDescription"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textColor="@color/black" />
-
-                        <TextView
-                            android:id="@+id/txtDateDescription"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textColor="@color/black" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:paddingTop="3dp"
-                        android:paddingRight="3dp"
-                        android:paddingBottom="3dp">
-
-                        <TextView
-                            android:id="@+id/txtClient"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Cari Açıklaması"
-                            android:textColor="@color/black"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:paddingTop="3dp"
-                        android:paddingRight="3dp"
-                        android:paddingBottom="3dp">
-
-                        <TextView
-                            android:id="@+id/txtClientDescription"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textColor="@color/black" />
-                    </LinearLayout>
-
+                        android:layout_weight="1"
+                        android:text="Tarih"
+                        android:textColor="#64748B"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
 
+                <!-- SİPARİŞ NUMARASI / TARİH DEĞER -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp">
 
+                    <TextView
+                        android:id="@+id/txtOrderFicheNumberDescription"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="#263746"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
+                    <TextView
+                        android:id="@+id/txtDateDescription"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="#263746"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
+                <!-- CARİ BAŞLIK -->
+                <TextView
+                    android:id="@+id/txtClient"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cari Açıklaması"
+                    android:textColor="#64748B"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="12dp" />
+
+                <!-- CARİ DEĞER -->
+                <TextView
+                    android:id="@+id/txtClientDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#263746"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="4dp" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- ÜRÜN DETAYLARI -->
         <androidx.cardview.widget.CardView
-
             android:id="@+id/orderLineCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="3dp"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="4dp"
-            >
+            android:layout_marginBottom="10dp"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="3dp"
+            app:cardBackgroundColor="#FFFFFF">
 
             <LinearLayout
                 android:id="@+id/orderLineLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="8dp">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:paddingTop="3dp"
-                    android:paddingRight="3dp"
-                    android:paddingBottom="3dp"
-                    android:background="@color/gray">
+                    android:text="ÜRÜN DETAYLARI"
+                    android:textColor="#0288D1"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:padding="8dp" />
+
+                <!-- TABLO BAŞLIKLARI -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="#E1F3FC"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp">
 
                     <TextView
                         android:id="@+id/txtItemCode"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="1.5"
                         android:text="Ürün Açıklaması"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"/>
+                        android:textColor="#263746"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/txtAmount"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="0.7"
                         android:text="Miktar"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:layout_marginLeft="10dp"
-                        />
+                        android:gravity="center"
+                        android:textColor="#263746"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/txtUnitPrice"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Birim Fiyat"
-                        android:textColor="@color/black"
+                        android:gravity="center"
+                        android:textColor="#263746"
+                        android:textSize="11sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/txtLineTotal"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Satır Toplamı"
-                        android:textColor="@color/black"
+                        android:gravity="end"
+                        android:textColor="#263746"
+                        android:textSize="11sp"
                         android:textStyle="bold" />
 
-
                 </LinearLayout>
 
+                <!-- ÜRÜN LİSTESİ -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewOrderLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="0dp"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false" />
+
+                <!-- TOPLAM BAŞLIK -->
+                <TextView
+                    android:id="@+id/txtTotalPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Toplam Fiyat"
+                    android:textColor="#64748B"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="12dp" />
+
+                <!-- TOPLAM TUTAR -->
+                <TextView
+                    android:id="@+id/txtTotalPriceDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#0288D1"
+                    android:textSize="21sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="3dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#E5E7EB"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp" />
+
+                <!-- KDV BAŞLIKLARI -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="3dp"
-                    android:paddingTop="3dp"
-                    android:paddingRight="3dp"
-                    android:paddingBottom="3dp">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerViewOrderLine"
-                        android:layout_width="match_parent"
-                        android:layout_height="220dp"
-                        android:padding="0dp"
-                        android:clipToPadding="false" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:paddingTop="3dp"
-                    android:paddingRight="3dp"
-                    android:paddingBottom="3dp"
-                    >
-
-
-                    <TextView
-                        android:id="@+id/txtTotalPrice"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Toplam Fiyat"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:paddingTop="3dp"
-                    android:paddingRight="3dp"
-                    android:paddingBottom="3dp">
-
-
-                    <TextView
-                        android:id="@+id/txtTotalPriceDescription"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="@color/black" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:paddingTop="3dp"
-                    android:paddingRight="3dp"
-                    android:paddingBottom="3dp">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/txtHasTax"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="KDV Açıklaması"
-                        android:textColor="@color/black"
+                        android:textColor="#64748B"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/txtTaxPercentage"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="KDV Oranı"
-                        android:textColor="@color/black"
+                        android:textColor="#64748B"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
+
                 </LinearLayout>
 
+                <!-- KDV DEĞERLERİ -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:paddingTop="3dp"
-                    android:paddingRight="3dp"
-                    android:paddingBottom="3dp">
+                    android:orientation="horizontal"
+                    android:layout_marginTop="5dp">
 
                     <TextView
                         android:id="@+id/txtHasTaxDescription"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textColor="@color/black" />
+                        android:textColor="#263746"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/txtTaxPercentageDescription"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textColor="@color/black" />
+                        android:textColor="#263746"
+                        android:textSize="14sp" />
+
                 </LinearLayout>
 
+                <!-- SİPARİŞ NOTU -->
                 <Button
                     android:id="@+id/btnShowOrderNotePopUp"
                     android:layout_width="150dp"
-                    android:layout_height="40dp"
+                    android:layout_height="42dp"
                     android:layout_gravity="center"
-                    android:backgroundTint="#FFA500"
+                    android:layout_marginTop="15dp"
+                    android:backgroundTint="#F59E0B"
                     android:text="Sipariş Notu"
-                    android:visibility="gone"
-                    />
+                    android:textColor="#FFFFFF"
+                    android:textAllCaps="false"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        </LinearLayout>
-        </LinearLayout>
+    </LinearLayout>
 
-</RelativeLayout>
 </ScrollView>
